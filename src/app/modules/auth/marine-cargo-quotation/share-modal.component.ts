@@ -85,7 +85,7 @@ export interface ShareModalData {
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            background-color: #21275c;
+            background-color: #007B7B;
             color: white;
             position: relative;
         }
@@ -245,7 +245,7 @@ export class ShareModalComponent {
     }
 
     shareViaGmail(): void {
-        const subject = encodeURIComponent('Marine Cargo Insurance Quote - Geminia');
+        const subject = encodeURIComponent('Marine Cargo Insurance Quote - Fidelity');
         // Add a line break and the shareable link for context
         const bodyText = `${this.data.quoteText}\n\nView this quote online: ${this.data.shareLink}`;
         const body = encodeURIComponent(bodyText);
@@ -257,7 +257,7 @@ export class ShareModalComponent {
     }
 
     shareViaOutlook(): void {
-        const subject = encodeURIComponent('Marine Cargo Insurance Quote - Geminia');
+        const subject = encodeURIComponent('Marine Cargo Insurance Quote - Fidelity');
         // The body for Outlook needs URL-encoded line breaks (%0D%0A)
         const bodyText = `${this.data.quoteText}\n\nView this quote online: ${this.data.shareLink}`;
         const body = encodeURIComponent(bodyText).replace(/%0A/g, '%0D%0A');

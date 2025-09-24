@@ -193,42 +193,67 @@ export class MpesaPaymentModalComponent implements OnInit { stkForm: FormGroup; 
     </div>
   `,
   styles: [`
-    :host { --pantone-306c: #04b2e1; --pantone-2758c: #21275c; --white-color: #ffffff; --light-gray: #f8f9fa; --medium-gray: #e9ecef; --dark-gray: #495057; }
+    :host { --fidelity-primary: #007B7B; --fidelity-secondary: #B7DC78; --white-color: #ffffff; --light-gray: #f8f9fa; --medium-gray: #e9ecef; --dark-gray: #495057; }
     .claim-modal-container { max-width: 650px; }
-    .modal-header { display: flex; align-items: center; padding: 20px 24px; background-color: var(--pantone-2758c); color: var(--white-color); position: relative; }
-    .header-icon-wrapper { width: 48px; height: 48px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; }
-    .header-icon-wrapper mat-icon { color: var(--pantone-306c); font-size: 28px; width: 28px; height: 28px; }
-    .modal-title { font-size: 22px; font-weight: 700; margin: 0; color: var(--white-color); }
-    .modal-subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; }
-    .close-button { position: absolute; top: 12px; right: 12px; color: var(--white-color); }
+    .modal-header { display: flex; align-items: center; padding: 20px 24px; background-color: var(--fidelity-secondary); color: var(--fidelity-primary); position: relative; }
+    .header-icon-wrapper { width: 48px; height: 48px; background-color: rgba(0, 123, 123, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; }
+    .header-icon-wrapper mat-icon { color: var(--fidelity-primary); font-size: 28px; width: 28px; height: 28px; }
+    .modal-title { font-size: 22px; font-weight: 700; margin: 0; color: var(--fidelity-primary); }
+    .modal-subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; color: var(--fidelity-primary); }
+    .close-button { position: absolute; top: 12px; right: 12px; color: var(--fidelity-primary); }
+    .close-button:hover { color: rgba(0, 123, 123, 0.7); }
     .modal-content { padding: 24px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .full-width { width: 100%; margin-bottom: 16px; }
-    .file-upload-section { margin-top: 16px; padding: 16px; border: 1px dashed var(--medium-gray); border-radius: 8px; background-color: var(--light-gray); }
-    .file-upload-title { font-weight: 600; color: var(--pantone-2758c); margin: 0 0 4px 0; }
+    .file-upload-section { margin-top: 16px; padding: 16px; border: 1px dashed rgba(183, 220, 120, 0.5); border-radius: 8px; background-color: rgba(183, 220, 120, 0.1); }
+    .file-upload-title { font-weight: 600; color: var(--fidelity-primary); margin: 0 0 4px 0; }
     .file-upload-subtitle { font-size: 13px; color: var(--dark-gray); margin: 0 0 16px 0; }
-    .upload-button { width: 100%; }
+    .upload-button { width: 100%; border-color: var(--fidelity-primary) !important; color: var(--fidelity-primary) !important; }
+    .upload-button:hover { background-color: rgba(0, 123, 123, 0.05) !important; }
     .file-list { margin-top: 16px; }
-    .file-item { display: flex; align-items: center; padding: 8px; background-color: var(--white-color); border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--medium-gray); }
-    .file-icon { color: var(--dark-gray); margin-right: 8px; }
-    .file-name { flex-grow: 1; font-size: 14px; color: var(--pantone-2758c); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-item { display: flex; align-items: center; padding: 8px; background-color: var(--white-color); border-radius: 6px; margin-bottom: 8px; border: 1px solid rgba(183, 220, 120, 0.3); }
+    .file-icon { color: var(--fidelity-primary); margin-right: 8px; }
+    .file-name { flex-grow: 1; font-size: 14px; color: var(--fidelity-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .file-size { font-size: 12px; color: var(--dark-gray); margin-left: 8px; }
-    .remove-file-btn { margin-left: auto; }
+    .remove-file-btn { margin-left: auto; color: #ef4444; }
+    .remove-file-btn:hover { background-color: rgba(239, 68, 68, 0.1); }
+    
+    /* Material form field focus states */
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline-thick {
+        border-color: var(--fidelity-primary) !important;
+    }
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+        color: var(--fidelity-primary) !important;
+    }
+    ::ng-deep .mat-mdc-select-focused .mat-mdc-form-field-outline-thick {
+        border-color: var(--fidelity-primary) !important;
+    }
+    ::ng-deep .mat-mdc-option.mat-mdc-option-active {
+        background-color: rgba(183, 220, 120, 0.12) !important;
+        color: var(--fidelity-primary) !important;
+    }
+    ::ng-deep .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+        background-color: rgba(183, 220, 120, 0.04) !important;
+    }
+    
     .btn-primary {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         padding: 0.75rem 1.5rem;
-        font-weight: 500;
+        font-weight: 600;
         color: white;
-        background-color: #04b2e1;
+        background-color: var(--fidelity-primary);
         border: none;
         border-radius: 0.375rem;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.3s ease-in-out;
     }
     .btn-primary:hover:not(:disabled) {
-        background-color: #21275c;
+        background-color: var(--fidelity-secondary);
+        color: var(--fidelity-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 123, 0.2);
     }
     .btn-primary:disabled {
         background-color: #9ca3af;
@@ -329,7 +354,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   totalPolicies = 0;
   navigationItems: NavigationItem[] = [];
   dashboardStats: DashboardStats = { marinePolicies: 0, travelPolicies: 0, pendingQuotes: 0, totalPremium: 0, activeClaims: 0 };
-  private readonly STORAGE_KEYS = { USER_DATA: 'geminia_user_data' };
+  private readonly STORAGE_KEYS = { USER_DATA: 'fidelity_user_data' };
 
   // --- MODIFIED/NEW PROPERTIES FOR SEARCH ---
   activePolicies: Policy[] = [];
@@ -581,7 +606,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       this.snackBar.open('Quote deleted successfully.', 'OK', {
         duration: 3000,
-        panelClass: ['geminia-toast-panel']
+        panelClass: ['fidelity-toast-panel']
       });
 
       // Handle pagination
@@ -600,7 +625,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this.snackBar.open('Quote deleted successfully.', 'OK', {
           duration: 3000,
-          panelClass: ['geminia-toast-panel']
+          panelClass: ['fidelity-toast-panel']
         });
 
         // Handle pagination
@@ -612,7 +637,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.error('Quote not found');
         this.snackBar.open('Quote not found.', 'OK', {
           duration: 3000,
-          panelClass: ['geminia-toast-panel']
+          panelClass: ['fidelity-toast-panel']
         });
       }
     }

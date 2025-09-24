@@ -1,6 +1,6 @@
 // Define the only allowed colors as variables for easy use
-$pantone-light-blue: #04b2e1;
-$pantone-dark-blue: #21275c;
+$fidelity-primary: #007B7B; // Pantone P 125-16 C
+$fidelity-secondary: #B7DC78; // Pantone 366 C
 $white: #ffffff;
 
 // --- BREAKPOINTS ---
@@ -9,42 +9,52 @@ $tablet: 768px;
 $desktop: 1024px;
 
 // --- UTILITY CLASSES ---
-.bg-pantone-light-blue {
-    background-color: $pantone-light-blue !important;
+.bg-fidelity-primary {
+    background-color: $fidelity-primary !important;
 }
-.bg-pantone-dark-blue {
-    background-color: $pantone-dark-blue !important;
+.bg-fidelity-secondary {
+    background-color: $fidelity-secondary !important;
 }
-.text-pantone-light-blue {
-    color: $pantone-light-blue !important;
+.text-fidelity-primary {
+    color: $fidelity-primary !important;
 }
-.text-pantone-dark-blue {
-    color: $pantone-dark-blue !important;
+.text-fidelity-secondary {
+    color: $fidelity-secondary !important;
 }
 
 // --- COMPONENT STYLES ---
 
 .sidebar-bg {
-    background-color: $pantone-light-blue;
+    background-color: $fidelity-secondary; /* Pantone 366 C */
 }
 
 .nav-menu-item {
     .sidebar-nav-icon {
-        color: $pantone-dark-blue;
+        color: $fidelity-primary;
         transition: color 0.2s ease-in-out;
     }
 
     span.font-medium {
         font-weight: 700;
+        color: $fidelity-primary;
     }
 }
 
 .nav-menu-item.active-menu-item {
-    background-color: rgba($pantone-dark-blue, 0.3) !important;
-    color: $white !important;
+    background-color: rgba($fidelity-primary, 0.2) !important;
+    color: $fidelity-primary !important;
 
     .sidebar-nav-icon {
-        color: $white !important;
+        color: $fidelity-primary !important;
+    }
+}
+
+.nav-menu-item:hover {
+    background-color: rgba($fidelity-primary, 0.1) !important;
+    color: $fidelity-primary !important;
+    
+    .sidebar-nav-icon {
+        color: $fidelity-primary !important;
     }
 }
 
@@ -91,7 +101,7 @@ $desktop: 1024px;
 .detail-section-title {
     font-size: 1rem;
     font-weight: 600;
-    color: $pantone-light-blue;
+    color: $fidelity-primary;
     margin-top: 1.25rem;
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
@@ -129,15 +139,15 @@ $desktop: 1024px;
 
 .detail-value {
     font-size: 0.9rem;
-    color: $pantone-dark-blue;
+    color: darken($fidelity-primary, 20%);
     font-weight: 500;
     word-break: break-word;
 }
 
 // --- CLAIM STYLES ---
 .claim-filed-chip {
-    background-color: rgba($pantone-dark-blue, 0.1);
-    color: $pantone-dark-blue;
+    background-color: rgba($fidelity-primary, 0.1);
+    color: $fidelity-primary;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
@@ -145,15 +155,15 @@ $desktop: 1024px;
 }
 
 .file-claim-button {
-    border-color: $pantone-light-blue !important;
-    color: $pantone-light-blue !important;
+    border-color: $fidelity-primary !important;
+    color: $fidelity-primary !important;
 
     &:hover {
-        background-color: rgba($pantone-light-blue, 0.05);
+        background-color: rgba($fidelity-primary, 0.05);
     }
 
     mat-icon {
-        color: $pantone-light-blue;
+        color: $fidelity-primary;
     }
 }
 
@@ -770,8 +780,8 @@ $desktop: 1024px;
 }
 
 // --- TOAST STYLES ---
-::ng-deep .geminia-toast-panel {
-    --mdc-snackbar-container-color: #{$pantone-dark-blue};
+::ng-deep .fidelity-toast-panel {
+    --mdc-snackbar-container-color: #{$fidelity-primary};
     --mdc-snackbar-supporting-text-color: #{$white};
     border-radius: 8px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
@@ -788,7 +798,7 @@ $desktop: 1024px;
     }
 
     .mat-mdc-button.mat-mdc-snack-bar-action {
-        color: #{$pantone-light-blue} !important;
+        color: #{$fidelity-secondary} !important;
         font-weight: 700;
     }
 }
@@ -828,21 +838,21 @@ $desktop: 1024px;
 }
 
 .quote-action-edit {
-    color: $pantone-light-blue;
-    border-color: $pantone-light-blue;
+    color: $fidelity-primary;
+    border-color: $fidelity-primary;
 
     &:hover {
-        background-color: rgba(4, 178, 225, 0.05);
+        background-color: rgba(0, 123, 123, 0.05);
     }
 }
 
 .quote-action-pay {
-    background-color: $pantone-dark-blue !important;
+    background-color: $fidelity-primary !important;
     color: white !important;
     box-shadow: none !important;
 
     &:hover {
-        background-color: lighten($pantone-dark-blue, 5%) !important;
+        background-color: lighten($fidelity-primary, 5%) !important;
     }
 }
 
@@ -926,8 +936,8 @@ $desktop: 1024px;
     }
     
     // Section headers mobile
-    .bg-pantone-dark-blue.px-6.py-4,
-    .bg-pantone-light-blue.px-6.py-4 {
+    .bg-fidelity-primary.px-6.py-4,
+    .bg-fidelity-secondary.px-6.py-4 {
         padding: 0.75rem 1rem !important;
         
         h2, h3 {

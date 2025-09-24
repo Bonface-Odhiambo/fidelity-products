@@ -294,8 +294,8 @@ if (!originalQuoteServiceProto.updateQuoteWithKycAndShipping) {
             justify-content: space-between;
             align-items: center;
             padding: 20px 24px;
-            background-color: #21275c;
-            color: white;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary */
             position: relative;
         }
 
@@ -323,7 +323,7 @@ if (!originalQuoteServiceProto.updateQuoteWithKycAndShipping) {
         }
 
         .content-text h3 {
-            color: #21275c;
+            color: #007B7B; /* Fidelity primary */
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 16px;
@@ -337,7 +337,7 @@ if (!originalQuoteServiceProto.updateQuoteWithKycAndShipping) {
         }
 
         .policy-link {
-            color: #04b2e1;
+            color: #007B7B; /* Fidelity primary */
             text-decoration: none;
         }
 
@@ -359,15 +359,18 @@ if (!originalQuoteServiceProto.updateQuoteWithKycAndShipping) {
             padding: 0.75rem 1.5rem;
             font-weight: 500;
             color: white;
-            background-color: #04b2e1;
+            background-color: #007B7B; /* Fidelity primary */
             border: none;
             border-radius: 0.375rem;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease-in-out;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background-color: #21275c;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary text */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 123, 0.2);
         }
 
         .btn-primary:disabled {
@@ -486,8 +489,8 @@ export class TermsPrivacyModalComponent {
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            background-color: #21275c;
-            color: white;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary */
             position: relative;
         }
 
@@ -507,7 +510,7 @@ export class TermsPrivacyModalComponent {
         }
 
         .modal-title {
-            color: white;
+            color: #007B7B; /* Fidelity primary */
             font-size: 20px;
             font-weight: 600;
             margin: 0
@@ -523,7 +526,11 @@ export class TermsPrivacyModalComponent {
             position: absolute;
             top: 12px;
             right: 12px;
-            color: rgba(255, 255, 255, .7)
+            color: rgba(0, 123, 123, 0.7); /* Fidelity primary with opacity */
+        }
+
+        .close-button:hover {
+            color: #007B7B; /* Fidelity primary */
         }
 
         .modal-content {
@@ -562,7 +569,7 @@ export class TermsPrivacyModalComponent {
 
         .sub-option-btn.active {
             background-color: #fff;
-            color: #21275c;
+            color: #007B7B; /* Fidelity primary */
             box-shadow: 0 2px 4px rgba(0, 0, 0, .05)
         }
 
@@ -584,7 +591,7 @@ export class TermsPrivacyModalComponent {
 
         .detail-item .value {
             font-weight: 700;
-            color: #21275c
+            color: #007B7B; /* Fidelity primary */
         }
 
         .animate-fade-in {
@@ -607,24 +614,53 @@ export class TermsPrivacyModalComponent {
             align-items: center;
             justify-content: center;
             padding: 0.75rem 1.5rem;
-            font-weight: 500;
+            font-weight: 600;
             color: white;
-            background-color: #04b2e1;
+            background-color: #007B7B; /* Fidelity primary */
             border: none;
             border-radius: 0.375rem;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary {
             height: 50px;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background-color: #21275c;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary text */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 123, 0.2);
         }
 
         .btn-primary:disabled {
             background-color: #9ca3af;
             cursor: not-allowed;
             opacity: 0.7;
+        }
+
+        /* Form input styling for better text visibility */
+        .modal-content input[type="text"],
+        .modal-content input[type="tel"],
+        .modal-content input[type="email"] {
+            color: #1f2937 !important;
+            font-weight: 500 !important;
+        }
+
+        .modal-content input[type="text"]:focus,
+        .modal-content input[type="tel"]:focus,
+        .modal-content input[type="email"]:focus {
+            color: #111827 !important;
+            font-weight: 600 !important;
+        }
+
+        /* Material form field focus states */
+        .mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline-thick {
+            border-color: #007B7B !important;
+        }
+
+        .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+            color: #007B7B !important;
         }
 
         @media (max-width: 480px) {
@@ -904,8 +940,8 @@ export class PaymentModalComponent implements OnInit {
                         <!-- Loading Port -->
                         <div>
                             <mat-form-field class="w-full">
-                                <mat-label>Loading Port <span class="text-red-500">*</span></mat-label>
-                                <mat-select formControlName="loadingPort" #loadingPortSelect>
+                                <mat-label>Loading Port</mat-label>
+                                <mat-select formControlName="loadingPort" #loadingPortSelect required>
                                     <mat-option>
                                         <ngx-mat-select-search [formControl]="loadingPortFilterCtrl" placeholderLabel="Search..."></ngx-mat-select-search>
                                     </mat-option>
@@ -924,8 +960,8 @@ export class PaymentModalComponent implements OnInit {
                         <!-- Port of Discharge -->
                         <div>
                            <mat-form-field class="w-full">
-                                <mat-label>Port of Discharge <span class="text-red-500">*</span></mat-label>
-                                <mat-select formControlName="portOfDischarge" #dischargePortSelect>
+                                <mat-label>Port of Discharge</mat-label>
+                                <mat-select formControlName="portOfDischarge" #dischargePortSelect required>
                                     <mat-option>
                                         <ngx-mat-select-search [formControl]="dischargePortFilterCtrl" placeholderLabel="Search..."></ngx-mat-select-search>
                                     </mat-option>
@@ -954,8 +990,8 @@ export class PaymentModalComponent implements OnInit {
                          <!-- Final Destination County -->
                         <div>
                            <mat-form-field class="w-full">
-                                <mat-label>Final Destination (County in Kenya) <span class="text-red-500">*</span></mat-label>
-                                <mat-select formControlName="finalDestinationCounty">
+                                <mat-label>Final Destination (County in Kenya)</mat-label>
+                                <mat-select formControlName="finalDestinationCounty" required>
                                     <mat-option>
                                         <ngx-mat-select-search [formControl]="countyFilterCtrl" placeholderLabel="Search..."></ngx-mat-select-search>
                                     </mat-option>
@@ -1052,8 +1088,8 @@ export class PaymentModalComponent implements OnInit {
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            background-color: #21275c;
-            color: white;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary for text */
             position: sticky;
             top: 0;
             z-index: 10;
@@ -1064,7 +1100,7 @@ export class PaymentModalComponent implements OnInit {
             font-size: 20px;
             font-weight: 600;
             margin: 0;
-            color: white;
+            color: #007B7B; /* Fidelity primary */
             padding-right: 40px; /* Add space for the button */
         }
 
@@ -1073,11 +1109,11 @@ export class PaymentModalComponent implements OnInit {
             top: 50%;
             right: 24px;
             transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(0, 123, 123, 0.7); /* Fidelity primary with opacity */
         }
 
         .close-button:hover {
-            color: white;
+            color: #007B7B; /* Fidelity primary */
         }
 
         .modal-content {
@@ -1086,32 +1122,97 @@ export class PaymentModalComponent implements OnInit {
             padding: 0 !important;
         }
 
-        .modal-content form input, .modal-content form select, .modal-content form textarea {
-            color: #1f2937;
+        /* Form styling for better text visibility */
+        .modal-content form input, 
+        .modal-content form select, 
+        .modal-content form textarea {
+            color: #1f2937 !important;
+            background-color: white !important;
         }
 
+        .modal-content form input:focus, 
+        .modal-content form select:focus, 
+        .modal-content form textarea:focus {
+            border-color: #007B7B !important;
+            box-shadow: 0 0 0 3px rgba(0, 123, 123, 0.1) !important;
+        }
+
+        /* File upload button styling */
+        input[type="file"] {
+            color: #374151 !important;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: rgba(183, 220, 120, 0.2) !important;
+            color: #007B7B !important;
+            border: 1px solid rgba(183, 220, 120, 0.5) !important;
+            border-radius: 0.375rem !important;
+            padding: 0.5rem 1rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: #B7DC78 !important;
+            color: #007B7B !important;
+            border-color: #B7DC78 !important;
+        }
+
+        /* Primary button styling */
         .btn-primary {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 0.75rem 1.5rem;
-            font-weight: 500;
+            font-weight: 600;
             color: white;
-            background-color: #04b2e1;
+            background-color: #007B7B; /* Fidelity primary */
             border: none;
             border-radius: 0.375rem;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease-in-out;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background-color: #21275c;
+            background-color: #B7DC78; /* Pantone 366 C */
+            color: #007B7B; /* Fidelity primary text */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 123, 0.2);
         }
 
         .btn-primary:disabled {
             background-color: #9ca3af;
             cursor: not-allowed;
             opacity: 0.7;
+        }
+
+        /* Material form field styling */
+        .mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline-thick {
+            border-color: #007B7B !important;
+        }
+
+        .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+            color: #007B7B !important;
+        }
+
+        /* Text input styling for better visibility */
+        .modal-content input[type="text"],
+        .modal-content input[type="email"],
+        .modal-content input[type="tel"],
+        .modal-content input[type="date"],
+        .modal-content textarea {
+            color: #1f2937 !important;
+            font-weight: 500 !important;
+        }
+
+        .modal-content input[type="text"]:focus,
+        .modal-content input[type="email"]:focus,
+        .modal-content input[type="tel"]:focus,
+        .modal-content input[type="date"]:focus,
+        .modal-content textarea:focus {
+            color: #111827 !important;
+            font-weight: 600 !important;
         }
 
         @media (max-width: 767px) {

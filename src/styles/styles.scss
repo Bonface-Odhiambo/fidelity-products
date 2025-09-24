@@ -8,8 +8,151 @@
 
 // ... other global styles ...
 
-// Custom panel class for Geminia snackbar/toast notifications
-.geminia-toast-panel {
-  background-color: #21275c; // Pantone 2758C
+// Custom panel class for Fidelity snackbar/toast notifications
+.fidelity-toast-panel {
+  background-color: #007B7B; // Pantone P 125-16 C
   color: white; // Ensure text is readable
+}
+
+/* Global Material Design overrides for Fidelity branding */
+/* Override Material Select dropdown option colors */
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+  background-color: #B7DC78 !important; /* Pantone 366 C */
+  color: #007B7B !important; /* Pantone P 125-16 C for text */
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  color: #007B7B !important;
+}
+
+/* Override Material Select focus and hover states */
+.mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+  background-color: rgba(183, 220, 120, 0.1) !important; /* Light Pantone 366 C */
+}
+
+.mat-mdc-option.mat-mdc-option-active {
+  background-color: rgba(183, 220, 120, 0.12) !important;
+  color: #007B7B !important;
+}
+
+/* Override Material Select outline color when focused */
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline-thick {
+  border-color: #007B7B !important; /* Pantone P 125-16 C */
+}
+
+/* Override Material Select arrow and label colors when focused */
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #007B7B !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+  color: #007B7B !important;
+}
+
+/* Override regular HTML select dropdown options */
+select option:checked,
+select option:hover {
+  background-color: #B7DC78 !important; /* Pantone 366 C */
+  color: #007B7B !important;
+}
+
+/* Browser-specific overrides for select options */
+select option:checked {
+  background: #B7DC78 linear-gradient(0deg, #B7DC78 0%, #B7DC78 100%) !important;
+  color: #007B7B !important;
+}
+
+/* Firefox specific */
+select option:checked {
+  background-color: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+/* Webkit browsers (Chrome, Safari) */
+select option:checked {
+  background: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+/* More aggressive overrides for select options */
+select option {
+  background-color: white !important;
+  color: #374151 !important;
+}
+
+select option:checked,
+select option[selected] {
+  background-color: #B7DC78 !important;
+  background: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+select option:hover {
+  background-color: rgba(183, 220, 120, 0.3) !important;
+  background: rgba(183, 220, 120, 0.3) !important;
+  color: #007B7B !important;
+}
+
+/* Force override for all select styling */
+select {
+  accent-color: #007B7B !important;
+  color-scheme: light !important;
+}
+
+/* CSS Custom Properties for browser override */
+:root {
+  --select-highlight-color: #B7DC78;
+  --select-text-color: #007B7B;
+}
+
+/* Try to override browser default selection colors */
+select option::selection {
+  background: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+select option::-moz-selection {
+  background: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+/* Specific override for blue backgrounds */
+select option {
+  background: white !important;
+}
+
+select option:checked,
+select option:hover,
+select option:focus,
+select option:active {
+  background: #B7DC78 !important;
+  background-color: #B7DC78 !important;
+  color: #007B7B !important;
+}
+
+/* Override regular HTML select focus states */
+select:focus {
+  border-color: #007B7B !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(0, 123, 123, 0.1) !important;
+}
+
+/* Override radio button colors */
+input[type="radio"]:checked {
+  background-color: #007B7B !important;
+  border-color: #007B7B !important;
+}
+
+input[type="radio"]:focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 123, 0.1) !important;
+}
+
+/* Override checkbox colors */
+input[type="checkbox"]:checked {
+  background-color: #007B7B !important;
+  border-color: #007B7B !important;
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 123, 0.1) !important;
 }

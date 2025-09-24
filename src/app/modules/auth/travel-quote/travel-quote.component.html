@@ -4,13 +4,13 @@
         <div class="mx-auto max-w-7xl px-6">
             <div class="flex items-center justify-between py-3">
                 <div class="flex items-center gap-4">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROTKn0j9cVpA67LPdjPeYBR3KnWiwP1gsM3cS27rca-7m8BgvgUylY4uhBnOnVnXFx8Is&usqp=CAU"
-                        alt="Geminia Logo"
-                        class="h-10 w-auto rounded-lg" />
-                    <h1 class="text-xl font-semibold">
-                        Geminia Travel Insurance
-                    </h1>
+                    <div class="inline-block rounded-2xl bg-fidelity-primary/10 p-2 ring-2 ring-fidelity-primary/20">
+                        <img src="https://pbs.twimg.com/profile_images/1767198674373734400/R9lqG20r_400x400.jpg" alt="Fidelity Insurance Logo" class="h-8 w-8 sm:h-10 sm:w-10 rounded-xl object-cover ring-2 ring-fidelity-primary shadow-lg" />
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-semibold text-fidelity-primary sm:text-xl">Fidelity Travel Insurance</h1>
+                        <p class="text-xs font-semibold tracking-wide text-fidelity-primary">Insurance You can Trust</p>
+                    </div>
                 </div>
                 <button (click)="closeForm()" class="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50" title="Close">
                     <mat-icon class="!h-4 !w-4 !text-base">close</mat-icon>Close
@@ -25,18 +25,18 @@
             <!-- Progress Steps -->
             <div class="mb-8">
                  <div class="flex items-center">
-                    <div class="flex items-center" [class.text-geminia-blue]="currentStep >= 1" [class.text-gray-500]="currentStep < 1">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-geminia-blue]="currentStep >= 1" [class.text-white]="currentStep >= 1" [class.bg-gray-300]="currentStep < 1">1</div>
+                    <div class="flex items-center" [class.text-fidelity-primary]="currentStep >= 1" [class.text-gray-500]="currentStep < 1">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-fidelity-primary]="currentStep >= 1" [class.text-white]="currentStep >= 1" [class.bg-gray-300]="currentStep < 1">1</div>
                         <span class="ml-2 text-sm font-medium">Quote & Select Plan</span>
                     </div>
-                    <div class="mx-4 h-px flex-1" [class.bg-geminia-blue]="currentStep > 1" [class.bg-gray-300]="currentStep <= 1"></div>
-                    <div class="flex items-center" [class.text-geminia-blue]="currentStep >= 2" [class.text-gray-500]="currentStep < 2">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-geminia-blue]="currentStep >= 2" [class.text-white]="currentStep >= 2" [class.bg-gray-300]="currentStep < 2">2</div>
+                    <div class="mx-4 h-px flex-1" [class.bg-fidelity-primary]="currentStep > 1" [class.bg-gray-300]="currentStep <= 1"></div>
+                    <div class="flex items-center" [class.text-fidelity-primary]="currentStep >= 2" [class.text-gray-500]="currentStep < 2">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-fidelity-primary]="currentStep >= 2" [class.text-white]="currentStep >= 2" [class.bg-gray-300]="currentStep < 2">2</div>
                         <span class="ml-2 text-sm font-medium">Traveler Details</span>
                     </div>
-                    <div class="mx-4 h-px flex-1" [class.bg-geminia-blue]="currentStep > 2" [class.bg-gray-300]="currentStep <= 2"></div>
-                    <div class="flex items-center" [class.text-geminia-blue]="currentStep >= 3" [class.text-gray-500]="currentStep < 3">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-geminia-blue]="currentStep >= 3" [class.text-white]="currentStep >= 3" [class.bg-gray-300]="currentStep < 3">3</div>
+                    <div class="mx-4 h-px flex-1" [class.bg-fidelity-primary]="currentStep > 2" [class.bg-gray-300]="currentStep <= 2"></div>
+                    <div class="flex items-center" [class.text-fidelity-primary]="currentStep >= 3" [class.text-gray-500]="currentStep < 3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" [class.bg-fidelity-primary]="currentStep >= 3" [class.text-white]="currentStep >= 3" [class.bg-gray-300]="currentStep < 3">3</div>
                         <span class="ml-2 text-sm font-medium">Review & Pay</span>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         </form>
 
                         <div class="mt-8 flex justify-end">
-                            <button (click)="nextStep()" [disabled]="quoteForm.invalid" class="btn-primary rounded-md px-8 py-3 font-medium">Next</button>
+                            <button (click)="nextStep()" [disabled]="quoteForm.invalid" class="rounded-md bg-fidelity-primary px-8 py-3 text-sm font-medium text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary transition-all duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">Next</button>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@
                             </div>
                             
                             <div class="mt-6 flex items-center">
-                               <input type="checkbox" formControlName="winterSports" id="winterSports" class="h-4 w-4 rounded border-gray-300 text-geminia-blue focus:ring-geminia-blue" />
+                               <input type="checkbox" formControlName="winterSports" id="winterSports" class="h-4 w-4 rounded border-gray-300 text-fidelity-primary focus:ring-fidelity-primary" />
                                <label for="winterSports" class="ml-2 text-sm text-gray-700">Add Winter Sports cover (Optional Surcharge)</label>
                            </div>
                        </form>
@@ -255,11 +255,11 @@
                         </div>
                         
                         <div class="mt-6">
-                            <button *ngIf="currentStep === 2" (click)="nextStep()" [disabled]="travelerDetailsForm.invalid" class="btn-primary w-full rounded-md px-4 py-3 font-medium">Review & Save Quote</button>
+                            <button *ngIf="currentStep === 2" (click)="nextStep()" [disabled]="travelerDetailsForm.invalid" class="w-full rounded-md bg-fidelity-primary px-4 py-3 text-sm font-medium text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary transition-all duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">Review & Save Quote</button>
                             <div *ngIf="currentStep === 3" class="mt-4 flex flex-col gap-4">
-                                <button (click)="handlePayment()" class="btn-primary rounded-md px-6 py-2 font-medium">Proceed to Payment</button>
+                                <button (click)="handlePayment()" class="rounded-md bg-fidelity-primary px-6 py-2 text-sm font-medium text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary transition-all duration-300">Proceed to Payment</button>
                             </div>
-                             <button (click)="prevStep()" class="hover:text-geminia-blue mt-2 w-full text-center text-sm font-medium text-gray-600">Back</button>
+                             <button (click)="prevStep()" class="mt-2 w-full text-center text-sm font-medium text-gray-600 hover:text-fidelity-primary transition-colors duration-300">Back</button>
                         </div>
                     </div>
                 </div>

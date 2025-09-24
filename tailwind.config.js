@@ -13,7 +13,7 @@ const generatePalette = require(path.resolve(
  * Tailwind-like color palettes automatically
  */
 const customPalettes = {
-  brand: generatePalette("#2196F3"),
+  brand: generatePalette("#007B7B"),
 };
 
 /**
@@ -100,11 +100,11 @@ const config = {
       },
       colors: {
         gray: colors.slate,
-        // ADDED: Custom colors for the Geminia insurance page design
-        "geminia-blue-light": "#29B6F6",
-        "geminia-blue-dark": "#303F9F",
-        "geminia-gray-light": "#F3F4F6",
-        "geminia-gray-dropdown": "#E5E7EB",
+        // ADDED: Custom colors for the Fidelity insurance page design
+        "fidelity-primary": "#007B7B", // Pantone P 125-16 C (R=0 G=123 B=123)
+        "fidelity-secondary": "#B7DC78", // Pantone 366 C (R=183 G=220 B=120)
+        "fidelity-gray-light": "#F3F4F6",
+        "fidelity-gray-dropdown": "#E5E7EB",
         "brand-pink": "#EC4899",
         "brand-orange": "#F97316",
       },

@@ -1,0 +1,22 @@
+<svg
+    width="200"
+    height="80"
+    viewBox="0 0 200 80"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    
+    <!-- Curved element inspired by Fidelity brand -->
+    <path
+        d="M20 10C35 5, 55 15, 70 25C85 35, 95 45, 80 55C65 65, 45 55, 30 45C15 35, 5 25, 20 10Z"
+        fill="#B7DC78"/>
+    
+    <!-- Main Fidelity text -->
+    <text x="20" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#007B7B">
+        Fidelity
+    </text>
+    
+    <!-- Insurance text -->
+    <text x="20" y="65" font-family="Arial, sans-serif" font-size="10" font-weight="normal" fill="#007B7B" letter-spacing="2px">
+        INSURANCE
+    </text>
+</svg>

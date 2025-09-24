@@ -69,6 +69,14 @@ export const appRoutes: Route[] = [
                         path: 'marine-quote', // This will correctly match '/sign-up/marine-quote'
                         loadChildren: () => import('app/modules/auth/marine-cargo-quotation/marine-cargo-quotation.routes'),
                     },
+                    {
+                        path: 'golfers-quote', // This will correctly match '/sign-up/golfers-quote'
+                        loadChildren: () => import('app/modules/auth/golfers-quote/golfers-quote.routes'),
+                    },
+                    {
+                        path: 'personal-accident-quote', // This will correctly match '/sign-up/personal-accident-quote'
+                        loadChildren: () => import('app/modules/auth/personal-accident/personal-accident-quote.routes'),
+                    },
                 ]
             }
             // --- END OF FIX ---
@@ -102,8 +110,16 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/auth/travel-quote/travel-quote.routes'),
             },
             {
-                path: 'marine-quote', // This will correctly match '/sign-up/marine-quote'
+                path: 'marine-quote',
                 loadChildren: () => import('app/modules/auth/marine-cargo-quotation/marine-cargo-quotation.routes'),
+            },
+            {
+                path: 'golfers-quote',
+                loadChildren: () => import('app/modules/auth/golfers-quote/golfers-quote.routes'),
+            },
+            {
+                path: 'personal-accident-quote',
+                loadChildren: () => import('app/modules/auth/personal-accident/personal-accident-quote.routes'),
             },
 		],
 	},
