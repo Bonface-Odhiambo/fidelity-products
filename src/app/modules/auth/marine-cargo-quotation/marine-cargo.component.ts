@@ -1264,6 +1264,7 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         private quotationService: QuoteService,
         private userService: UserService,
         private router: Router,
+        private authService: AuthenticationService,
     ) {
         this.kycShippingForm = this.createKycShippingForm();
     }
@@ -1604,6 +1605,10 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         formData.append('invoiceUpload', kycDocs.invoiceUpload);
         formData.append('idfUpload', kycDocs.idfUpload);
 
+        // Get current user information
+        const currentUser = this.authService.getCurrentUser();
+        const clientName = currentUser ? currentUser.name || currentUser.username || 'N/A' : 'N/A';
+
         const updatedMetadata = {
             quoteId: this.data.quoteId,
             suminsured: kycFormValue.sumInsured,
@@ -1618,7 +1623,8 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             dateOfDispatch: this.datePipe.transform(kycFormValue.dateOfDispatch, 'dd MMM yyyy'),
             estimatedArrivalDate: this.datePipe.transform(kycFormValue.estimatedArrivalDate, 'dd MMM yyyy'),
             description: kycFormValue.descriptionOfGoods,
-            // shippingItems: kycFormValue.shippingItems,
+            clientName: clientName, // Add client/agent name
+            agentName: clientName, // Also store as agent name for fallback
             dateFormat: 'dd MMM yyyy',
             locale: 'en_US',
         };
