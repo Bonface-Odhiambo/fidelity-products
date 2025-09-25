@@ -303,6 +303,8 @@
                                             <div class="policy-detail-grid">
                                                 <div class="detail-item"><span class="detail-label">Mode of Shipment</span><span class="detail-value">{{ policy.shippingModeName | titlecase }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Trade Type</span><span class="detail-value">{{ policy.importerType | titlecase }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Importer Name</span><span class="detail-value">{{ policy.importerName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Sum Insured</span><span class="detail-value">KES {{ policy.sumInsured | number:'1.2-2' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Vessel Name</span><span class="detail-value">{{ policy.vesselName }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Country of Origin</span><span class="detail-value">{{ policy.originPortName }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Destination</span><span class="detail-value">{{ policy.destPortName }}</span></div>

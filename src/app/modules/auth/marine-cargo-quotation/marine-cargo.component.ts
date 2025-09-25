@@ -429,7 +429,7 @@ export class TermsPrivacyModalComponent {
                                     <span>Use Paybill</span></button>
                             </div>
                             <div *ngIf="mpesaSubMethod === 'stk'" class="option-view animate-fade-in">
-                                <p class="instruction-text" style="font-weight: 400; margin-bottom: 1rem; color: #6b7280;">Enter your M-PESA number to receive a payment prompt.</p>
+                                <p class="instruction-text" style="font-weight: 700; margin-bottom: 1rem; color: #6b7280;">Enter your M-PESA number to receive a payment prompt.</p>
                                 <form [formGroup]="stkForm">
                                     <mat-form-field appearance="outline" style="margin-bottom: 1rem;">
                                         <input matInput formControlName="phoneNumber" placeholder="0706242439"
@@ -488,8 +488,8 @@ export class TermsPrivacyModalComponent {
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            background-color: #B7DC78; /* Pantone 366 C */
-            color: #007B7B; /* Fidelity primary */
+            background-color: rgb(0, 123, 123); /* Pantone P 125-16 C */
+            color: white;
             position: relative;
         }
 
@@ -509,7 +509,7 @@ export class TermsPrivacyModalComponent {
         }
 
         .modal-title {
-            color: #007B7B; /* Fidelity primary */
+            color: white;
             font-size: 20px;
             font-weight: 600;
             margin: 0
@@ -525,11 +525,11 @@ export class TermsPrivacyModalComponent {
             position: absolute;
             top: 12px;
             right: 12px;
-            color: rgba(0, 123, 123, 0.7); /* Fidelity primary with opacity */
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .close-button:hover {
-            color: #007B7B; /* Fidelity primary */
+            color: white;
         }
 
         .modal-content {
@@ -1087,8 +1087,8 @@ export class PaymentModalComponent implements OnInit {
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            background-color: #B7DC78; /* Pantone 366 C */
-            color: #007B7B; /* Fidelity primary for text */
+            background-color: rgb(0, 123, 123); /* Pantone P 125-16 C */
+            color: white;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -1099,7 +1099,7 @@ export class PaymentModalComponent implements OnInit {
             font-size: 20px;
             font-weight: 600;
             margin: 0;
-            color: #007B7B; /* Fidelity primary */
+            color: white;
             padding-right: 40px; /* Add space for the button */
         }
 
@@ -1108,11 +1108,11 @@ export class PaymentModalComponent implements OnInit {
             top: 50%;
             right: 24px;
             transform: translateY(-50%);
-            color: rgba(0, 123, 123, 0.7); /* Fidelity primary with opacity */
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .close-button:hover {
-            color: #007B7B; /* Fidelity primary */
+            color: white;
         }
 
         .modal-content {
