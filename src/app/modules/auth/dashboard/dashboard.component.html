@@ -303,8 +303,8 @@
                                             <div class="policy-detail-grid">
                                                 <div class="detail-item"><span class="detail-label">Mode of Shipment</span><span class="detail-value">{{ policy.shippingModeName | titlecase }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Trade Type</span><span class="detail-value">{{ policy.importerType | titlecase }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Importer Name</span><span class="detail-value">{{ policy.importerName || 'N/A' }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Sum Insured</span><span class="detail-value">KES {{ policy.sumInsured | number:'1.2-2' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Client/Agent</span><span class="detail-value">{{ policy.clientName || policy.agentName || policy.intermediaryName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Sum Insured</span><span class="detail-value">KES {{ policy.sumassured || policy.sumInsured | number:'1.2-2' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Vessel Name</span><span class="detail-value">{{ policy.vesselName || 'N/A' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Loading Port</span><span class="detail-value">{{ policy.loadingPortName || policy.originPortName || 'N/A' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Port of Discharge</span><span class="detail-value">{{ policy.dischargePortName || policy.destPortName || 'N/A' }}</span></div>
