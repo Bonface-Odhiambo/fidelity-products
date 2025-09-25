@@ -402,6 +402,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
              this.pendingQuotes = res.pageItems;
              console.log( this.pendingQuotes );
              this.totalRecords = res.totalFilteredRecords || res.totalElements || 0;
+             
+             // Load all insurance quotes from localStorage and merge them
+             this.loadPersonalAccidentQuotes();
+             this.loadTravelQuotes();
+             this.loadGolfQuotes();
+             
              this.updateDashboardStats();
               // this.pendingQuotes.forEach(q => {
               //     if (q.status === 'PAID') {
@@ -411,6 +417,129 @@ export class DashboardComponent implements OnInit, OnDestroy {
           },
           error: (err) => console.error('Error loading quotes', err)
       });
+  }
+
+  private loadPersonalAccidentQuotes(): void {
+    try {
+      // Load Personal Accident quotes from localStorage
+      const paQuotes = JSON.parse(localStorage.getItem('personalAccidentQuotes') || '[]');
+      
+      // Convert Personal Accident quotes to PendingQuote format
+      const convertedPAQuotes: PendingQuote[] = paQuotes.map((paQuote: any) => ({
+        id: paQuote.reference || paQuote.id,
+        quoteId: paQuote.reference || paQuote.id,
+        refno: paQuote.reference,
+        status: paQuote.status === 'pending_payment' ? 'DRAFT' : paQuote.status,
+        premium: paQuote.calculatedPremium,
+        sumassured: paQuote.calculatedPremium, // Using premium as sum assured for display
+        createdDate: paQuote.timestamp ? new Date(paQuote.timestamp) : new Date(),
+        productType: 'PERSONAL_ACCIDENT',
+        customerName: paQuote.formData?.personalDetails?.firstName + ' ' + paQuote.formData?.personalDetails?.surname || 'Personal Accident Quote',
+        customerEmail: paQuote.formData?.personalDetails?.email || '',
+        customerPhone: paQuote.formData?.personalDetails?.mobileNumber || '',
+        // Additional fields for Personal Accident
+        coverageOption: paQuote.coverOption,
+        ageRange: paQuote.ageRange,
+        beneficiaryName: paQuote.formData?.beneficiaryDetails?.beneficiaryName || '',
+        // Marine-specific fields (set to defaults for PA quotes)
+        originCountry: 'N/A',
+        shippingmodeId: 0,
+        pinNo: '',
+        idNo: paQuote.formData?.personalDetails?.passportIdNo || ''
+      }));
+
+      // Merge with existing marine quotes
+      this.pendingQuotes = [...this.pendingQuotes, ...convertedPAQuotes];
+      this.totalRecords += convertedPAQuotes.length;
+      
+      console.log('Loaded Personal Accident quotes:', convertedPAQuotes);
+    } catch (error) {
+      console.error('Error loading Personal Accident quotes from localStorage:', error);
+    }
+  }
+
+  private loadTravelQuotes(): void {
+    try {
+      // Load Travel quotes from localStorage
+      const travelQuotes = JSON.parse(localStorage.getItem('travelQuotes') || '[]');
+      
+      // Convert Travel quotes to PendingQuote format
+      const convertedTravelQuotes: PendingQuote[] = travelQuotes.map((travelQuote: any) => ({
+        id: travelQuote.reference || travelQuote.id,
+        quoteId: travelQuote.reference || travelQuote.id,
+        refno: travelQuote.reference,
+        status: travelQuote.status === 'pending_payment' ? 'DRAFT' : travelQuote.status,
+        premium: travelQuote.calculatedPremium || travelQuote.premium,
+        sumassured: travelQuote.calculatedPremium || travelQuote.premium,
+        createdDate: travelQuote.timestamp ? new Date(travelQuote.timestamp) : new Date(),
+        productType: 'TRAVEL',
+        customerName: travelQuote.formData?.personalDetails?.firstName + ' ' + travelQuote.formData?.personalDetails?.lastName || 'Travel Insurance Quote',
+        customerEmail: travelQuote.formData?.personalDetails?.email || '',
+        customerPhone: travelQuote.formData?.personalDetails?.phone || '',
+        // Travel-specific fields
+        destination: travelQuote.formData?.travelDetails?.destination || '',
+        travelDates: {
+          departure: travelQuote.formData?.travelDetails?.departureDate || '',
+          return: travelQuote.formData?.travelDetails?.returnDate || ''
+        },
+        travelPurpose: travelQuote.formData?.travelDetails?.purpose || '',
+        numberOfTravelers: travelQuote.formData?.travelDetails?.travelers || 1,
+        // Default fields
+        originCountry: 'N/A',
+        shippingmodeId: 0,
+        pinNo: '',
+        idNo: travelQuote.formData?.personalDetails?.idNumber || ''
+      }));
+
+      // Merge with existing quotes
+      this.pendingQuotes = [...this.pendingQuotes, ...convertedTravelQuotes];
+      this.totalRecords += convertedTravelQuotes.length;
+      
+      console.log('Loaded Travel quotes:', convertedTravelQuotes);
+    } catch (error) {
+      console.error('Error loading Travel quotes from localStorage:', error);
+    }
+  }
+
+  private loadGolfQuotes(): void {
+    try {
+      // Load Golf quotes from localStorage
+      const golfQuotes = JSON.parse(localStorage.getItem('golfQuotes') || '[]');
+      
+      // Convert Golf quotes to PendingQuote format
+      const convertedGolfQuotes: PendingQuote[] = golfQuotes.map((golfQuote: any) => ({
+        id: golfQuote.reference || golfQuote.id,
+        quoteId: golfQuote.reference || golfQuote.id,
+        refno: golfQuote.reference,
+        status: golfQuote.status === 'pending_payment' ? 'DRAFT' : golfQuote.status,
+        premium: golfQuote.calculatedPremium || golfQuote.premium,
+        sumassured: golfQuote.calculatedPremium || golfQuote.premium,
+        createdDate: golfQuote.timestamp ? new Date(golfQuote.timestamp) : new Date(),
+        productType: 'GOLF',
+        customerName: golfQuote.formData?.personalDetails?.firstName + ' ' + golfQuote.formData?.personalDetails?.lastName || 'Golf Insurance Quote',
+        customerEmail: golfQuote.formData?.personalDetails?.email || '',
+        customerPhone: golfQuote.formData?.personalDetails?.phone || '',
+        // Golf-specific fields
+        golfClub: golfQuote.formData?.golfDetails?.clubName || '',
+        handicap: golfQuote.formData?.golfDetails?.handicap || 0,
+        equipmentValue: golfQuote.formData?.golfDetails?.equipmentValue || 0,
+        tournamentCover: golfQuote.formData?.golfDetails?.tournamentCover || false,
+        // Default fields
+        originCountry: 'N/A',
+        shippingmodeId: 0,
+        pinNo: '',
+        idNo: golfQuote.formData?.personalDetails?.idNumber || ''
+      }));
+
+      // Merge with existing quotes
+      this.pendingQuotes = [...this.pendingQuotes, ...convertedGolfQuotes];
+      this.totalRecords += convertedGolfQuotes.length;
+      
+      console.log('Loaded Golf quotes:', convertedGolfQuotes);
+      console.log('Total merged quotes (all products):', this.pendingQuotes);
+    } catch (error) {
+      console.error('Error loading Golf quotes from localStorage:', error);
+    }
   }
 
     checkQuoteStatusPeriodically(quote: any) {
@@ -520,6 +649,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     initiatePayment(quoteId: number,originCountry:string,shippingmodeId:number,sumassured:number,pinNo: string,idNo: string,status:string,phone:string,prem:number,refno:string): void {
       this.openKycShippingPaymentModal(quoteId,originCountry,shippingmodeId,sumassured,pinNo,idNo,status,phone,prem,refno);
+  }
+
+  initiatePersonalAccidentPayment(quote: PendingQuote): void {
+    // For Personal Accident quotes, we'll use a simpler payment flow
+    const premium = quote.premium || quote.netprem || 0;
+    const phoneNumber = quote.customerPhone || quote.phoneNo || '';
+    
+    this.openPaymentModal(premium, phoneNumber, quote.refno);
+  }
+
+  initiateGenericPayment(quote: PendingQuote): void {
+    // For all non-marine quotes (Personal Accident, Travel, Golf), use simplified payment flow
+    const premium = quote.premium || quote.netprem || 0;
+    const phoneNumber = quote.customerPhone || quote.phoneNo || '';
+    
+    this.openPaymentModal(premium, phoneNumber, quote.refno);
+  }
+
+  getQuoteTitle(quote: PendingQuote): string {
+    switch (quote.productType) {
+      case 'PERSONAL_ACCIDENT':
+        return 'PERSONAL ACCIDENT INSURANCE';
+      case 'TRAVEL':
+        return 'TRAVEL INSURANCE';
+      case 'GOLF':
+        return 'GOLF INSURANCE';
+      case 'MARINE_CARGO':
+        return quote.prodName || 'MARINE CARGO INSURANCE';
+      default:
+        return quote.prodName || 'MARINE CARGO INSURANCE';
+    }
+  }
+
+  getEditRoute(productType?: string): string {
+    switch (productType) {
+      case 'PERSONAL_ACCIDENT':
+        return '/personal-accident-quote';
+      case 'TRAVEL':
+        return '/travel-quote';
+      case 'GOLF':
+        return '/golfers-quote';
+      case 'MARINE_CARGO':
+      default:
+        return '/marine-quote';
+    }
   }
 
   showOption(status):boolean{
@@ -728,6 +902,18 @@ ngOnDestroy(): void {
         {
             label: 'Marine Insurance', icon: 'directions_boat', isExpanded: true,
             children: [ { label: 'New Quote', route: '/marine-quote', icon: 'add_circle' } ]
+        },
+        {
+            label: 'Personal Accident', icon: 'personal_injury', isExpanded: true,
+            children: [ { label: 'New Quote', route: '/personal-accident-quote', icon: 'add_circle' } ]
+        },
+        {
+            label: 'Travel Insurance', icon: 'flight', isExpanded: true,
+            children: [ { label: 'New Quote', route: '/travel-quote', icon: 'add_circle' } ]
+        },
+        {
+            label: 'Golf Insurance', icon: 'golf_course', isExpanded: true,
+            children: [ { label: 'New Quote', route: '/golfers-quote', icon: 'add_circle' } ]
         },
         { label: 'My Policies', icon: 'shield', sectionId: 'my-policies-section' },
         { label: 'Receipts', icon: 'receipt_long', route: '/receipts' }

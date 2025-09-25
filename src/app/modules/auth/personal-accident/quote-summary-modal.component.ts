@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
 
@@ -36,6 +37,7 @@ export interface QuoteSummaryData {
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     CurrencyPipe
   ],
   template: `
@@ -440,6 +442,40 @@ export interface QuoteSummaryData {
         justify-content: center;
       }
     }
+
+    /* Toast Styling */
+    :host ::ng-deep .login-toast {
+      background: linear-gradient(135deg, var(--brand-turquoise) 0%, var(--brand-lime) 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(3, 123, 124, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    :host ::ng-deep .login-toast .mat-mdc-snack-bar-action {
+      color: white;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      margin-left: 12px;
+      transition: all 0.3s ease;
+    }
+
+    :host ::ng-deep .login-toast .mat-mdc-snack-bar-action:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    :host ::ng-deep .error-toast {
+      background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+      color: white;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(239, 68, 68, 0.3);
+    }
   `]
 })
 export class QuoteSummaryModalComponent implements OnInit {
@@ -448,8 +484,7 @@ export class QuoteSummaryModalComponent implements OnInit {
     public dialogRef: MatDialogRef<QuoteSummaryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: QuoteSummaryData,
     private authService: AuthService,
-    // private quoteStorageService: QuoteStorageService,
-    // private toastService: ToastService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 
@@ -494,13 +529,89 @@ export class QuoteSummaryModalComponent implements OnInit {
           quoteData: this.data 
         });
       } else {
-        // User is not logged in, redirect to homepage with simple alert
-        alert('Please log in first to pay for your policy.');
+        // User is not logged in, save quote and show beautiful toast
+        this.saveQuoteForLater();
+        this.showLoginToast();
         
-        this.dialogRef.close({ action: 'redirect' });
-        this.router.navigate(['/']);
+        // Close modal and redirect to login
+        this.dialogRef.close({ action: 'login_required' });
+        
+        // Redirect to login page after a short delay
+        setTimeout(() => {
+          this.router.navigate(['/sign-in']);
+        }, 2000);
       }
     });
+  }
+
+  private showLoginToast(): void {
+    const snackBarRef = this.snackBar.open(
+      '🔐 Please log in first to purchase your policy',
+      'Login Now',
+      {
+        duration: 8000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['login-toast', 'fidelity-toast']
+      }
+    );
+
+    // Handle the action button click
+    snackBarRef.onAction().subscribe(() => {
+      this.router.navigate(['/sign-in']);
+    });
+  }
+
+  private saveQuoteForLater(): void {
+    try {
+      // Enhanced quote saving with more details for dashboard display
+      const quote: PersonalAccidentQuote = {
+        id: this.data.reference,
+        timestamp: new Date().toISOString(),
+        userId: 'guest', // Will be updated when user logs in
+        formData: this.data.formData,
+        coverOption: this.data.coverOption.id,
+        ageRange: this.data.ageRange,
+        calculatedPremium: this.data.calculatedPremium,
+        status: 'pending_payment',
+        reference: this.data.reference
+      };
+
+      // Save to localStorage with enhanced structure for dashboard
+      const existingQuotes = JSON.parse(localStorage.getItem('personalAccidentQuotes') || '[]');
+      
+      // Remove any existing quote with same reference to avoid duplicates
+      const filteredQuotes = existingQuotes.filter((q: PersonalAccidentQuote) => q.reference !== this.data.reference);
+      
+      // Add the new/updated quote
+      filteredQuotes.push(quote);
+      
+      // Also save additional quote details for dashboard display
+      const quoteDetails = {
+        ...quote,
+        coverDetails: this.data.coverOption,
+        benefits: this.data.benefits,
+        customerName: `${this.data.formData.personalDetails.firstName} ${this.data.formData.personalDetails.surname}`,
+        customerEmail: this.data.formData.personalDetails.email,
+        coveragePeriod: {
+          from: this.data.formData.periodOfInsurance.fromDate,
+          to: this.data.formData.periodOfInsurance.toDate
+        },
+        savedForLater: true,
+        requiresLogin: true
+      };
+
+      localStorage.setItem('personalAccidentQuotes', JSON.stringify(filteredQuotes));
+      localStorage.setItem(`pa_quote_${this.data.reference}`, JSON.stringify(quoteDetails));
+      
+      console.log('Quote saved successfully for later payment:', this.data.reference);
+    } catch (error) {
+      console.error('Error saving quote:', error);
+      this.snackBar.open('⚠️ Error saving quote. Please try again.', 'Close', {
+        duration: 4000,
+        panelClass: ['error-toast']
+      });
+    }
   }
 
   closeDialog(): void {

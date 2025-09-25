@@ -1709,8 +1709,8 @@ textarea.form-input {
 
   &:focus {
     outline: none;
-    border-color: var(--fidelity-primary);
-    box-shadow: 0 0 0 4px rgba(0, 123, 123, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-color: #B8D87A;
+    box-shadow: 0 0 0 4px rgba(184, 216, 122, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
   }
 
@@ -1751,12 +1751,24 @@ select.modern-input-uniform {
   background-color: #ffffff;
   
   &:focus {
-    border-color: var(--fidelity-primary);
-    box-shadow: 0 0 0 4px rgba(0, 123, 123, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-color: #B8D87A;
+    box-shadow: 0 0 0 4px rgba(184, 216, 122, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   }
   
   &:hover {
     border-color: #9ca3af;
+  }
+
+  // Style the dropdown options
+  option {
+    background-color: #ffffff;
+    color: #1f2937;
+    
+    &:checked,
+    &:hover {
+      background-color: #B8D87A;
+      color: #ffffff;
+    }
   }
 }
 
@@ -1771,8 +1783,8 @@ select.modern-input-uniform {
   background-color: #ffffff;
   
   &:focus {
-    border-color: var(--fidelity-primary);
-    box-shadow: 0 0 0 4px rgba(0, 123, 123, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-color: #B8D87A;
+    box-shadow: 0 0 0 4px rgba(184, 216, 122, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   }
   
   &:hover {
@@ -1825,13 +1837,13 @@ select.modern-input-uniform {
   gap: 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--fidelity-primary);
+  color: #B8D87A;
   margin: 2rem 0 1.5rem 0;
   padding-bottom: 1rem;
-  border-bottom: 3px solid var(--fidelity-secondary);
+  border-bottom: 3px solid #B8D87A;
 
   mat-icon {
-    color: var(--fidelity-primary);
+    color: #B8D87A;
     font-size: 1.75rem;
   }
 }
@@ -1851,7 +1863,7 @@ select.modern-input-uniform {
 
 .coverage-card-improved {
   background: white;
-  border: 2px solid var(--fidelity-border-gray);
+  border: 2px solid #e5e7eb;
   border-radius: 1rem;
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -1860,29 +1872,29 @@ select.modern-input-uniform {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    border-color: var(--fidelity-primary);
-    box-shadow: 0 8px 24px rgba(0, 123, 123, 0.15);
+    border-color: #B8D87A;
+    box-shadow: 0 8px 24px rgba(184, 216, 122, 0.25);
     transform: translateY(-2px);
   }
 
   &.selected {
-    border-color: var(--fidelity-primary);
-    background: linear-gradient(135deg, var(--fidelity-light) 0%, white 100%);
-    box-shadow: 0 8px 24px rgba(0, 123, 123, 0.2);
+    border-color: #B8D87A;
+    background: linear-gradient(135deg, rgba(184, 216, 122, 0.1) 0%, white 100%);
+    box-shadow: 0 8px 24px rgba(184, 216, 122, 0.3);
     transform: translateY(-2px);
 
     .option-badge {
-      background: var(--fidelity-primary);
+      background: #B8D87A;
       color: white;
     }
 
     .coverage-radio {
       .mat-radio-outer-circle {
-        border-color: var(--fidelity-primary);
+        border-color: #B8D87A;
       }
 
       .mat-radio-inner-circle {
-        background-color: var(--fidelity-primary);
+        background-color: #B8D87A;
       }
     }
   }
@@ -1893,12 +1905,14 @@ select.modern-input-uniform {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--fidelity-border-gray);
+  padding: 1rem;
+  background: linear-gradient(135deg, #B8D87A 0%, rgba(184, 216, 122, 0.8) 100%);
+  border-radius: 0.75rem;
+  color: white;
 
   .option-badge {
-    background: var(--fidelity-secondary);
-    color: var(--fidelity-primary);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
     padding: 0.5rem 1rem;
     border-radius: 2rem;
     font-weight: 700;
@@ -1906,6 +1920,7 @@ select.modern-input-uniform {
     letter-spacing: 0.5px;
     text-transform: uppercase;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .coverage-price-improved {
@@ -1915,13 +1930,13 @@ select.modern-input-uniform {
       display: block;
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--fidelity-primary);
+      color: white;
       line-height: 1;
     }
 
     .price-period {
       font-size: 0.75rem;
-      color: var(--fidelity-medium-text);
+      color: rgba(255, 255, 255, 0.9);
       font-weight: 500;
     }
   }

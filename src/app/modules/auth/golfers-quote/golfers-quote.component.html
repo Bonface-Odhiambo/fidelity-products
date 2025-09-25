@@ -4,11 +4,16 @@
       <div class="mx-auto max-w-7xl px-6">
         <div class="flex items-center justify-between py-3">
           <div class="flex items-center gap-4">
-            <img 
-              src="https://media.licdn.com/dms/image/v2/C4D0BAQE1s2Npp6hGgQ/company-logo_200_200/company-logo_200_200/0/1660551127923?e=2147483647&v=beta&t=Zo2bd_nKsv1iQFrO3fqYuGdJIPUA6oWrTKf8Tq9-swg" 
-              alt="Fidelity Logo" 
-              class="h-14 w-auto rounded-lg" />
-            <h1 class="text-xl font-semibold text-slate-800">Fidelity Golfers Insurance</h1>
+            <div class="inline-block rounded-3xl bg-fidelity-primary/10 p-4 ring-2 ring-fidelity-primary/20">
+              <img 
+                src="https://pbs.twimg.com/profile_images/1767198674373734400/R9lqG20r_400x400.jpg" 
+                alt="Fidelity Insurance Logo" 
+                class="h-12 w-12 rounded-2xl object-cover ring-2 ring-fidelity-primary shadow-lg" />
+            </div>
+            <div>
+              <h1 class="text-xl font-semibold text-fidelity-primary">Fidelity Golfers Insurance</h1>
+              <p class="text-sm font-medium tracking-wide text-fidelity-primary/70">Insurance You can Trust</p>
+            </div>
           </div>
           <button (click)="closeForm()" class="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50" title="Close">
             <mat-icon class="!h-4 !w-4 !text-base">close</mat-icon>Close
@@ -129,40 +134,45 @@
   
             <!-- Right Column: Premium Summary -->
             <div class="lg:col-span-1">
-              <div class="sticky top-24 rounded-lg bg-white p-6 shadow-sm">
-                <h3 class="mb-4 text-lg font-semibold text-gray-900">Quote Summary</h3>
+              <div class="sticky top-24">
+                <h3 class="mb-4 text-xl font-bold text-fidelity-primary flex items-center">
+                  <mat-icon class="mr-2">receipt_long</mat-icon>
+                  Quote Summary
+                </h3>
+                
                 <ng-container *ngIf="selectedPlan">
-                  <div class="animate-fade-in rounded-lg bg-fidelity-turquoise/10 p-4">
-                    <div class="mb-4 border-b border-fidelity-turquoise/20 pb-4">
-                      <p class="text-sm text-gray-600">You have selected</p>
-                      <p class="text-xl font-bold text-fidelity-turquoise">{{ selectedPlan.name }}</p>
+                  <div class="quote-summary-modern animate-slide-up">
+                    <div class="summary-header">
+                      <p class="plan-description">You have selected</p>
+                      <h4 class="selected-plan-name">{{ selectedPlan.name }}</h4>
                     </div>
                     
-                    <div *ngIf="commissionAmount" class="mt-4 text-sm">
-                        <div class="flex justify-between items-center text-green-700">
-                            <span class="font-medium">Your Commission (10%)</span>
-                            <span class="font-bold">KES {{ commissionAmount | number:'1.2-2' }}</span>
-                        </div>
+                    <div *ngIf="commissionAmount" class="commission-section">
+                      <div class="flex justify-between items-center">
+                        <span class="commission-label">Your Commission (10%)</span>
+                        <span class="commission-amount">KES {{ commissionAmount | number:'1.2-2' }}</span>
+                      </div>
                     </div>
   
-                    <div class="mt-4 border-t border-fidelity-turquoise/20 pt-4 flex justify-between items-center text-xl font-bold text-fidelity-turquoise">
-                      <span>Total Premium</span>
-                      <span>KES {{ selectedPlan.premium | number:'1.0-0' }}</span>
+                    <div class="total-premium-section">
+                      <div class="total-label">Total Premium</div>
+                      <div class="total-amount">KES {{ selectedPlan.premium | number:'1.0-0' }}</div>
                     </div>
-                  </div>
-                  
-                  <div class="mt-6 space-y-3">
-                      <button (click)="handlePayment()" [disabled]="golferForm.invalid" class="btn-primary w-full rounded-md px-4 py-3 font-medium">
-                          Save & Proceed to Payment
+                    
+                    <div class="action-buttons">
+                      <button (click)="handlePayment()" [disabled]="golferForm.invalid" class="btn-primary">
+                        Save & Proceed to Payment
                       </button>
-                      <button (click)="saveForLater()" [disabled]="golferForm.invalid" class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
-                          Save for Later
+                      <button (click)="saveForLater()" [disabled]="golferForm.invalid" class="btn-secondary">
+                        Save for Later
                       </button>
+                    </div>
                   </div>
                 </ng-container>
   
-                <div *ngIf="!selectedPlan" class="rounded-lg bg-gray-50 p-6 text-center text-gray-500">
-                  <p>Please select a cover option to see the summary.</p>
+                <div *ngIf="!selectedPlan" class="no-plan-selected">
+                  <mat-icon class="empty-state-icon">golf_course</mat-icon>
+                  <p class="empty-state-text">Please select a cover option to see the summary.</p>
                 </div>
               </div>
             </div>

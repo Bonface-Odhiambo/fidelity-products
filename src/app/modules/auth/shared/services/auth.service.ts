@@ -23,20 +23,49 @@ export interface StoredCredentials {
   type: 'individual' | 'intermediary';
 }
 export interface PendingQuote {
-    quoteId: number;
-    shippingmodeId: number;
+    quoteId: number | string;
+    shippingmodeId?: number;
     id: string;
-    prodName: string;
-    phoneNo: string;
+    prodName?: string;
+    phoneNo?: string;
     refno: string;
     status: string;
-    createDate: string;
-    description: any;
-    pinNumber: string;
-    idNumber: string;
-    originCountry: any;
-    sumassured:number;
-    netprem: number;
+    createDate?: string;
+    createdDate?: Date;
+    description?: any;
+    pinNumber?: string;
+    pinNo?: string;
+    idNumber?: string;
+    idNo?: string;
+    originCountry?: any;
+    sumassured: number;
+    netprem?: number;
+    premium?: number;
+    // Product type identification
+    productType?: 'MARINE_CARGO' | 'PERSONAL_ACCIDENT' | 'TRAVEL' | 'GOLF';
+    customerName?: string;
+    customerEmail?: string;
+    customerPhone?: string;
+    
+    // Personal Accident specific fields
+    coverageOption?: string;
+    ageRange?: string;
+    beneficiaryName?: string;
+    
+    // Travel Insurance specific fields
+    destination?: string;
+    travelDates?: {
+        departure: string;
+        return: string;
+    };
+    travelPurpose?: string;
+    numberOfTravelers?: number;
+    
+    // Golf Insurance specific fields
+    golfClub?: string;
+    handicap?: number;
+    equipmentValue?: number;
+    tournamentCover?: boolean;
 }
 
 export  interface PortData {

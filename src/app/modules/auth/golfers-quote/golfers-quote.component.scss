@@ -1,4 +1,6 @@
 // Define Fidelity brand colors as SCSS variables
+$fidelity-primary: #007B7B;
+$fidelity-secondary: #B8D87A;
 $fidelity-turquoise: #037B7C;
 $fidelity-lime: #B8D87A;
 $fidelity-white: #ffffff;
@@ -6,6 +8,8 @@ $fidelity-dark-text: #1f2937;
 $fidelity-medium-text: #6b7280;
 $fidelity-light-gray: #f9fafb;
 $fidelity-border-gray: #e5e7eb;
+$fidelity-light-green: rgba(184, 216, 122, 0.1);
+$fidelity-green-border: rgba(184, 216, 122, 0.3);
 
 /* --- Primary Button --- */
 .btn-primary {
@@ -35,79 +39,297 @@ input, select, textarea {
 }
 .ng-invalid.ng-touched:not(form) { border-color: #f87171 !important; }
 
-/* --- Cover Selection Card Layout --- */
+/* --- Modern Plan Cards with Fidelity Branding --- */
 .plan-card {
   display: flex;
   flex-direction: column;
   border: 2px solid $fidelity-border-gray;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   background-color: $fidelity-white;
-  padding: 1.5rem;
+  padding: 0;
   position: relative;
   transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   
   .plan-header {
+    background: linear-gradient(135deg, $fidelity-secondary 0%, rgba(184, 216, 122, 0.8) 100%);
+    color: white;
     text-align: center;
-    .plan-icon { font-size: 1.75rem; color: $fidelity-dark-text; }
-    .plan-name { font-size: 1.125rem; font-weight: 700; color: $fidelity-dark-text; margin: 0.25rem 0; }
+    padding: 1.5rem;
+    margin-bottom: 0;
+    
+    .plan-icon { 
+      font-size: 2rem; 
+      color: white; 
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .plan-name { 
+      font-size: 1.25rem; 
+      font-weight: 700; 
+      color: white; 
+      margin: 0;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
   }
 
   .plan-price {
     text-align: center;
-    margin: 1rem 0;
-    color: $fidelity-dark-text;
-    .price-amount { font-size: 2rem; font-weight: 700; color: $fidelity-turquoise; }
-    .price-period { font-size: 0.875rem; color: $fidelity-medium-text; }
+    margin: 1.5rem 0;
+    padding: 0 1.5rem;
+    
+    .price-amount { 
+      font-size: 2.25rem; 
+      font-weight: 800; 
+      color: $fidelity-primary;
+      display: block;
+      line-height: 1;
+    }
+    .price-period { 
+      font-size: 0.875rem; 
+      color: $fidelity-medium-text; 
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
   }
 
   .plan-benefits {
     list-style: none;
-    padding: 0;
+    padding: 0 1.5rem;
     margin: 0;
-    flex-grow: 1; // Pushes the button to the bottom
+    flex-grow: 1;
+    
     .benefit-item {
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       color: $fidelity-dark-text;
-      padding: 0.6rem 0;
-      border-top: 1px solid $fidelity-light-gray;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgba(184, 216, 122, 0.2);
+      
+      &:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+      
       .benefit-icon { 
         margin-top: 2px;
-        font-size: 1rem;
+        font-size: 1.1rem;
         flex-shrink: 0; 
       }
-      .included { color: #22c55e; } // green-500
-      .not-included { color: #d1d5db; } // gray-300
+      .included { color: $fidelity-secondary; }
+      .not-included { color: #d1d5db; }
+      
       .benefit-text {
-        .benefit-name { font-weight: 500; }
-        .benefit-limit { color: $fidelity-medium-text; font-weight: 700; }
+        .benefit-name { font-weight: 600; }
+        .benefit-limit { 
+          color: $fidelity-primary; 
+          font-weight: 700; 
+          font-size: 0.8rem;
+        }
       }
     }
   }
 
   .select-button {
-    display: block; width: 100%; text-align: center; padding: 0.75rem 1rem; border-radius: 0.375rem;
-    border: 1px solid $fidelity-border-gray; background-color: $fidelity-white;
-    color: $fidelity-dark-text; cursor: pointer; font-weight: 600;
-    transition: all 0.2s ease-in-out;
+    display: block; 
+    width: 100%; 
+    text-align: center; 
+    padding: 1rem 1.5rem; 
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid $fidelity-green-border;
+    background-color: $fidelity-light-green;
+    color: $fidelity-primary; 
+    cursor: pointer; 
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
     margin-top: 1.5rem;
   }
 
-  // --- States & Modifiers ---
+  // --- Hover & Selected States ---
+  &:hover {
+    border-color: $fidelity-secondary;
+    box-shadow: 0 8px 24px rgba(184, 216, 122, 0.25);
+    transform: translateY(-2px);
+  }
+
   &.selected-plan {
-    border-color: $fidelity-turquoise;
-    box-shadow: 0 4px 12px rgba($fidelity-turquoise, 0.2);
-    transform: translateY(-5px);
+    border-color: $fidelity-secondary;
+    box-shadow: 0 8px 24px rgba(184, 216, 122, 0.3);
+    transform: translateY(-4px);
+    
+    .plan-header {
+      background: linear-gradient(135deg, $fidelity-primary 0%, rgba(0, 123, 123, 0.9) 100%);
+    }
+    
+    .select-button {
+      background-color: $fidelity-primary;
+      color: white;
+    }
   }
 }
 
-// Radio button magic
-input[type="radio"]:hover + .select-button { border-color: $fidelity-lime; color: $fidelity-dark-text; }
-input[type="radio"]:checked + .select-button { background-color: $fidelity-turquoise; color: $fidelity-white; border-color: $fidelity-turquoise; }
-input[type="radio"].sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+// Radio button interactions
+input[type="radio"]:hover + .select-button { 
+  background-color: rgba(184, 216, 122, 0.2); 
+  color: $fidelity-primary; 
+}
+input[type="radio"]:checked + .select-button { 
+  background-color: $fidelity-primary; 
+  color: $fidelity-white; 
+  border-color: $fidelity-primary; 
+}
+input[type="radio"].sr-only { 
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip: rect(0, 0, 0, 0); 
+  white-space: nowrap; 
+  border-width: 0; 
+}
 
+
+/* --- Modern Quote Summary Section --- */
+.quote-summary-modern {
+  background: linear-gradient(135deg, $fidelity-light-green 0%, rgba(184, 216, 122, 0.05) 100%);
+  border: 2px solid $fidelity-green-border;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  
+  .summary-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    
+    .selected-plan-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $fidelity-primary;
+      margin: 0.5rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .plan-description {
+      font-size: 0.875rem;
+      color: $fidelity-medium-text;
+      font-weight: 500;
+    }
+  }
+  
+  .commission-section {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    
+    .commission-label {
+      font-weight: 600;
+      color: #059669;
+    }
+    
+    .commission-amount {
+      font-weight: 800;
+      color: #059669;
+      font-size: 1.1rem;
+    }
+  }
+  
+  .total-premium-section {
+    background: linear-gradient(135deg, $fidelity-primary 0%, rgba(0, 123, 123, 0.9) 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 123, 123, 0.3);
+    
+    .total-label {
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+    
+    .total-amount {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    
+    .btn-primary {
+      background: linear-gradient(135deg, $fidelity-primary 0%, rgba(0, 123, 123, 0.9) 100%);
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(0, 123, 123, 0.3);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, $fidelity-secondary 0%, rgba(184, 216, 122, 0.9) 100%);
+        color: $fidelity-dark-text;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(184, 216, 122, 0.4);
+      }
+    }
+    
+    .btn-secondary {
+      background: white;
+      border: 2px solid $fidelity-green-border;
+      border-radius: 0.75rem;
+      padding: 0.875rem 1.5rem;
+      color: $fidelity-primary;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: $fidelity-light-green;
+        border-color: $fidelity-secondary;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+.no-plan-selected {
+  background: rgba(156, 163, 175, 0.1);
+  border: 2px dashed rgba(156, 163, 175, 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  color: $fidelity-medium-text;
+  
+  .empty-state-icon {
+    font-size: 3rem;
+    color: rgba(156, 163, 175, 0.5);
+    margin-bottom: 1rem;
+  }
+  
+  .empty-state-text {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
 
 /* --- Animations --- */
 @keyframes fadeIn {
@@ -115,3 +337,9 @@ input[type="radio"].sr-only { position: absolute; width: 1px; height: 1px; paddi
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in { animation: fadeIn 0.4s ease-in-out; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slideUp 0.5s ease-out; }
