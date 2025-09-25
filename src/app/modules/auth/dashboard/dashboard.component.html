@@ -305,10 +305,10 @@
                                                 <div class="detail-item"><span class="detail-label">Trade Type</span><span class="detail-value">{{ policy.importerType | titlecase }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Importer Name</span><span class="detail-value">{{ policy.importerName || 'N/A' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">Sum Insured</span><span class="detail-value">KES {{ policy.sumInsured | number:'1.2-2' }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Vessel Name</span><span class="detail-value">{{ policy.vesselName }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Country of Origin</span><span class="detail-value">{{ policy.originPortName }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Destination</span><span class="detail-value">{{ policy.destPortName || 'Kenya' }}</span></div>
-                                                <div class="detail-item"><span class="detail-label">Port of Discharge</span><span class="detail-value">{{ policy.dischargePortName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Vessel Name</span><span class="detail-value">{{ policy.vesselName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Loading Port</span><span class="detail-value">{{ policy.loadingPortName || policy.originPortName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Port of Discharge</span><span class="detail-value">{{ policy.dischargePortName || policy.destPortName || 'N/A' }}</span></div>
+                                                <div class="detail-item"><span class="detail-label">Final Destination</span><span class="detail-value">{{ policy.finalDestinationCounty || 'Kenya' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">IDF Number</span><span class="detail-value">{{ policy.idfNumber || 'N/A' }}</span></div>
                                                 <div class="detail-item"><span class="detail-label">UCR Number</span><span class="detail-value">{{ policy.ucrNumber || 'N/A' }}</span></div>
                                             </div>
