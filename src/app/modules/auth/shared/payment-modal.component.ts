@@ -74,65 +74,462 @@ export interface PaymentResult {
     MatFormFieldModule,
   ],
   template: `
-    <div class="p-6 relative min-w-[320px] md:min-w-[400px]">
+    <div class="payment-modal-container">
       <!-- Close Button -->
-      <button mat-icon-button (click)="close(false)" class="absolute top-2 right-2" aria-label="Close dialog">
+      <button mat-icon-button (click)="close(false)" class="close-button" aria-label="Close dialog">
           <mat-icon>close</mat-icon>
       </button>
 
-      <h2 mat-dialog-title class="text-2xl font-semibold text-center mb-4">M-PESA Payment</h2>
+      <!-- Header -->
+      <div class="modal-header">
+        <h2 class="modal-title">M-PESA Payment</h2>
+      </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading" class="flex flex-col items-center justify-center text-center p-4 min-h-[200px]">
-        <mat-spinner diameter="50"></mat-spinner>
-        <p class="mt-4 font-medium text-gray-700">Sending request to your phone...</p>
-        <p class="text-sm text-gray-500">Please enter your M-PESA PIN on your phone to complete the payment.</p>
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner-container">
+          <mat-spinner diameter="60" class="fidelity-spinner"></mat-spinner>
+        </div>
+        <h3 class="loading-title">Processing Payment</h3>
+        <p class="loading-subtitle">Please check your phone and enter your M-PESA PIN to complete the payment.</p>
+        <div class="loading-steps">
+          <div class="step">
+            <mat-icon class="step-icon">phone_iphone</mat-icon>
+            <span>Check your phone</span>
+          </div>
+          <div class="step">
+            <mat-icon class="step-icon">lock</mat-icon>
+            <span>Enter M-PESA PIN</span>
+          </div>
+          <div class="step">
+            <mat-icon class="step-icon">check_circle</mat-icon>
+            <span>Confirm payment</span>
+          </div>
+        </div>
       </div>
 
       <!-- Success State -->
-      <div *ngIf="paymentStatus === 'success'" class="flex flex-col items-center justify-center text-center p-4 min-h-[200px]">
-        <mat-icon class="text-green-500 !h-20 !w-20 text-6xl">check_circle</mat-icon>
-        <p class="mt-4 text-xl font-semibold text-gray-800">Payment Successful!</p>
-        <p class="text-sm text-gray-500 mb-6">Your policy will be sent to your email shortly.</p>
-        <button mat-flat-button color="primary" (click)="close(true)">Done</button>
+      <div *ngIf="paymentStatus === 'success'" class="success-state">
+        <div class="success-icon-container">
+          <mat-icon class="success-icon">check_circle</mat-icon>
+        </div>
+        <h3 class="success-title">Payment Successful!</h3>
+        <p class="success-subtitle">Your golf insurance policy has been activated and will be sent to your email shortly.</p>
+        <button mat-flat-button class="success-button" (click)="close(true)">
+          <mat-icon>email</mat-icon>
+          Done
+        </button>
       </div>
 
       <!-- Error State -->
-      <div *ngIf="paymentStatus === 'failed'" class="flex flex-col items-center justify-center text-center p-4 min-h-[200px]">
-        <mat-icon class="text-red-500 !h-20 !w-20 text-6xl">error</mat-icon>
-        <p class="mt-4 text-xl font-semibold text-gray-800">Payment Failed</p>
-        <p class="text-sm text-gray-500 mb-6">{{ errorMessage }}</p>
-        <div class="flex gap-4">
-            <button mat-stroked-button (click)="close(false)">Cancel</button>
-            <button mat-flat-button color="primary" (click)="resetAndTryAgain()">Try Again</button>
+      <div *ngIf="paymentStatus === 'failed'" class="error-state">
+        <div class="error-icon-container">
+          <mat-icon class="error-icon">error</mat-icon>
+        </div>
+        <h3 class="error-title">Payment Failed</h3>
+        <p class="error-subtitle">{{ errorMessage }}</p>
+        <div class="error-actions">
+            <button mat-stroked-button class="cancel-button" (click)="close(false)">Cancel</button>
+            <button mat-flat-button class="retry-button" (click)="resetAndTryAgain()">
+              <mat-icon>refresh</mat-icon>
+              Try Again
+            </button>
         </div>
       </div>
 
       <!-- Initial State -->
-      <div *ngIf="!isLoading && paymentStatus === 'pending'" mat-dialog-content>
-        <div class="text-center mb-6 bg-gray-50 p-4 rounded-lg">
-            <p class="text-sm text-gray-600">Total Amount Payable</p>
-            <p class="text-3xl font-bold text-slate-800">KES {{ data.amount | number:'1.2-2' }}</p>
-            <p class="text-xs text-gray-500 mt-1">{{ data.description }}</p>
+      <div *ngIf="!isLoading && paymentStatus === 'pending'" class="payment-form">
+        <!-- Amount Display -->
+        <div class="amount-display">
+            <p class="amount-label">Total Amount Payable</p>
+            <p class="amount-value">KES {{ data.amount | number:'1.2-2' }}</p>
+            <p class="amount-description">{{ data.description }}</p>
         </div>
 
-        <form [formGroup]="paymentForm" (ngSubmit)="initiatePayment()">
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>M-PESA Phone Number</mat-label>
-                <input matInput formControlName="phoneNumber" placeholder="0712345678" required>
-                <mat-error *ngIf="paymentForm.get('phoneNumber')?.hasError('required')">Phone number is required</mat-error>
-<!--                <mat-error *ngIf="paymentForm.get('phoneNumber')?.hasError('pattern')">Enter a valid Kenyan phone number</mat-error>-->
-            </mat-form-field>
-
-            <div mat-dialog-actions class="mt-4">
-                <button mat-flat-button color="primary" class="w-full !py-6 !text-base" [disabled]="paymentForm.invalid || isLoading">
-                    Pay Now
-                </button>
+        <!-- Payment Form -->
+        <form [formGroup]="paymentForm" (ngSubmit)="initiatePayment()" class="form-container">
+            <div class="input-group">
+              <label class="input-label">M-PESA Phone Number *</label>
+              <div class="input-container">
+                <mat-icon class="input-icon">phone</mat-icon>
+                <input 
+                  class="payment-input" 
+                  formControlName="phoneNumber" 
+                  placeholder="0706242439" 
+                  type="tel"
+                  required>
+              </div>
+              <div *ngIf="paymentForm.get('phoneNumber')?.hasError('required') && paymentForm.get('phoneNumber')?.touched" 
+                   class="error-message">
+                Phone number is required
+              </div>
             </div>
+
+            <button 
+              type="submit" 
+              class="pay-button" 
+              [disabled]="paymentForm.invalid || isLoading">
+              <mat-icon>payment</mat-icon>
+              Pay Now
+            </button>
         </form>
       </div>
     </div>
-  `
+  `,
+  styles: [`
+    .payment-modal-container {
+      position: relative;
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      min-width: 400px;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .close-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.9);
+      color: #6b7280;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 1);
+        color: #374151;
+      }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #007B7B 0%, rgba(0, 123, 123, 0.9) 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .modal-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .loading-state, .success-state, .error-state, .payment-form {
+      padding: 2rem;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .spinner-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .fidelity-spinner ::ng-deep circle {
+      stroke: #007B7B;
+    }
+
+    .loading-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .loading-subtitle {
+      color: #6b7280;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .loading-steps {
+      display: flex;
+      justify-content: space-around;
+      gap: 1rem;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .step-icon {
+      color: #B8D87A;
+      font-size: 1.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    /* Success State */
+    .success-state {
+      text-align: center;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .success-icon-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .success-icon {
+      color: #10b981;
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .success-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .success-subtitle {
+      color: #6b7280;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .success-button {
+      background: linear-gradient(135deg, #007B7B 0%, rgba(0, 123, 123, 0.9) 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      &:hover {
+        background: linear-gradient(135deg, #B8D87A 0%, rgba(184, 216, 122, 0.9) 100%);
+        color: #1f2937;
+      }
+    }
+
+    /* Error State */
+    .error-state {
+      text-align: center;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .error-icon-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .error-icon {
+      color: #ef4444;
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .error-subtitle {
+      color: #6b7280;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .cancel-button {
+      border-color: #d1d5db;
+      color: #6b7280;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      
+      &:hover {
+        border-color: #9ca3af;
+        background: #f9fafb;
+      }
+    }
+
+    .retry-button {
+      background: linear-gradient(135deg, #007B7B 0%, rgba(0, 123, 123, 0.9) 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      &:hover {
+        background: linear-gradient(135deg, #B8D87A 0%, rgba(184, 216, 122, 0.9) 100%);
+        color: #1f2937;
+      }
+    }
+
+    /* Payment Form */
+    .amount-display {
+      background: linear-gradient(135deg, rgba(184, 216, 122, 0.1) 0%, rgba(184, 216, 122, 0.05) 100%);
+      border: 2px solid rgba(184, 216, 122, 0.3);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .amount-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 0 0 0.5rem 0;
+      font-weight: 500;
+    }
+
+    .amount-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #007B7B;
+      margin: 0 0 0.25rem 0;
+      line-height: 1;
+    }
+
+    .amount-description {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .input-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      color: #6b7280;
+      z-index: 1;
+      font-size: 1.25rem;
+    }
+
+    .payment-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: white;
+      
+      &:focus {
+        outline: none;
+        border-color: #B8D87A;
+        box-shadow: 0 0 0 4px rgba(184, 216, 122, 0.2);
+      }
+      
+      &::placeholder {
+        color: #9ca3af;
+      }
+    }
+
+    .error-message {
+      font-size: 0.875rem;
+      color: #ef4444;
+      font-weight: 500;
+    }
+
+    .pay-button {
+      background: linear-gradient(135deg, #007B7B 0%, rgba(0, 123, 123, 0.9) 100%);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 123, 0.3);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #B8D87A 0%, rgba(184, 216, 122, 0.9) 100%);
+        color: #1f2937;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(184, 216, 122, 0.4);
+      }
+      
+      &:disabled {
+        background: #9ca3af;
+        color: #d1d5db;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .payment-modal-container {
+        min-width: 320px;
+        margin: 1rem;
+      }
+      
+      .loading-steps {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .step {
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+      }
+    }
+  `]
 })
 export class MpesaPaymentModalComponent implements OnInit, OnDestroy {
   isLoading = false;
