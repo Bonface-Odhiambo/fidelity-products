@@ -3,6 +3,20 @@ $fidelity-primary: #007B7B; // Pantone P 125-16 C
 $fidelity-secondary: #B7DC78; // Pantone 366 C
 $white: #ffffff;
 
+// Success snackbar styling
+::ng-deep .success-snackbar {
+  background-color: #10b981 !important;
+  color: white !important;
+  
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+  }
+  
+  .mat-mdc-button {
+    color: white !important;
+  }
+}
+
 // --- BREAKPOINTS ---
 $mobile: 480px;
 $tablet: 768px;

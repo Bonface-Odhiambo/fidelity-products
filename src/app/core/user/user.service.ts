@@ -154,4 +154,10 @@ export class UserService {
         );
     }
 
+    downloadCertificate(id: number): Observable<Blob> {
+        return this._httpClient.get(`${this.baseUrl}/shippingapplication/coredigitalCert?id=${id}`, {
+            responseType: 'blob'  // very important for binary files
+        });
+    }
+
 }
