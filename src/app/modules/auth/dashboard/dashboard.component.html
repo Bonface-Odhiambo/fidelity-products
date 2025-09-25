@@ -95,7 +95,7 @@
                             getUnreadNotificationCount() }}</span>
                 </button>
                 <button mat-icon-button [matMenuTriggerFor]="userMenu"
-                        class="relative h-10 w-10 rounded-full bg-fidelity-primary text-white hover:bg-white hover:text-fidelity-primary hover:ring-2 hover:ring-fidelity-primary transition-all duration-300">
+                        class="user-profile-button">
                     <span class="text-sm font-bold">{{ getInitials(user.name) }}</span>
                 </button>
             </div>
@@ -422,22 +422,22 @@
                     </div>
                     <div class="space-y-3 p-6">
                         <button mat-raised-button [routerLink]="['/marine-quote']" 
-                                class="w-full rounded-xl bg-fidelity-primary p-4 text-sm font-semibold text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                                class="quick-action-button">
                             New Marine Quote
                         </button>
                         
                         <button mat-raised-button [routerLink]="['/personal-accident-quote']" 
-                                class="w-full rounded-xl bg-fidelity-primary p-4 text-sm font-semibold text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                                class="quick-action-button">
                             New Personal Accident Quote
                         </button>
                         
                         <button mat-raised-button [routerLink]="['/travel-quote']" 
-                                class="w-full rounded-xl bg-fidelity-primary p-4 text-sm font-semibold text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                                class="quick-action-button">
                             New Travel Quote
                         </button>
                         
                         <button mat-raised-button [routerLink]="['/golfers-quote']" 
-                                class="w-full rounded-xl bg-fidelity-primary p-4 text-sm font-semibold text-white hover:bg-white hover:text-fidelity-primary hover:border-2 hover:border-fidelity-primary hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+                                class="quick-action-button">
                             New Golfers Quote
                         </button>
                     </div>
