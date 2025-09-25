@@ -195,13 +195,13 @@ export class MpesaPaymentModalComponent implements OnInit { stkForm: FormGroup; 
   styles: [`
     :host { --fidelity-primary: #007B7B; --fidelity-secondary: #B7DC78; --white-color: #ffffff; --light-gray: #f8f9fa; --medium-gray: #e9ecef; --dark-gray: #495057; }
     .claim-modal-container { max-width: 650px; }
-    .modal-header { display: flex; align-items: center; padding: 20px 24px; background-color: var(--fidelity-secondary); color: var(--fidelity-primary); position: relative; }
-    .header-icon-wrapper { width: 48px; height: 48px; background-color: rgba(0, 123, 123, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; }
-    .header-icon-wrapper mat-icon { color: var(--fidelity-primary); font-size: 28px; width: 28px; height: 28px; }
-    .modal-title { font-size: 22px; font-weight: 700; margin: 0; color: var(--fidelity-primary); }
-    .modal-subtitle { font-size: 14px; opacity: 0.8; margin-top: 4px; color: var(--fidelity-primary); }
-    .close-button { position: absolute; top: 12px; right: 12px; color: var(--fidelity-primary); }
-    .close-button:hover { color: rgba(0, 123, 123, 0.7); }
+    .modal-header { display: flex; align-items: center; padding: 20px 24px; background-color: rgb(0, 123, 123); color: white; position: relative; }
+    .header-icon-wrapper { width: 48px; height: 48px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; }
+    .header-icon-wrapper mat-icon { color: white; font-size: 28px; width: 28px; height: 28px; }
+    .modal-title { font-size: 22px; font-weight: 700; margin: 0; color: white; }
+    .modal-subtitle { font-size: 14px; opacity: 0.9; margin-top: 4px; color: white; }
+    .close-button { position: absolute; top: 12px; right: 12px; color: white; }
+    .close-button:hover { color: rgba(255, 255, 255, 0.8); }
     .modal-content { padding: 24px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .full-width { width: 100%; margin-bottom: 16px; }
