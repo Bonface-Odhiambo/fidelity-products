@@ -365,7 +365,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   filteredClaims: Claim[] = []; // Used to display claims in the template
   claimSearchTerm: string = '';   // Bound to the claim search input
 
-  recentActivities: Activity[] = [ { id: 'A001', title: 'Payment Successful', description: 'Travel Insurance for Europe', timestamp: new Date(Date.now() - 3600000), icon: 'payment', iconColor: '#04b2e1', relatedId: 'P003' }, { id: 'A002', title: 'Certificate Downloaded', description: 'Marine Cargo Policy MAR-2025-002', timestamp: new Date(Date.now() - 14400000), icon: 'download', iconColor: '#04b2e1', relatedId: 'P002' }, { id: 'A003', title: 'Profile Updated', description: 'Contact information updated', timestamp: new Date(Date.now() - 86400000), icon: 'person', iconColor: '#21275c' }];
+  recentActivities: Activity[] = [];
   notifications: Notification[] = [ { id: 'N001', title: 'Quotes Awaiting Payment', message: 'You have quotes that need payment to activate your policy.', timestamp: new Date(), read: false, actionUrl: '#pending-quotes' }, { id: 'N002', title: 'Certificates Ready', message: 'Your new policy certificates are ready for download.', timestamp: new Date(), read: false, actionUrl: '#active-policies' } ];
   isMobileSidebarOpen = false;
   expandedPolicyId: number | null = null;
@@ -391,8 +391,86 @@ export class DashboardComponent implements OnInit, OnDestroy {
               this.router.navigate(['/sign-in']);
           }
       });
+    this.loadUserData();
     this.loadDashboardData();
-    this.loadClaimsData(); // Load claims data on init
+    this.loadUserPolicies();
+    this.loadUserClaims();
+    this.generateRecentActivities();
+  }
+
+  loadUserData(): void {
+    // Load user data from storage or service
+    const storedUser = localStorage.getItem(this.STORAGE_KEYS.USER_DATA);
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+    }
+  }
+
+  loadUserPolicies(): void {
+    // Load user policies - this calls updateDashboardStats which loads policies
+    this.updateDashboardStats();
+  }
+
+  loadUserClaims(): void {
+    // Load user claims data
+    this.loadClaimsData();
+  }
+
+  generateRecentActivities(): void {
+    this.recentActivities = [];
+    
+    // Add login activity
+    this.addActivity('Login', 'Logged into dashboard', 'login', '#04b2e1', new Date());
+    
+    // Generate activities based on pending quotes
+    this.pendingQuotes.slice(0, 3).forEach(quote => {
+      if (quote.status === 'DRAFT') {
+        this.addActivity(
+          'Quote Created', 
+          `${quote.productType} quote ${quote.refno || quote.id}`, 
+          'description', 
+          '#04b2e1',
+          quote.createdDate || new Date()
+        );
+      } else if (quote.status === 'PAID') {
+        this.addActivity(
+          'Payment Successful', 
+          `Payment for ${quote.productType} quote ${quote.refno || quote.id}`, 
+          'payment', 
+          '#10b981',
+          quote.createdDate || new Date()
+        );
+      }
+    });
+    
+    // Generate activities based on active policies
+    this.activePolicies.slice(0, 2).forEach(policy => {
+      this.addActivity(
+        'Policy Activated', 
+        `Marine policy ${policy.refno}`, 
+        'verified', 
+        '#10b981',
+        new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000) // Random time within last week
+      );
+    });
+    
+    // Sort activities by timestamp (newest first)
+    this.recentActivities.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    
+    // Keep only the 5 most recent activities
+    this.recentActivities = this.recentActivities.slice(0, 5);
+  }
+
+  private addActivity(title: string, description: string, icon: string, iconColor: string, timestamp: Date): void {
+    this.recentActivities.push({
+      id: 'A' + Date.now() + Math.random(),
+      title,
+      description,
+      timestamp,
+      icon,
+      iconColor,
+      relatedId: ''
+    });
   }
 
   loadDashboardData(): void {
@@ -409,6 +487,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
              this.loadGolfQuotes();
              
              this.updateDashboardStats();
+             this.generateRecentActivities(); // Generate activities after data is loaded
               // this.pendingQuotes.forEach(q => {
               //     if (q.status === 'PAID') {
               //         this.checkQuoteStatusPeriodically(q);
