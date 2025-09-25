@@ -821,18 +821,11 @@ export class PaymentModalComponent implements OnInit {
             </div>
             <mat-dialog-content class="modal-content">
                 <form [formGroup]="kycShippingForm" class="p-4">
-
                     <h3 class="mb-4 text-xl font-semibold text-gray-800">KYC Document Uploads</h3>
-                    <p class="mb-4 text-sm text-gray-500">Please upload the following required documents. Accepted
-                        formats: PDF, PNG, JPG (Max 10MB each).</p>
-                    <div *ngIf="kycDocuments.hasError('duplicateFiles') && kycDocuments.touched"
-                         class="mb-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
-                        <p>{{ getErrorMessage(kycShippingForm, 'kycDocuments') }}</p>
-                    </div>
+                    <p class="mb-4 text-sm text-gray-500">Please upload the following required documents. Accepted formats: PDF, PNG, JPG (Max 10MB each).</p>
                     <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2 mb-6" formGroupName="kycDocuments">
                         <div>
-                            <label for="idfUpload" class="block text-sm font-medium text-gray-700">IDF Document <span
-                                class="text-red-500">*</span></label>
+                            <label for="idfUpload" class="block text-sm font-medium text-gray-700">IDF Document <span class="text-red-500">*</span></label>
                             <div class="mt-1">
                                 <input id="idfUpload" (change)="onFileSelected($event, 'idfUpload')" type="file"
                                        accept=".pdf,.jpg,.jpeg,.png"
@@ -1516,20 +1509,23 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
                 });
         });
 
+        // Add duplicate file validation
         this.kycDocuments.statusChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe(status => {
                 if (status === 'INVALID' && this.kycDocuments.errors?.['duplicateFiles']) {
                     const duplicatedControls = this.kycDocuments.errors['duplicateFiles'].duplicatedControls;
-                    duplicatedControls.forEach((c: string) => {
-                        this.handleControlValidationErrors(c, { duplicateFiles: true });
+                    duplicatedControls.forEach((controlName: string) => {
+                        this.handleControlValidationErrors(controlName, { duplicateFiles: true });
                     });
+                    // Clear duplicate errors for controls that are no longer duplicated
                     Object.keys(this.kycFileValidationErrors).forEach(key => {
                         if (!duplicatedControls.includes(key) && this.kycFileValidationErrors[key].includes('duplicate')) {
                             delete this.kycFileValidationErrors[key];
                         }
                     });
                 } else {
+                    // Clear all duplicate file errors when there are no duplicates
                     Object.keys(this.kycFileValidationErrors).forEach(key => {
                         if (this.kycFileValidationErrors[key].includes('duplicate')) {
                             delete this.kycFileValidationErrors[key];
@@ -1607,7 +1603,26 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
 
         // Get current user information
         const currentUser = this.authService.getCurrentUser();
-        const clientName = currentUser ? currentUser.name || currentUser.username || 'N/A' : 'N/A';
+        let clientName = 'N/A';
+        let agentName = 'N/A';
+        
+        if (currentUser) {
+            const userName = currentUser.name || currentUser.username || 'N/A';
+            // Check user type: 'I' for Individual (client), 'A' for Agent/Intermediary
+            if (currentUser.userType === 'I') {
+                // Individual user is the client
+                clientName = userName;
+                agentName = 'N/A';
+            } else if (currentUser.userType === 'A') {
+                // Agent/Intermediary user
+                clientName = 'N/A';
+                agentName = userName;
+            } else {
+                // Default fallback
+                clientName = userName;
+                agentName = 'N/A';
+            }
+        }
 
         const updatedMetadata = {
             quoteId: this.data.quoteId,
@@ -1623,8 +1638,9 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             dateOfDispatch: this.datePipe.transform(kycFormValue.dateOfDispatch, 'dd MMM yyyy'),
             estimatedArrivalDate: this.datePipe.transform(kycFormValue.estimatedArrivalDate, 'dd MMM yyyy'),
             description: kycFormValue.descriptionOfGoods,
-            clientName: clientName, // Add client/agent name
-            agentName: clientName, // Also store as agent name for fallback
+            clientName: clientName, // Individual user name
+            agentName: agentName, // Intermediary user name
+            intermediaryName: agentName, // Also store as intermediary name for compatibility
             dateFormat: 'dd MMM yyyy',
             locale: 'en_US',
         };
@@ -1684,9 +1700,6 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
 
     getErrorMessage(form: AbstractControl, field: string): string {
         const control = form.get(field);
-        if (field === 'kycDocuments' && control?.hasError('duplicateFiles')) {
-            return 'You cannot upload the same document for multiple fields.';
-        }
         if (!control || !control.errors) return '';
         if (control.hasError('required')) return 'This field is required.';
         if (control.hasError('email')) return 'Please enter a valid email address.';
@@ -1757,9 +1770,9 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
     styleUrls: ['./marine-cargo-quotation.component.scss'],
     styles: [`
         :host form select,
-        :host form input[type="text"],
-        :host form input[type="email"],
-        :host form input[type="tel"],
+        :host form input[type="text"]:not([matInput]),
+        :host form input[type="email"]:not([matInput]),
+        :host form input[type="tel"]:not([matInput]),
         :host form input.sum-insured-input {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -1774,6 +1787,26 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             height: 50px;
         }
 
+        /* Ensure Material Design inputs are not affected */
+        :host mat-form-field input[matInput] {
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+            height: auto !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        /* Reset any conflicting styles on mat-form-field */
+        :host mat-form-field {
+            width: 100%;
+        }
+
+        :host mat-form-field .mat-mdc-form-field-infix {
+            padding: 16px 0 16px 0;
+        }
+
         :host form select {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
@@ -1782,7 +1815,7 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             padding-right: 2.5rem;
         }
 
-        :host form input:disabled,
+        :host form input:disabled:not([matInput]),
         :host form select:disabled {
             background-color: #f3f4f6;
             cursor: not-allowed;
