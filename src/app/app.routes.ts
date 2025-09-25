@@ -97,6 +97,10 @@ export const appRoutes: Route[] = [
                 path: 'dashboard',
                 loadChildren: () => import('app/modules/auth/dashboard/dashboard.routes'),
             },
+            {
+                path: 'change-password',
+                loadChildren: () => import('app/modules/auth/change-password/change-password.routes'),
+            },
 			{
 				path: "sign-out",
 				loadChildren: () => import("app/modules/auth/sign-out/sign-out.routes"),

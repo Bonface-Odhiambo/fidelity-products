@@ -3,8 +3,12 @@
     <header class="modern-header">
       <div class="header-content">
         <div class="logo-section">
-          <div class="logo-wrapper">
-            <img src="https://pbs.twimg.com/profile_images/1767198674373734400/R9lqG20r_400x400.jpg" alt="Fidelity Insurance Logo" class="logo-image" />
+          <div class="fidelity-logo-container">
+            <div class="inline-block rounded-3xl bg-fidelity-primary/10 p-3 ring-2 ring-fidelity-primary/20">
+              <img src="https://pbs.twimg.com/profile_images/1767198674373734400/R9lqG20r_400x400.jpg" 
+                   alt="Fidelity Insurance Logo" 
+                   class="h-16 w-16 rounded-2xl object-cover ring-2 ring-fidelity-primary shadow-lg"/>
+            </div>
           </div>
           <div class="brand-text">
             <h1 class="brand-title">Personal Accident Insurance</h1>
@@ -67,111 +71,90 @@
             <p class="step-description">We need some basic information to get started with your quote</p>
           </div>
           
-          <div class="modern-form-grid">
-  
-            <!-- Personal Details Section -->
-            <div formGroupName="personalDetails" class="form-section-card">
-              <h3 class="section-title">
-                <mat-icon>person</mat-icon>
-                Personal Information
-              </h3>
-              
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">First Name <span class="required">*</span></label>
-                  <input type="text" formControlName="firstName" class="modern-input" placeholder="Enter your first name">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.firstName')?.touched && personalAccidentForm.get('personalDetails.firstName')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.firstName')?.errors?.['required']">First name is required</span>
-                  </div>
-                </div>
-                
-                <div class="form-field">
-                  <label class="field-label">Last Name <span class="required">*</span></label>
-                  <input type="text" formControlName="surname" class="modern-input" placeholder="Enter your last name">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.surname')?.touched && personalAccidentForm.get('personalDetails.surname')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.surname')?.errors?.['required']">Last name is required</span>
-                  </div>
+          <!-- Modernized Compact Form -->
+          <div formGroupName="personalDetails" class="modern-compact-form">
+            
+            <!-- Name Fields Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">First Name <span class="required">*</span></label>
+                <input type="text" formControlName="firstName" class="modern-input-uniform" placeholder="First name">
+                <div *ngIf="personalAccidentForm.get('personalDetails.firstName')?.touched && personalAccidentForm.get('personalDetails.firstName')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.firstName')?.errors?.['required']">Required</span>
                 </div>
               </div>
               
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Middle Name</label>
-                  <input type="text" formControlName="middleName" class="modern-input" placeholder="Enter your middle name (optional)">
-                </div>
-                
-                <div class="form-field">
-                  <label class="field-label">Age <span class="required">*</span></label>
-                  <input type="number" formControlName="ageLastBirthday" class="modern-input" min="18" max="70" placeholder="Enter your age">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.touched && personalAccidentForm.get('personalDetails.ageLastBirthday')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['required']">Age is required</span>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['min']">Age must be at least 18</span>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['max']">Age must not exceed 70</span>
-                  </div>
+              <div class="form-field-modern">
+                <label class="field-label-modern">Last Name <span class="required">*</span></label>
+                <input type="text" formControlName="surname" class="modern-input-uniform" placeholder="Last name">
+                <div *ngIf="personalAccidentForm.get('personalDetails.surname')?.touched && personalAccidentForm.get('personalDetails.surname')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.surname')?.errors?.['required']">Required</span>
                 </div>
               </div>
               
-              <div class="form-row">
-                <div class="form-field full-width">
-                  <label class="field-label">Address <span class="required">*</span></label>
-                  <input type="text" formControlName="address" class="modern-input" placeholder="Enter your full address">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.address')?.touched && personalAccidentForm.get('personalDetails.address')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.address')?.errors?.['required']">Address is required</span>
-                  </div>
+              <div class="form-field-modern">
+                <label class="field-label-modern">Middle Name</label>
+                <input type="text" formControlName="middleName" class="modern-input-uniform" placeholder="Middle name (optional)">
+              </div>
+            </div>
+            
+            <!-- Personal Details Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Age <span class="required">*</span></label>
+                <input type="number" formControlName="ageLastBirthday" class="modern-input-uniform" min="18" max="70" placeholder="Age">
+                <div *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.touched && personalAccidentForm.get('personalDetails.ageLastBirthday')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['min']">Min 18</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['max']">Max 70</span>
                 </div>
               </div>
               
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Postal Code <span class="required">*</span></label>
-                  <input type="text" formControlName="postalCode" class="modern-input" placeholder="Enter postal code">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.touched && personalAccidentForm.get('personalDetails.postalCode')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.errors?.['required']">Postal code is required</span>
-                  </div>
+              <div class="form-field-modern">
+                <label class="field-label-modern">ID/Passport <span class="required">*</span></label>
+                <input type="text" formControlName="passportIdNo" class="modern-input-uniform" placeholder="ID or passport number">
+                <div *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.touched && personalAccidentForm.get('personalDetails.passportIdNo')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.errors?.['required']">Required</span>
                 </div>
-                
-                <div class="form-field">
-                  <label class="field-label">ID/Passport Number <span class="required">*</span></label>
-                  <input type="text" formControlName="passportIdNo" class="modern-input" placeholder="Enter ID or passport number">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.touched && personalAccidentForm.get('personalDetails.passportIdNo')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.errors?.['required']">ID/Passport number is required</span>
-                  </div>
+              </div>
+              
+              <div class="form-field-modern">
+                <label class="field-label-modern">Postal Code <span class="required">*</span></label>
+                <input type="text" formControlName="postalCode" class="modern-input-uniform" placeholder="Postal code">
+                <div *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.touched && personalAccidentForm.get('personalDetails.postalCode')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.errors?.['required']">Required</span>
                 </div>
               </div>
             </div>
             
-            <!-- Contact Information Section -->
-            <div class="form-section-card">
-              <h3 class="section-title">
-                <mat-icon>contact_mail</mat-icon>
-                Contact Information
-              </h3>
-              
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Email Address <span class="required">*</span></label>
-                  <input type="email" formControlName="email" class="modern-input" placeholder="Enter your email address">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.email')?.touched && personalAccidentForm.get('personalDetails.email')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['required']">Email is required</span>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['email']">Please enter a valid email address</span>
-                  </div>
+            <!-- Contact Information Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern form-field-wide">
+                <label class="field-label-modern">Email Address <span class="required">*</span></label>
+                <input type="email" formControlName="email" class="modern-input-uniform" placeholder="your.email@example.com">
+                <div *ngIf="personalAccidentForm.get('personalDetails.email')?.touched && personalAccidentForm.get('personalDetails.email')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['email']">Invalid email</span>
                 </div>
-                
-                <div class="form-field">
-                  <label class="field-label">Mobile Number <span class="required">*</span></label>
-                  <input type="text" formControlName="mobileNumber" class="modern-input" placeholder="+254XXXXXXXXX">
-                  <div *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.touched && personalAccidentForm.get('personalDetails.mobileNumber')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['required']">Mobile number is required</span>
-                    <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['pattern']">Please enter a valid mobile number</span>
-                  </div>
+              </div>
+              
+              <div class="form-field-modern">
+                <label class="field-label-modern">Mobile Number <span class="required">*</span></label>
+                <input type="text" formControlName="mobileNumber" class="modern-input-uniform" placeholder="+254XXXXXXXXX">
+                <div *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.touched && personalAccidentForm.get('personalDetails.mobileNumber')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['pattern']">Invalid format</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Address Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern form-field-full">
+                <label class="field-label-modern">Address <span class="required">*</span></label>
+                <input type="text" formControlName="address" class="modern-input-uniform" placeholder="Enter your full address">
+                <div *ngIf="personalAccidentForm.get('personalDetails.address')?.touched && personalAccidentForm.get('personalDetails.address')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.address')?.errors?.['required']">Required</span>
                 </div>
               </div>
             </div>
@@ -193,103 +176,205 @@
             <p class="step-description">Select the protection level that best suits your needs</p>
           </div>
           
-          <div class="modern-form-grid">
-            <!-- Beneficiary Information -->
-            <div formGroupName="beneficiaryDetails" class="form-section-card">
-              <h3 class="section-title">
-                <mat-icon>family_restroom</mat-icon>
-                Beneficiary Information
-              </h3>
-              
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Beneficiary Name <span class="required">*</span></label>
-                  <input type="text" formControlName="beneficiaryName" class="modern-input" placeholder="Enter beneficiary's full name">
-                  <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.errors?.['required']">Beneficiary name is required</span>
-                  </div>
+          <!-- Modernized Compact Coverage Form -->
+          <div class="modern-compact-form">
+            
+            <!-- Beneficiary & Coverage Period Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern" formGroupName="beneficiaryDetails">
+                <label class="field-label-modern">Beneficiary Name <span class="required">*</span></label>
+                <input type="text" formControlName="beneficiaryName" class="modern-input-uniform" placeholder="Full name">
+                <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.errors?.['required']">Required</span>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Relationship <span class="required">*</span></label>
-                  <input type="text" formControlName="beneficiaryRelationship" class="modern-input" placeholder="e.g., Spouse, Child, Parent">
-                  <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.errors?.['required']">Relationship is required</span>
-                  </div>
+              
+              <div class="form-field-modern" formGroupName="beneficiaryDetails">
+                <label class="field-label-modern">Relationship <span class="required">*</span></label>
+                <input type="text" formControlName="beneficiaryRelationship" class="modern-input-uniform" placeholder="e.g., Spouse, Child">
+                <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern" formGroupName="periodOfInsurance">
+                <label class="field-label-modern">Start Date <span class="required">*</span></label>
+                <input type="date" formControlName="fromDate" class="modern-input-uniform">
+                <div *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.touched && personalAccidentForm.get('periodOfInsurance.fromDate')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern" formGroupName="periodOfInsurance">
+                <label class="field-label-modern">End Date <span class="required">*</span></label>
+                <input type="date" formControlName="toDate" class="modern-input-uniform">
+                <div *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.touched && personalAccidentForm.get('periodOfInsurance.toDate')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['required']">Required</span>
                 </div>
               </div>
             </div>
-
-            <!-- Coverage Period -->
-            <div formGroupName="periodOfInsurance" class="form-section-card">
-              <h3 class="section-title">
-                <mat-icon>date_range</mat-icon>
-                Coverage Period
-              </h3>
-              
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">Start Date <span class="required">*</span></label>
-                  <input type="date" formControlName="fromDate" class="modern-input">
-                  <div *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.touched && personalAccidentForm.get('periodOfInsurance.fromDate')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.errors?.['required']">Start date is required</span>
-                  </div>
+            
+            <!-- Age Range & Occupation Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Age Range <span class="required">*</span></label>
+                <mat-radio-group formControlName="ageRange" class="radio-group-compact">
+                  <mat-radio-button *ngFor="let range of ageRanges" [value]="range.id" class="radio-option-compact">
+                    {{ range.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('ageRange')?.touched && personalAccidentForm.get('ageRange')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('ageRange')?.errors?.['required']">Required</span>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label">End Date <span class="required">*</span></label>
-                  <input type="date" formControlName="toDate" class="modern-input">
-                  <div *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.touched && personalAccidentForm.get('periodOfInsurance.toDate')?.invalid" class="error-message">
-                    <mat-icon class="error-icon">error</mat-icon>
-                    <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['required']">End date is required</span>
-                  </div>
+              
+              <div class="form-field-modern form-field-wide">
+                <label class="field-label-modern">Occupation Class <span class="required">*</span></label>
+                <select formControlName="occupationClass" class="modern-input-uniform">
+                  <option value="">Select occupation class</option>
+                  <option value="1">Class 1 - Professional/Office Work</option>
+                  <option value="2">Class 2 - Light Manual Work</option>
+                  <option value="3">Class 3 - Heavy Manual Work</option>
+                  <option value="4">Class 4 - Hazardous Work</option>
+                </select>
+                <div *ngIf="personalAccidentForm.get('occupationClass')?.touched && personalAccidentForm.get('occupationClass')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('occupationClass')?.errors?.['required']">Required</span>
                 </div>
               </div>
             </div>
-
-            <!-- Coverage Plans -->
-            <div class="coverage-plans-section">
-              <h3 class="section-title">
-                <mat-icon>shield</mat-icon>
-                Select Your Coverage Plan
-              </h3>
+            
+            <!-- Health & Risk Questions Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Hazardous Activities? <span class="required">*</span></label>
+                <mat-radio-group formControlName="hazardousActivities" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('hazardousActivities')?.touched && personalAccidentForm.get('hazardousActivities')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('hazardousActivities')?.errors?.['required']">Required</span>
+                </div>
+              </div>
               
-              <div class="coverage-grid">
-                <div *ngFor="let plan of coverOptions" 
-                     class="coverage-card" 
-                     [class.selected]="personalAccidentForm.get('coverOption')?.value === plan.id"
-                     (click)="selectCoverageOption(plan.id)">
-                  <div class="coverage-header">
-                    <h4 class="coverage-title">Option {{ plan.id }}</h4>
-                    <div class="coverage-price">
-                      <span class="price-amount">KES {{ getSelectedPremium(plan) | number:'1.0-0' }}</span>
-                      <span class="price-period">per year</span>
+              <div class="form-field-modern">
+                <label class="field-label-modern">Past Injury (5 years)? <span class="required">*</span></label>
+                <mat-radio-group formControlName="sustainedInjury" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('sustainedInjury')?.touched && personalAccidentForm.get('sustainedInjury')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('sustainedInjury')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern">
+                <label class="field-label-modern">Insurer Declined? <span class="required">*</span></label>
+                <mat-radio-group formControlName="insurerDeclined" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('insurerDeclined')?.touched && personalAccidentForm.get('insurerDeclined')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('insurerDeclined')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern">
+                <label class="field-label-modern">Free from Illness? <span class="required">*</span></label>
+                <mat-radio-group formControlName="freeFromIllness" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('freeFromIllness')?.touched && personalAccidentForm.get('freeFromIllness')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('freeFromIllness')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Conditional Details Row -->
+            <div class="form-row-modern" *ngIf="personalAccidentForm.get('sustainedInjury')?.value === true || personalAccidentForm.get('freeFromIllness')?.value === false">
+              <div class="form-field-modern form-field-half" *ngIf="personalAccidentForm.get('sustainedInjury')?.value === true">
+                <label class="field-label-modern">Injury Details <span class="required">*</span></label>
+                <textarea formControlName="injuryDetails" class="modern-input-uniform textarea-compact" placeholder="Describe injury details"></textarea>
+                <div *ngIf="personalAccidentForm.get('injuryDetails')?.touched && personalAccidentForm.get('injuryDetails')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('injuryDetails')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern form-field-half" *ngIf="personalAccidentForm.get('freeFromIllness')?.value === false">
+                <label class="field-label-modern">Illness Details <span class="required">*</span></label>
+                <textarea formControlName="illnessDetails" class="modern-input-uniform textarea-compact" placeholder="Describe illness/defect"></textarea>
+                <div *ngIf="personalAccidentForm.get('illnessDetails')?.touched && personalAccidentForm.get('illnessDetails')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('illnessDetails')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Excluded Activities Row -->
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Engage in Excluded Activities? <span class="required">*</span></label>
+                <mat-radio-group formControlName="engagedInExcludedActivities" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('engagedInExcludedActivities')?.touched && personalAccidentForm.get('engagedInExcludedActivities')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('engagedInExcludedActivities')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+              
+              <div class="form-field-modern" *ngIf="personalAccidentForm.get('engagedInExcludedActivities')?.value === true">
+                <label class="field-label-modern">Extension of Cover? <span class="required">*</span></label>
+                <mat-radio-group formControlName="extensionOfCover" class="radio-group-compact">
+                  <mat-radio-button [value]="true">Yes (+25% premium)</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('extensionOfCover')?.touched && personalAccidentForm.get('extensionOfCover')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('extensionOfCover')?.errors?.['required']">Required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coverage Plans Section -->
+          <div class="coverage-plans-section">
+            <h3 class="section-title-main">
+              <mat-icon>shield</mat-icon>
+              Select Your Coverage Plan
+            </h3>
+            
+            <div class="coverage-grid-improved">
+              <div *ngFor="let plan of coverOptions" 
+                   class="coverage-card-improved" 
+                   [class.selected]="personalAccidentForm.get('coverOption')?.value === plan.id"
+                   (click)="selectCoverageOption(plan.id)">
+                
+                <!-- Card Header -->
+                <div class="coverage-header-improved">
+                  <div class="option-badge">Option {{ plan.id }}</div>
+                  <div class="coverage-price-improved">
+                    <span class="price-amount">KES {{ getSelectedPremium(plan) | number:'1.0-0' }}</span>
+                    <span class="price-period">per year</span>
+                  </div>
+                </div>
+                
+                <!-- Benefits Grid -->
+                <div class="coverage-benefits-grid">
+                  <div *ngFor="let benefit of benefits" class="benefit-item">
+                    <div class="benefit-label">{{ benefit.name }}</div>
+                    <div class="benefit-value" *ngIf="plan[benefit.key] > 0">
+                      KES {{ plan[benefit.key] | number:'1.0-0' }}
+                    </div>
+                    <div class="benefit-value not-covered" *ngIf="plan[benefit.key] === 0">
+                      Not Covered
                     </div>
                   </div>
-                  
-                  <ul class="coverage-benefits">
-                    <li *ngFor="let benefit of benefits" class="benefit-row">
-                      <mat-icon class="benefit-icon">check_circle_outline</mat-icon>
-                      <span class="benefit-name">{{ benefit.name }}</span>
-                      <span class="benefit-amount" *ngIf="plan[benefit.key] > 0">
-                        KES {{ plan[benefit.key] | number:'1.0-0' }}
-                      </span>
-                      <span class="benefit-amount not-covered" *ngIf="plan[benefit.key] === 0">
-                        Not Covered
-                      </span>
-                    </li>
-                  </ul>
-                  
-                  <div class="coverage-select">
-                    <mat-radio-button [value]="plan.id" formControlName="coverOption">
-                      Select Option {{ plan.id }}
-                    </mat-radio-button>
-                  </div>
+                </div>
+                
+                <!-- Selection Radio -->
+                <div class="coverage-select-improved">
+                  <mat-radio-button [value]="plan.id" formControlName="coverOption" class="coverage-radio">
+                    <span class="select-text">Select Option {{ plan.id }}</span>
+                  </mat-radio-button>
                 </div>
               </div>
             </div>
@@ -431,12 +516,44 @@
               </div>
             </div>
 
+            <!-- Declaration Section -->
+            <div class="declaration-section">
+              <h3 class="review-section-title">
+                <mat-icon>edit</mat-icon>
+                Declaration
+              </h3>
+              
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="field-label">Digital Signature <span class="required">*</span></label>
+                  <input type="text" formControlName="signature" class="modern-input" placeholder="Type your full name as signature">
+                  <div *ngIf="personalAccidentForm.get('signature')?.touched && personalAccidentForm.get('signature')?.invalid" class="error-message">
+                    <mat-icon class="error-icon">error</mat-icon>
+                    <span *ngIf="personalAccidentForm.get('signature')?.errors?.['required']">Digital signature is required</span>
+                  </div>
+                </div>
+                
+                <div class="form-field">
+                  <label class="field-label">Declaration Date <span class="required">*</span></label>
+                  <input type="date" formControlName="declarationDate" class="modern-input">
+                  <div *ngIf="personalAccidentForm.get('declarationDate')?.touched && personalAccidentForm.get('declarationDate')?.invalid" class="error-message">
+                    <mat-icon class="error-icon">error</mat-icon>
+                    <span *ngIf="personalAccidentForm.get('declarationDate')?.errors?.['required']">Declaration date is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Terms and Conditions -->
             <div class="terms-section">
               <div class="terms-checkbox">
                 <mat-checkbox formControlName="agreementAccepted" class="terms-check">
                   I agree to the <a href="#" class="terms-link">Terms & Conditions</a> and confirm that all information provided is accurate.
                 </mat-checkbox>
+                <div *ngIf="personalAccidentForm.get('agreementAccepted')?.touched && personalAccidentForm.get('agreementAccepted')?.invalid" class="error-message">
+                  <mat-icon class="error-icon">error</mat-icon>
+                  <span *ngIf="personalAccidentForm.get('agreementAccepted')?.errors?.['required']">You must accept the terms and conditions</span>
+                </div>
               </div>
             </div>
           </div>
@@ -446,6 +563,10 @@
             <button type="button" (click)="prevStep()" class="btn-secondary">
               <mat-icon>arrow_back</mat-icon>
               Back to Coverage
+            </button>
+            <button type="button" (click)="shareQuote()" class="btn-share">
+              <mat-icon>share</mat-icon>
+              Share Quote
             </button>
             <button type="button" (click)="getQuote()" [disabled]="personalAccidentForm.invalid" class="btn-primary">
               <mat-icon>payment</mat-icon>

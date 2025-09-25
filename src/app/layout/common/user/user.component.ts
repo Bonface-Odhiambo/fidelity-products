@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,6 +31,7 @@ import { StoredUser } from '../../../modules/auth/shared/services/auth.service';
         MatIconModule,
         NgClass,
         MatDividerModule,
+        RouterLink,
     ],
 })
 export class UserComponent implements OnInit, OnDestroy {

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
     FormsModule,
     NgForm,
@@ -9,6 +10,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
@@ -20,14 +22,17 @@ import { finalize } from 'rxjs';
 @Component({
     selector: 'auth-forgot-password',
     templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     imports: [
+        CommonModule,
         FuseAlertComponent,
         FormsModule,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
+        MatIconModule,
         MatButtonModule,
         MatProgressSpinnerModule,
         RouterLink,
@@ -68,6 +73,50 @@ export class AuthForgotPasswordComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Get button classes based on form state
+     */
+    getButtonClasses(): string {
+        const baseClasses = 'w-full rounded-xl py-4 text-sm font-bold transition-all duration-300 transform focus:outline-none focus:ring-4 focus:ring-fidelity-primary/30 shadow-lg';
+        
+        if (this.forgotPasswordForm.disabled) {
+            // Loading state - keep light green background with dark green text
+            return baseClasses + ' cursor-not-allowed';
+        } else if (this.forgotPasswordForm.valid) {
+            // Valid email - light green background with dark green text (active state)
+            return baseClasses + ' hover:scale-[1.02] cursor-pointer';
+        } else {
+            // Invalid/empty email - dark green background with white text (disabled state)  
+            return baseClasses + ' cursor-not-allowed';
+        }
+    }
+    
+    /**
+     * Get button style based on form state
+     */
+    getButtonStyle(): any {
+        if (this.forgotPasswordForm.disabled) {
+            // Loading state - light green background with dark green text
+            return { 
+                'background-color': '#B7DC78',
+                'color': '#007B7B'
+            };
+        } else if (this.forgotPasswordForm.valid) {
+            // Valid email - light green background with dark green text
+            return { 
+                'background-color': '#B7DC78',
+                'color': '#007B7B'
+            };
+        } else {
+            // Invalid/empty email - dark green background with white text
+            return { 
+                'background-color': '#007B7B',
+                'color': '#ffffff',
+                'opacity': '0.7'
+            };
+        }
+    }
 
     /**
      * Send the reset link

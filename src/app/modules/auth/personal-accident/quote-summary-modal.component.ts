@@ -350,12 +350,12 @@ export interface QuoteSummaryData {
     }
 
     .premium-display {
-      background: linear-gradient(135deg, var(--brand-turquoise), var(--brand-lime));
+      background: var(--brand-lime);
       color: white;
       padding: 24px;
       border-radius: 12px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(3, 123, 124, 0.3);
+      box-shadow: 0 4px 12px rgba(184, 216, 122, 0.3);
     }
 
     .premium-display h3 {

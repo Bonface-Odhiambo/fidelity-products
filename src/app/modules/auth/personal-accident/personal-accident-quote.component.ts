@@ -11,6 +11,7 @@ import { Subject, takeUntil, take } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MpesaPaymentModalComponent, PaymentResult } from '../shared/payment-modal.component';
 import { QuoteSummaryModalComponent } from './quote-summary-modal.component';
+import { ShareQuoteModalComponent } from './share-quote-modal.component';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
@@ -410,5 +411,39 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
   getSelectedCoverOption(): any {
     const selectedId = this.personalAccidentForm.get('coverOption')?.value;
     return this.coverOptions.find(option => option.id === selectedId);
+  }
+
+  shareQuote(): void {
+    if (this.personalAccidentForm.invalid || !this.calculatedPremium) {
+      this.triggerAlert('error', 'Please complete the form and select coverage before sharing.', 'inline');
+      return;
+    }
+
+    const formData = this.personalAccidentForm.getRawValue();
+    const selectedCover = this.coverOptions.find(opt => opt.id === formData.coverOption);
+    const reference = this.generateQuoteReference();
+    
+    if (!selectedCover) {
+      this.triggerAlert('error', 'Invalid cover option selected.', 'inline');
+      return;
+    }
+
+    const dialogRef = this._dialog.open(ShareQuoteModalComponent, {
+      width: '600px',
+      maxWidth: '95vw',
+      disableClose: false,
+      data: {
+        formData: formData,
+        coverOption: selectedCover,
+        calculatedPremium: this.calculatedPremium,
+        benefits: this.benefits,
+        reference: reference
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      // Handle any post-share actions if needed
+      console.log('Share modal closed', result);
+    });
   }
 }
