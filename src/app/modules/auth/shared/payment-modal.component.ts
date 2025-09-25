@@ -148,8 +148,11 @@ export interface PaymentResult {
 
         <!-- Payment Form -->
         <form [formGroup]="paymentForm" (ngSubmit)="initiatePayment()" class="form-container">
+            <div class="instruction-text">
+              Enter your M-PESA number to receive a payment prompt.
+            </div>
+            
             <div class="input-group">
-              <label class="input-label">M-PESA Phone Number *</label>
               <div class="input-container">
                 <mat-icon class="input-icon">phone</mat-icon>
                 <input 
@@ -423,7 +426,15 @@ export interface PaymentResult {
     .form-container {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1rem;
+    }
+
+    .instruction-text {
+      font-size: 0.875rem;
+      color: #6b7280;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
     }
 
     .input-group {

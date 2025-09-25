@@ -429,11 +429,10 @@ export class TermsPrivacyModalComponent {
                                     <span>Use Paybill</span></button>
                             </div>
                             <div *ngIf="mpesaSubMethod === 'stk'" class="option-view animate-fade-in">
-                                <p class="instruction-text" style="font-weight: 700;"><strong>Enter your M-PESA number to receive a payment prompt.</strong></p>
+                                <p class="instruction-text" style="font-weight: 400; margin-bottom: 1rem; color: #6b7280;">Enter your M-PESA number to receive a payment prompt.</p>
                                 <form [formGroup]="stkForm">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Phone Number</mat-label>
-                                        <input matInput formControlName="phoneNumber" placeholder="e.g., 0712345678"
+                                    <mat-form-field appearance="outline" style="margin-bottom: 1rem;">
+                                        <input matInput formControlName="phoneNumber" placeholder="0706242439"
                                                [disabled]="isProcessingStk" />
                                         <mat-icon matSuffix>phone_iphone</mat-icon>
                                     </mat-form-field>
