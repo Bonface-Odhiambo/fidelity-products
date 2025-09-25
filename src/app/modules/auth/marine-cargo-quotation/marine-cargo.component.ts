@@ -970,14 +970,14 @@ export class PaymentModalComponent implements OnInit {
                         </div>
 
                         <div>
-                        <mat-form-field class="w-full">
-                            <mat-label>Vessel Name</mat-label>
-                            <input matInput type="text" formControlName="vesselName" placeholder="e.g., MSC Isabella" />
-                        </mat-form-field>
-                        <div *ngIf="isFieldInvalid(kycShippingForm, 'vesselName')"
-                            class="mt-1 text-sm text-red-600">{{ getErrorMessage(kycShippingForm, 'vesselName') }}
+                            <label class="block text-sm font-medium text-gray-700">Vessel Name</label>
+                            <input type="text" formControlName="vesselName" placeholder="e.g., MSC Isabella"
+                                   class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
+                                   [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'vesselName')}" />
+                            <div *ngIf="isFieldInvalid(kycShippingForm, 'vesselName')"
+                                 class="mt-1 text-sm text-red-600">{{ getErrorMessage(kycShippingForm, 'vesselName') }}
+                            </div>
                         </div>
-                    </div>
                         
                          <!-- Final Destination County -->
                         <div>
@@ -1787,7 +1787,7 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             height: 50px;
         }
 
-        /* Ensure Material Design inputs are not affected */
+        /* Aggressive Material Design input reset */
         :host mat-form-field input[matInput] {
             border: none !important;
             background: transparent !important;
@@ -1796,15 +1796,28 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             border-radius: 0 !important;
             box-shadow: none !important;
             outline: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
         }
 
         /* Reset any conflicting styles on mat-form-field */
         :host mat-form-field {
-            width: 100%;
+            width: 100% !important;
         }
 
         :host mat-form-field .mat-mdc-form-field-infix {
-            padding: 16px 0 16px 0;
+            padding: 16px 0 16px 0 !important;
+        }
+
+        /* Override any global form input styles for Material inputs */
+        :host mat-form-field .mat-mdc-text-field-wrapper {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        :host mat-form-field .mat-mdc-form-field-outline {
+            border: none !important;
         }
 
         :host form select {
