@@ -98,8 +98,9 @@ export const idfNumberValidator: ValidatorFn = (control: AbstractControl): Valid
 
 export const ucrNumberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const ucrPattern = /^\d{2}[A-Z]{3}\d{9}[A-Z]\d{10}$/i;
-    return ucrPattern.test(control.value) ? null : { invalidUcrNumber: true };
+    // Format: 2 digits + 3 letters (caps) + 9 digits + 1 letter (caps) + 9 digits
+    const ucrPattern = /^\d{2}[A-Z]{3}\d{9}[A-Z]\d{9}$/;
+    return ucrPattern.test(control.value.trim().toUpperCase()) ? null : { invalidUcrNumber: true };
 };
 
 export const nameValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -888,7 +889,7 @@ export class PaymentModalComponent implements OnInit {
                             <label class="block text-sm font-medium text-gray-700">KRA PIN <span
                                 class="text-red-500">*</span></label>
                             <input type="text" formControlName="kraPin"
-                                   class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
+                                   class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    placeholder="Format: A123456789Z"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'kraPin')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'kraPin')"
@@ -898,10 +899,30 @@ export class PaymentModalComponent implements OnInit {
                         <div>
                             <label class="block text-sm font-medium text-gray-700">ID Number <span class="text-red-500">*</span></label>
                             <input type="text" formControlName="idNumber"
-                                   class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
+                                   class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'idNumber')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'idNumber')"
                                  class="mt-1 text-sm text-red-600">{{ getErrorMessage(kycShippingForm, 'idNumber') }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Postal Address <span class="text-red-500">*</span></label>
+                            <input type="text" formControlName="postalAddress"
+                                   class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
+                                   placeholder="Enter your full postal address"
+                                   [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'postalAddress')}" />
+                            <div *ngIf="isFieldInvalid(kycShippingForm, 'postalAddress')"
+                                 class="mt-1 text-sm text-red-600">{{ getErrorMessage(kycShippingForm, 'postalAddress') }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Postal Code <span class="text-red-500">*</span></label>
+                            <input type="number" formControlName="postalCode"
+                                   class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
+                                   placeholder="e.g., 00100"
+                                   [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'postalCode')}" />
+                            <div *ngIf="isFieldInvalid(kycShippingForm, 'postalCode')"
+                                 class="mt-1 text-sm text-red-600">{{ getErrorMessage(kycShippingForm, 'postalCode') }}
                             </div>
                         </div>
                     </div>
@@ -911,7 +932,7 @@ export class PaymentModalComponent implements OnInit {
                     <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">UCR Number</label>
-                            <input type="text" formControlName="ucrNumber" placeholder="e.g. 12VNP011111123X0012345678"
+                            <input type="text" formControlName="ucrNumber" placeholder="e.g. 12VNP123456789X123456789"
                                    class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'ucrNumber')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'ucrNumber')"
@@ -1404,6 +1425,8 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         return this.fb.group({
             kraPin: ['', [Validators.required, kraPinValidator]],
             idNumber: ['', [Validators.required, idNumberValidator]],
+            postalAddress: ['', [Validators.required, Validators.minLength(10)]],
+            postalCode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
             kycDocuments: this.fb.group({
                 kraPinUpload: [null, [Validators.required, enhancedFileTypeValidator(allowedFileTypes, maxFileSize)]],
                 nationalIdUpload: [null, [Validators.required, enhancedFileTypeValidator(allowedFileTypes, maxFileSize)]],
@@ -1713,7 +1736,7 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         if (control.hasError('minWords')) return `Minimum of ${control.errors['minWords'].requiredWords} words is required.`;
         if (control.hasError('maxWords')) return `Maximum of ${control.errors['maxWords'].maxWords} words is allowed.`;
         if (control.hasError('invalidIdfNumber')) return 'Invalid IDF Number. Format: 25MBAIM004889919 (2 digits + 5 letters + 9 digits).';
-        if (control.hasError('invalidUcrNumber')) return 'Invalid UCR Number. Format: 12VNP011111123X0012345678.';
+        if (control.hasError('invalidUcrNumber')) return 'Invalid UCR Number. Format: 2 digits + 3 letters + 9 digits + 1 letter + 9 digits (e.g. 12VNP123456789X123456789).';
         return 'This field has an error.';
     }
 

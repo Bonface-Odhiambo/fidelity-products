@@ -418,11 +418,42 @@ export class ShareModalComponent {
 
     extractTotalPayable(): string {
         const lines = this.data.quoteText.split('\n');
-        const totalLine = lines.find(line => line.includes('Total Payable') || line.includes('Total Premium') || line.includes('Net Premium'));
+        
+        // First try to find explicit total lines
+        const totalLine = lines.find(line => 
+            line.includes('Total Payable') || 
+            line.includes('Total Premium') || 
+            line.includes('Net Premium') ||
+            line.includes('Grand Total')
+        );
+        
         if (totalLine) {
             const match = totalLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
-            return match ? `KES ${match[1]}` : 'KES 0.00';
+            if (match) {
+                return `KES ${match[1]}`;
+            }
         }
+        
+        // If no explicit total found, calculate from individual components
+        const basePremium = this.parseAmount(this.extractBasePremium());
+        const phcf = this.parseAmount(this.extractPHCF());
+        const trainingLevy = this.parseAmount(this.extractTrainingLevy());
+        const stampDuty = this.parseAmount(this.extractStampDuty());
+        
+        const total = basePremium + phcf + trainingLevy + stampDuty;
+        
+        if (total > 0) {
+            return `KES ${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+        
         return 'KES 0.00';
+    }
+    
+    private parseAmount(amountString: string): number {
+        const match = amountString.match(/([\d,]+(?:\.\d{2})?)/);
+        if (match) {
+            return parseFloat(match[1].replace(/,/g, ''));
+        }
+        return 0;
     }
 }
