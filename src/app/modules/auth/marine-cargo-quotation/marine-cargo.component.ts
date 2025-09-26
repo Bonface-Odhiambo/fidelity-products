@@ -1701,15 +1701,19 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
             });
 
             dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((paymentResult: PaymentResult | null) => {
-                if (paymentResult?.success) {
-                    this.showToast('Payment successful!');
+                if (paymentResult?.success === true) {
+                    // Payment successful - close both modals
+                    this.showToast('Payment successful! Your policy is now active.');
                     this.dialogRef.close('payment_success');
                 } else if (paymentResult === null) {
                     // User closed/cancelled the payment modal - keep Complete Purchase modal open
                     this.showToast('Payment cancelled. You can try again or close this window.');
-                } else {
+                } else if (paymentResult?.success === false) {
                     // Payment failed but was attempted - keep Complete Purchase modal open
                     this.showToast('Payment failed. Your quote has been saved. You can try again.');
+                } else {
+                    // Fallback case - keep Complete Purchase modal open
+                    this.showToast('Payment was not completed. You can try again.');
                 }
             });
         });
