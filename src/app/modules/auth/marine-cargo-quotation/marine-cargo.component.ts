@@ -24,6 +24,7 @@ import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TrimDirective } from '../shared/directives/trim.directive';
+import { PaymentResult } from '../shared/payment-modal.component';
 import {
     forkJoin,
     Subject,
@@ -35,7 +36,14 @@ import {
     timeout,
     interval,
     switchMap,
-    takeWhile, catchError, throwError, take, fromEvent, filter,
+    tap,
+    catchError,
+    finalize,
+    take,
+    fromEvent,
+    filter,
+    takeWhile,
+    throwError,
 } from 'rxjs';
 import { AuthenticationService, PortData, StoredUser } from '../shared/services/auth.service';
 import {
@@ -191,12 +199,6 @@ interface MpesaPayment {
     description: string;
 }
 
-export interface PaymentResult {
-    success: boolean;
-    method: 'stk' | 'paybill' | 'card';
-    reference: string;
-    mpesaReceipt?: string;
-}
 
 interface DisplayUser {
     type: 'individual' | 'intermediary';
@@ -788,7 +790,7 @@ export class PaymentModalComponent implements OnInit {
         this.isVerifyingPaybill = true;
         setTimeout(() => {
             this.isVerifyingPaybill = false;
-            this.closeDialog({ success: true, method: 'paybill', reference: this.data.reference });
+            this.closeDialog({ success: true });
         }, 3500);
     }
 
@@ -796,7 +798,7 @@ export class PaymentModalComponent implements OnInit {
         this.isRedirectingToCard = true;
         setTimeout(() => {
             this.isRedirectingToCard = false;
-            this.closeDialog({ success: true, method: 'card', reference: this.data.reference });
+            this.closeDialog({ success: true });
         }, 2000);
     }
 }
@@ -1700,19 +1702,33 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
                 disableClose: true,
             });
 
-            dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((paymentResult: PaymentResult | null) => {
-                if (paymentResult?.success === true) {
+            dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((paymentResult: any) => {
+                console.log('🔥 MARINE CARGO - Payment modal closed with result:', paymentResult);
+                console.log('🔥 MARINE CARGO - Payment result type:', typeof paymentResult);
+                console.log('🔥 MARINE CARGO - Payment result success property:', paymentResult?.success);
+                console.log('🔥 MARINE CARGO - Payment result success type:', typeof paymentResult?.success);
+                
+                // Handle both { success: true } and just true
+                const isSuccess = paymentResult === true || paymentResult?.success === true;
+                
+                if (isSuccess) {
                     // Payment successful - close both modals
+                    console.log('🔥 MARINE CARGO SUCCESS: Closing Complete Purchase modal');
                     this.showToast('Payment successful! Your policy is now active.');
+                    console.log('🔥 MARINE CARGO SUCCESS: About to call this.dialogRef.close()');
                     this.dialogRef.close('payment_success');
+                    console.log('🔥 MARINE CARGO SUCCESS: this.dialogRef.close() called');
                 } else if (paymentResult === null) {
                     // User closed/cancelled the payment modal - keep Complete Purchase modal open
+                    console.log('🔥 MARINE CARGO CANCELLED: Keeping Complete Purchase modal open');
                     this.showToast('Payment cancelled. You can try again or close this window.');
-                } else if (paymentResult?.success === false) {
+                } else if (paymentResult === false || paymentResult?.success === false) {
                     // Payment failed but was attempted - keep Complete Purchase modal open
+                    console.log('🔥 MARINE CARGO FAILED: Keeping Complete Purchase modal open');
                     this.showToast('Payment failed. Your quote has been saved. You can try again.');
                 } else {
                     // Fallback case - keep Complete Purchase modal open
+                    console.log('🔥 MARINE CARGO FALLBACK: Keeping Complete Purchase modal open. Result:', paymentResult);
                     this.showToast('Payment was not completed. You can try again.');
                 }
             });

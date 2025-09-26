@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, delay, takeUntil, tap } from 'rxjs/operators';
+import { catchError, delay, takeUntil, tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 // --- Mock M-PESA Service (for demonstration) ---
@@ -33,7 +33,7 @@ export class MpesaService {
       // Map to a success response
       // Note: In a real app, you'd poll a callback URL to confirm the transaction status.
       // This is a simplified success simulation.
-      () => of({ success: true, message: 'Payment completed successfully.' }),
+      map(() => ({ success: true, message: 'Payment completed successfully.' })),
       catchError((error) => {
         return throwError(() => new Error(error.message || 'An unknown error occurred.'));
       })
@@ -114,7 +114,8 @@ export interface PaymentResult {
           <mat-icon class="success-icon">check_circle</mat-icon>
         </div>
         <h3 class="success-title">Payment Successful!</h3>
-        <p class="success-subtitle">Your golf insurance policy has been activated and will be sent to your email shortly.</p>
+        <p class="success-subtitle">Your insurance policy has been activated and will be sent to your email shortly.</p>
+        <p class="auto-close-message">This window will close automatically...</p>
         <button mat-flat-button class="success-button" (click)="close(true)">
           <mat-icon>email</mat-icon>
           Done
@@ -306,8 +307,17 @@ export interface PaymentResult {
 
     .success-subtitle {
       color: #6b7280;
-      margin-bottom: 2rem;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
       line-height: 1.5;
+    }
+
+    .auto-close-message {
+      color: #9ca3af;
+      font-size: 0.75rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      animation: pulse 2s infinite;
     }
 
     .success-button {
@@ -585,9 +595,15 @@ export class MpesaPaymentModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          console.log('Payment response:', response);
+          console.log('🎉 PAYMENT SUCCESS - Payment response:', response);
           this.isLoading = false;
           this.paymentStatus = 'success';
+          console.log('🎉 PAYMENT SUCCESS - Setting paymentStatus to success');
+          // Auto-close modal after successful payment with a brief delay
+          setTimeout(() => {
+            console.log('🎉 PAYMENT SUCCESS - Auto-closing payment modal with success=true');
+            this.close(true);
+          }, 2000); // 2 second delay to show success message
         },
         error: (err) => {
           console.error('Payment error:', err);
@@ -605,6 +621,12 @@ export class MpesaPaymentModalComponent implements OnInit, OnDestroy {
   }
 
   close(isSuccess: boolean): void {
-    this.dialogRef.close({ success: isSuccess });
+    const result = { success: isSuccess };
+    console.log('🚀 PAYMENT MODAL CLOSE - Payment modal closing with result:', result);
+    console.log('🚀 PAYMENT MODAL CLOSE - isSuccess parameter:', isSuccess);
+    console.log('🚀 PAYMENT MODAL CLOSE - Result object success property:', result.success);
+    console.log('🚀 PAYMENT MODAL CLOSE - About to call dialogRef.close()');
+    this.dialogRef.close(result);
+    console.log('🚀 PAYMENT MODAL CLOSE - dialogRef.close() called');
   }
 }
