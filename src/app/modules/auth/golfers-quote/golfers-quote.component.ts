@@ -10,6 +10,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 // --- ASSUMED IMPORTS (Adjust paths if necessary) ---
 import { MpesaPaymentModalComponent, PaymentResult } from '../shared/payment-modal.component';
 import { AuthService } from 'app/core/auth/auth.service';
+import { TrimDirective } from '../shared/directives/trim.directive';
 
 // --- Data Structures ---
 interface CoverOption {
@@ -40,40 +41,25 @@ export function dateNotInFuture(control: AbstractControl): ValidationErrors | nu
 
 export function kraPinValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     const kraPinPattern = /^[A-Z]\d{9}[A-Z]$/i;
-    return kraPinPattern.test(trimmedValue) ? null : { invalidKraPin: true };
+    return kraPinPattern.test(control.value) ? null : { invalidKraPin: true };
 }
 
 export function phoneValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     const phonePattern = /^(01|07)\d{8}$/;
-    return phonePattern.test(trimmedValue) ? null : { invalidPhoneNumber: true };
+    return phonePattern.test(control.value) ? null : { invalidPhoneNumber: true };
 }
 
 export function nameValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
-    return trimmedValue.length >= 3 ? null : { minlength: true };
+    return control.value.length >= 3 ? null : { minlength: true };
 }
 
 @Component({
   selector: 'app-golfers-quote',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIconModule, MatSnackBarModule, CurrencyPipe, DecimalPipe],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIconModule, MatSnackBarModule, CurrencyPipe, DecimalPipe, TrimDirective],
   templateUrl: './golfers-quote.component.html',
   styleUrls: ['./golfers-quote.component.scss']
 })
@@ -134,11 +120,11 @@ export class GolfersQuoteComponent implements OnInit, OnDestroy {
     ) {
     this.golferForm = this.fb.group({
       policyHolderType: ['individual', Validators.required],
-      fullName: ['', [Validators.required, nameValidatorWithSpaces]],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
       dob: ['', [Validators.required, dateNotInFuture]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, phoneValidatorWithSpaces]],
-      kraPin: ['', [kraPinValidatorWithSpaces]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^(01|07)\d{8}$/)]],
+      kraPin: ['', [Validators.pattern(/^[A-Z]\d{9}[A-Z]$/i)]],
       golfClub: ['', Validators.required],
       intermediaryName: [''],
       intermediaryNumber: [''],

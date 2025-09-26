@@ -23,6 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { TrimDirective } from '../shared/directives/trim.directive';
 import {
     forkJoin,
     Subject,
@@ -71,61 +72,36 @@ export function maxWords(max: number): ValidatorFn {
 
 export const kraPinValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     const kraPinPattern = /^[A-Z]\d{9}[A-Z]$/i;
-    return kraPinPattern.test(trimmedValue) ? null : { invalidKraPin: true };
+    return kraPinPattern.test(control.value) ? null : { invalidKraPin: true };
 };
 
 export const kenyanPhoneNumberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
-    // Remove any internal spaces and validate
-    const cleanValue = trimmedValue.replace(/\s+/g, '');
+    // Remove any spaces and validate
+    const cleanValue = control.value.replace(/\s+/g, '');
     const phonePattern = /^(?:\+254\d{9}|0\d{9})$/;
     return phonePattern.test(cleanValue) ? null : { invalidPhoneNumber: true };
 };
 
 export const idNumberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     const idPattern = /^[0-9]{7,8}$/;
-    return idPattern.test(trimmedValue) ? null : { invalidIdNumber: true };
+    return idPattern.test(control.value) ? null : { invalidIdNumber: true };
 };
 
 export const idfNumberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     // Updated pattern: 2 digits + 5 letters + 9 digits (no spaces allowed)
     const idfPattern = /^\d{2}[A-Z]{5}\d{9}$/i;
-    return idfPattern.test(trimmedValue) ? null : { invalidIdfNumber: true };
+    return idfPattern.test(control.value.trim()) ? null : { invalidIdfNumber: true };
 };
 
 export const ucrNumberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
-    const trimmedValue = control.value.trim();
-    // Check if original value had leading/trailing spaces
-    if (control.value !== trimmedValue) {
-        return { hasLeadingTrailingSpaces: true };
-    }
     // Format: 2 digits + 3 letters (caps) + 9 digits + 1 letter (caps) + 9 digits
     const ucrPattern = /^\d{2}[A-Z]{3}\d{9}[A-Z]\d{9}$/;
-    return ucrPattern.test(trimmedValue.toUpperCase()) ? null : { invalidUcrNumber: true };
+    return ucrPattern.test(control.value.trim().toUpperCase()) ? null : { invalidUcrNumber: true };
 };
 
 export const nameValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -833,7 +809,7 @@ export class PaymentModalComponent implements OnInit {
         CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule,
         MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, DatePipe,
         ThousandsSeparatorValueAccessor, PaymentModalComponent, FuseAlertComponent,
-        MatSelectModule, NgxMatSelectSearchModule, ScrollingModule
+        MatSelectModule, NgxMatSelectSearchModule, ScrollingModule, TrimDirective
     ],
     providers: [DatePipe],
     template: `
@@ -913,7 +889,7 @@ export class PaymentModalComponent implements OnInit {
                         <div>
                             <label class="block text-sm font-medium text-gray-700">KRA PIN <span
                                 class="text-red-500">*</span></label>
-                            <input type="text" formControlName="kraPin"
+                            <input type="text" formControlName="kraPin" appTrim
                                    class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    placeholder="Format: A123456789Z"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'kraPin')}" />
@@ -923,7 +899,7 @@ export class PaymentModalComponent implements OnInit {
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">ID Number <span class="text-red-500">*</span></label>
-                            <input type="text" formControlName="idNumber"
+                            <input type="text" formControlName="idNumber" appTrim
                                    class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'idNumber')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'idNumber')"
@@ -932,7 +908,7 @@ export class PaymentModalComponent implements OnInit {
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Postal Address <span class="text-red-500">*</span></label>
-                            <input type="text" formControlName="postalAddress"
+                            <input type="text" formControlName="postalAddress" appTrim
                                    class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    placeholder="Enter your full postal address"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'postalAddress')}" />
@@ -942,7 +918,7 @@ export class PaymentModalComponent implements OnInit {
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Postal Code <span class="text-red-500">*</span></label>
-                            <input type="text" formControlName="postalCode"
+                            <input type="text" formControlName="postalCode" appTrim
                                    class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    placeholder="e.g., 00100"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'postalCode')}" />
@@ -957,7 +933,7 @@ export class PaymentModalComponent implements OnInit {
                     <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">UCR Number</label>
-                            <input type="text" formControlName="ucrNumber" placeholder="e.g. 12VNP123456789X123456789"
+                            <input type="text" formControlName="ucrNumber" appTrim placeholder="e.g. 12VNP123456789X123456789"
                                    class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'ucrNumber')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'ucrNumber')"
@@ -967,7 +943,7 @@ export class PaymentModalComponent implements OnInit {
                         <div>
                             <label class="block text-sm font-medium text-gray-700">IDF Number <span
                                 class="text-red-500">*</span></label>
-                            <input type="text" formControlName="idfNumber" placeholder="e.g. 25MBAIM004889919"
+                            <input type="text" formControlName="idfNumber" appTrim placeholder="e.g. 25MBAIM004889919"
                                    class="w-full rounded-md border bg-white px-3 py-2 focus-ring-primary"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'idfNumber')}" />
                             <div *ngIf="isFieldInvalid(kycShippingForm, 'idfNumber')"
@@ -1765,7 +1741,6 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         if (control.hasError('maxWords')) return `Maximum of ${control.errors['maxWords'].maxWords} words is allowed.`;
         if (control.hasError('invalidIdfNumber')) return 'Invalid IDF Number. Format: 25MBAIM004889919 (2 digits + 5 letters + 9 digits).';
         if (control.hasError('invalidUcrNumber')) return 'Invalid UCR Number. Format: 2 digits + 3 letters + 9 digits + 1 letter + 9 digits (e.g. 12VNP123456789X123456789).';
-        if (control.hasError('hasLeadingTrailingSpaces')) return 'Please remove spaces at the beginning or end of this field.';
         if (control.hasError('pattern')) {
             if (control === this.kycShippingForm?.get('postalAddress')) {
                 return 'Postal address can contain letters, numbers, spaces, hyphens, commas, periods, apostrophes, # and /.';
