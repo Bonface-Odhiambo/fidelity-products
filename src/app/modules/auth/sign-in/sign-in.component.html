@@ -154,12 +154,12 @@
                         <div *ngIf="loginState === 'credentials'">
                             <div class="mb-2 sm:mb-3">
                                 <label class="mb-1 block text-xs sm:text-sm font-medium text-gray-700">Email Address</label>
-                                <input type="email" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-xs sm:text-sm shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="username" placeholder="your-email@example.com"/>
+                                <input type="email" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="username" placeholder="your-email@example.com"/>
                             </div>
                             <div class="mb-2 sm:mb-3">
                                 <label class="mb-1 block text-xs sm:text-sm font-medium text-gray-700">Password</label>
                                 <div class="relative">
-                                    <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-xs sm:text-sm shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="password" placeholder="Password"/>
+                                    <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="password" placeholder="Password"/>
                                     <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600" (click)="togglePasswordVisibility()">
                                         <mat-icon class="text-sm">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                                     </button>
@@ -173,7 +173,7 @@
                         <div *ngIf="loginState === 'otp'">
                              <div class="mb-2 sm:mb-3">
                                  <label class="mb-1 block text-xs sm:text-sm font-medium text-gray-700">Enter OTP Code</label>
-                                 <input type="text" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-center text-base sm:text-lg tracking-[.3em] shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="otp" placeholder="_ _ _ _ _ _ _ _" maxlength="8"/>
+                                 <input type="text" class="w-full rounded-md border border-gray-300 px-3 py-1.5 sm:py-2 text-center text-base sm:text-lg font-bold tracking-[.3em] shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="otp" placeholder="_ _ _ _ _ _ _ _" maxlength="8"/>
                                  <div class="mt-2 flex items-center justify-between text-xs">
                                      <a (click)="backToCredentials()" class="cursor-pointer font-medium text-fidelity-primary hover:underline">Back to login</a>
                                      <a (click)="submitCredentials()" [class.pointer-events-none]="signInForm.disabled" [class.text-gray-400]="signInForm.disabled" class="cursor-pointer font-medium text-fidelity-primary hover:underline">
@@ -228,7 +228,7 @@
                             <div class="grid grid-cols-1 gap-x-2 sm:gap-x-3 sm:grid-cols-2">
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">Full Name</label>
-                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched" formControlName="fullName" placeholder="First Name Last Name"/>
+                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched" formControlName="fullName" placeholder="First Name Last Name"/>
                                     <div *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched" class="mt-0.5 text-xs text-red-500">
                                         <span *ngIf="registerForm.get('fullName')?.errors?.['required']">Full name is required</span>
                                         <span *ngIf="registerForm.get('fullName')?.errors?.['fullNameInvalid']">Enter at least two names</span>
@@ -236,7 +236,7 @@
                                 </div>
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">Email Address</label>
-                                    <input type="email" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" formControlName="email" placeholder="your-email@example.com"/>
+                                    <input type="email" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" formControlName="email" placeholder="your-email@example.com"/>
                                     <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="mt-0.5 text-xs text-red-500">
                                         <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
                                         <span *ngIf="registerForm.get('email')?.errors?.['email']">Enter a valid email</span>
@@ -244,7 +244,7 @@
                                 </div>
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">KRA PIN</label>
-                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('kraPin')?.invalid && registerForm.get('kraPin')?.touched" formControlName="kraPin" placeholder="A123456789M" (input)="onKraPinChange($event)" maxlength="11"/>
+                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('kraPin')?.invalid && registerForm.get('kraPin')?.touched" formControlName="kraPin" placeholder="A123456789M" (input)="onKraPinChange($event)" maxlength="11"/>
                                     <div *ngIf="registerForm.get('kraPin')?.invalid && registerForm.get('kraPin')?.touched" class="mt-0.5 text-xs text-red-500">
                                         <span *ngIf="registerForm.get('kraPin')?.errors?.['required']">KRA PIN is required</span>
                                         <span *ngIf="registerForm.get('kraPin')?.errors?.['kraPinInvalid']">Format: A123456789M</span>
@@ -252,7 +252,7 @@
                                 </div>
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">Phone Number</label>
-                                    <input type="tel" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched" formControlName="phoneNumber" placeholder="+254712345678" (input)="onPhoneNumberChange($event)" maxlength="13"/>
+                                    <input type="tel" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched" formControlName="phoneNumber" placeholder="+254712345678" (input)="onPhoneNumberChange($event)" maxlength="13"/>
                                     <div *ngIf="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched" class="mt-0.5 text-xs text-red-500">
                                         <span *ngIf="registerForm.get('phoneNumber')?.errors?.['required']">Phone is required</span>
                                         <span *ngIf="registerForm.get('phoneNumber')?.errors?.['phoneNumberInvalid']">Use +254 format</span>
@@ -264,18 +264,18 @@
                            <div class="grid grid-cols-1 gap-x-2 sm:gap-x-3 sm:grid-cols-2">
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">Intermediary - IRA Number</label>
-                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="iraNumber" placeholder="IRA Number"/>
+                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="iraNumber" placeholder="IRA Number"/>
                                 </div>
                                 <div class="mb-2">
                                     <label class="mb-1 block text-xs font-medium text-gray-700">PIN Number</label>
-                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="pinNumber" placeholder="PIN Number"/>
+                                    <input type="text" class="w-full rounded-md border px-2 py-1.5 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" formControlName="pinNumber" placeholder="PIN Number"/>
                                 </div>
                            </div>
                         </div>
                         <div class="mb-2">
                             <label class="mb-1 block text-xs font-medium text-gray-700">Password</label>
                             <div class="relative">
-                                <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border px-2 py-1.5 pr-6 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="password?.invalid && password?.touched" formControlName="password" placeholder="Create a strong password" required/>
+                                <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border px-2 py-1.5 pr-6 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="password?.invalid && password?.touched" formControlName="password" placeholder="Create a strong password" required/>
                                 <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-2 text-gray-400 hover:text-gray-600" (click)="togglePasswordVisibility()">
                                     <mat-icon class="text-xs">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                                 </button>
@@ -308,7 +308,7 @@
                         <div class="mb-2">
                             <label class="mb-1 block text-xs font-medium text-gray-700">Confirm Password</label>
                             <div class="relative">
-                                <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border px-2 py-1.5 pr-6 text-xs shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched" formControlName="confirmPassword" placeholder="Confirm your password" required/>
+                                <input [type]="showPassword ? 'text' : 'password'" class="w-full rounded-md border px-2 py-1.5 pr-6 text-xs font-bold shadow-sm focus:border-fidelity-primary focus:ring-fidelity-primary" [class.border-red-300]="registerForm.errors?.['passwordMismatch'] && confirmPassword?.touched" formControlName="confirmPassword" placeholder="Confirm your password" required/>
                                 <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-2 text-gray-400 hover:text-gray-600" (click)="togglePasswordVisibility()">
                                     <mat-icon class="text-xs">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                                 </button>

@@ -55,7 +55,7 @@
                                 <div class="grid grid-cols-1 gap-x-6 gap-y-4">
                                     <div>
                                         <label class="mb-2 block text-sm font-medium text-gray-700">Cover Period<span class="text-red-500">*</span></label>
-                                        <select formControlName="duration" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2">
+                                        <select formControlName="duration" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold">
                                             <option value="" disabled>Select duration</option>
                                             <option *ngFor="let d of standardDurations" [value]="d.value">{{ d.label }}</option>
                                         </select>
@@ -112,7 +112,7 @@
                             <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                                <div>
                                    <label class="mb-2 block text-sm font-medium text-gray-700">Email Address<span class="text-red-500">*</span></label>
-                                   <input type="email" formControlName="email" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2" />
+                                   <input type="email" formControlName="email" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold" />
                                     <div *ngIf="tdf.email.invalid && (tdf.email.dirty || tdf.email.touched)" class="mt-1 text-xs text-red-500">
                                        <div *ngIf="tdf.email.errors?.['required']">Email address is required.</div>
                                        <div *ngIf="tdf.email.errors?.['email']">Please enter a valid email address.</div>
@@ -120,7 +120,7 @@
                                </div>
                                <div>
                                    <label class="mb-2 block text-sm font-medium text-gray-700">Phone Number<span class="text-red-500">*</span></label>
-                                   <input type="tel" formControlName="phoneNumber" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2" placeholder="+254712345678" />
+                                   <input type="tel" formControlName="phoneNumber" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold" placeholder="+254712345678" />
                                     <div *ngIf="tdf.phoneNumber.invalid && (tdf.phoneNumber.dirty || tdf.phoneNumber.touched)" class="mt-1 text-xs text-red-500">
                                        <div *ngIf="tdf.phoneNumber.errors?.['required']">Phone number is required.</div>
                                        <div *ngIf="tdf.phoneNumber.errors?.['pattern']">Must be in the format +2547... or +2541...</div>
@@ -128,7 +128,7 @@
                                </div>
                                <div>
                                    <label class="mb-2 block text-sm font-medium text-gray-700">Number of Travelers<span class="text-red-500">*</span></label>
-                                   <input type="number" formControlName="numTravelers" min="1" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2" />
+                                   <input type="number" formControlName="numTravelers" min="1" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold" />
                                    <div *ngIf="tdf.numTravelers.invalid && (tdf.numTravelers.dirty || tdf.numTravelers.touched)" class="mt-1 text-xs text-red-500">
                                        <div *ngIf="tdf.numTravelers.errors?.['required']">Number of travelers is required.</div>
                                        <div *ngIf="tdf.numTravelers.errors?.['min']">At least one traveler is required.</div>
@@ -151,7 +151,7 @@
                                     <div class="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
                                         <div>
                                             <label class="mb-2 block text-sm font-medium text-gray-700">Full Name<span class="text-red-500">*</span></label>
-                                            <input type="text" formControlName="fullName" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2" />
+                                            <input type="text" formControlName="fullName" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold" />
                                             <div *ngIf="travelerGroup.get('fullName')?.invalid && (travelerGroup.get('fullName')?.dirty || travelerGroup.get('fullName')?.touched)" class="mt-1 text-xs text-red-500">
                                                 <div *ngIf="travelerGroup.get('fullName')?.errors?.['required']">Full name is required.</div>
                                                 <div *ngIf="travelerGroup.get('fullName')?.errors?.['invalidName']">Please enter at least two names (e.g., John Doe).</div>
@@ -159,7 +159,7 @@
                                         </div>
                                         <div>
                                             <label class="mb-2 block text-sm font-medium text-gray-700">Date of Birth<span class="text-red-500">*</span></label>
-                                            <input type="date" formControlName="dob" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2" />
+                                            <input type="date" formControlName="dob" class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 font-bold" />
                                             <div *ngIf="travelerGroup.get('dob')?.invalid && (travelerGroup.get('dob')?.dirty || travelerGroup.get('dob')?.touched)" class="mt-1 text-xs text-red-500">
                                                 <div *ngIf="travelerGroup.get('dob')?.errors?.['required']">Date of birth is required.</div>
                                                 <div *ngIf="travelerGroup.get('dob')?.errors?.['futureDate']">Date of birth cannot be in the future.</div>

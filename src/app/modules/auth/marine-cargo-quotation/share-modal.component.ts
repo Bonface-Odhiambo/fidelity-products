@@ -58,14 +58,47 @@ export interface ShareModalData {
                             </svg>
                             <span>Outlook</span>
                         </button>
+
+                        <!-- Yahoo Button -->
+                        <button (click)="shareViaYahoo()" class="share-button yahoo" matTooltip="Share via Yahoo Mail">
+                            <svg class="share-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.5 2.5c5.5 0 10 4.5 10 10s-4.5 10-10 10-10-4.5-10-10 4.5-10 10-10zm0 1.5c-4.7 0-8.5 3.8-8.5 8.5s3.8 8.5 8.5 8.5 8.5-3.8 8.5-8.5-3.8-8.5-8.5-8.5zm-1.8 3.2l2.4 4.2 2.4-4.2h2.1l-3.5 5.8v3.5h-1.8v-3.5l-3.5-5.8h1.9z"/>
+                            </svg>
+                            <span>Yahoo</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Preview Section -->
                 <div class="preview-section">
-                    <h3 class="section-title">Preview</h3>
-                    <div class="quote-preview">
-                        <pre>{{ getPreviewText() }}</pre>
+                    <h3 class="section-title">Premium Summary</h3>
+                    <div class="premium-summary-card">
+                        <div class="premium-header">
+                            <mat-icon class="premium-icon">receipt_long</mat-icon>
+                            <span class="premium-title">Your Quote Summary</span>
+                        </div>
+                        <div class="premium-details">
+                            <div class="premium-row">
+                                <span class="premium-label">Base Premium:</span>
+                                <span class="premium-value">{{ extractBasePremium() }}</span>
+                            </div>
+                            <div class="premium-row">
+                                <span class="premium-label">PHCF (0.25%):</span>
+                                <span class="premium-value">{{ extractPHCF() }}</span>
+                            </div>
+                            <div class="premium-row">
+                                <span class="premium-label">Training Levy (0.25%):</span>
+                                <span class="premium-value">{{ extractTrainingLevy() }}</span>
+                            </div>
+                            <div class="premium-row">
+                                <span class="premium-label">Stamp Duty:</span>
+                                <span class="premium-value">{{ extractStampDuty() }}</span>
+                            </div>
+                        </div>
+                        <div class="total-payable">
+                            <span class="total-label">Total Payable</span>
+                            <span class="total-amount">{{ extractTotalPayable() }}</span>
+                        </div>
                     </div>
                 </div>
             </mat-dialog-content>
@@ -143,8 +176,8 @@ export interface ShareModalData {
 
         .share-buttons-grid {
             display: grid;
-            /* Updated to fit 3 items gracefully */
-            grid-template-columns: repeat(3, 1fr);
+            /* Updated to fit 4 items gracefully */
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
@@ -175,7 +208,7 @@ export interface ShareModalData {
             color: #25d366;
         }
 
-        /* NEW STYLES for Gmail and Outlook */
+        /* NEW STYLES for Gmail, Outlook, and Yahoo */
         .share-button.gmail:hover {
             border-color: #EA4335;
             background-color: #fef2f2;
@@ -188,6 +221,12 @@ export interface ShareModalData {
             color: #0078D4;
         }
 
+        .share-button.yahoo:hover {
+            border-color: #6001D2;
+            background-color: #faf5ff;
+            color: #6001D2;
+        }
+
         .share-icon {
             width: 28px;
             height: 28px;
@@ -198,29 +237,83 @@ export interface ShareModalData {
             margin-top: 24px;
         }
 
-        .quote-preview {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-            max-height: 150px;
-            overflow-y: auto;
+        .premium-summary-card {
+            background: linear-gradient(135deg, #B7DC78 0%, #9BC53D 100%);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(183, 220, 120, 0.4);
         }
 
-        .quote-preview pre {
-            margin: 0;
-            font-size: 12px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: #374151;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        .premium-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .premium-icon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .premium-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .premium-details {
+            margin-bottom: 16px;
+        }
+
+        .premium-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .premium-label {
+            opacity: 0.9;
+        }
+
+        .premium-value {
+            font-weight: 600;
+        }
+
+        .total-payable {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            margin-top: 8px;
+        }
+
+        .total-label {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .total-amount {
+            font-size: 20px;
+            font-weight: 700;
         }
 
         @media (max-width: 480px) {
             .share-buttons-grid {
                 /* Stack them on small screens */
                 grid-template-columns: 1fr;
+            }
+            
+            .premium-summary-card {
+                padding: 16px;
+            }
+            
+            .total-amount {
+                font-size: 18px;
             }
         }
     `]
@@ -237,7 +330,7 @@ export class ShareModalComponent {
     }
 
     shareViaWhatsApp(): void {
-        // Ensure the full text is shared on WhatsApp
+        // Share the full quote text without the site URL
         const text = encodeURIComponent(this.data.quoteText);
         const whatsappUrl = `https://wa.me/?text=${text}`;
         window.open(whatsappUrl, '_blank');
@@ -246,9 +339,8 @@ export class ShareModalComponent {
 
     shareViaGmail(): void {
         const subject = encodeURIComponent('Marine Cargo Insurance Quote - Fidelity');
-        // Add a line break and the shareable link for context
-        const bodyText = `${this.data.quoteText}\n\nView this quote online: ${this.data.shareLink}`;
-        const body = encodeURIComponent(bodyText);
+        // Share the full quote text without the site URL
+        const body = encodeURIComponent(this.data.quoteText);
 
         // This URL structure opens a new compose window in Gmail
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`;
@@ -258,9 +350,8 @@ export class ShareModalComponent {
 
     shareViaOutlook(): void {
         const subject = encodeURIComponent('Marine Cargo Insurance Quote - Fidelity');
-        // The body for Outlook needs URL-encoded line breaks (%0D%0A)
-        const bodyText = `${this.data.quoteText}\n\nView this quote online: ${this.data.shareLink}`;
-        const body = encodeURIComponent(bodyText).replace(/%0A/g, '%0D%0A');
+        // Share the full quote text without the site URL
+        const body = encodeURIComponent(this.data.quoteText).replace(/%0A/g, '%0D%0A');
 
         // This URL structure opens a new compose window in Outlook
         const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?subject=${subject}&body=${body}`;
@@ -268,9 +359,70 @@ export class ShareModalComponent {
         this.closeDialog();
     }
 
+    shareViaYahoo(): void {
+        const subject = encodeURIComponent('Marine Cargo Insurance Quote - Fidelity');
+        // Share the full quote text without the site URL
+        const body = encodeURIComponent(this.data.quoteText);
+
+        // This URL structure opens a new compose window in Yahoo Mail
+        const yahooUrl = `https://compose.mail.yahoo.com/?subject=${subject}&body=${body}`;
+        window.open(yahooUrl, '_blank');
+        this.closeDialog();
+    }
+
     getPreviewText(): string {
         const lines = this.data.quoteText.split('\n');
         // Show a slightly shorter preview
         return lines.slice(0, 8).join('\n') + (lines.length > 8 ? '\n...' : '');
+    }
+
+    extractBasePremium(): string {
+        const lines = this.data.quoteText.split('\n');
+        const premiumLine = lines.find(line => line.includes('Base Premium') || line.includes('Premium:'));
+        if (premiumLine) {
+            const match = premiumLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
+            return match ? `KES ${match[1]}` : 'KES 0.00';
+        }
+        return 'KES 0.00';
+    }
+
+    extractPHCF(): string {
+        const lines = this.data.quoteText.split('\n');
+        const phcfLine = lines.find(line => line.includes('PHCF'));
+        if (phcfLine) {
+            const match = phcfLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
+            return match ? `KES ${match[1]}` : 'KES 0.00';
+        }
+        return 'KES 0.00';
+    }
+
+    extractTrainingLevy(): string {
+        const lines = this.data.quoteText.split('\n');
+        const tlLine = lines.find(line => line.includes('Training Levy') || line.includes('TL'));
+        if (tlLine) {
+            const match = tlLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
+            return match ? `KES ${match[1]}` : 'KES 0.00';
+        }
+        return 'KES 0.00';
+    }
+
+    extractStampDuty(): string {
+        const lines = this.data.quoteText.split('\n');
+        const sdLine = lines.find(line => line.includes('Stamp Duty') || line.includes('SD'));
+        if (sdLine) {
+            const match = sdLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
+            return match ? `KES ${match[1]}` : 'KES 0.00';
+        }
+        return 'KES 0.00';
+    }
+
+    extractTotalPayable(): string {
+        const lines = this.data.quoteText.split('\n');
+        const totalLine = lines.find(line => line.includes('Total Payable') || line.includes('Total Premium') || line.includes('Net Premium'));
+        if (totalLine) {
+            const match = totalLine.match(/KES\s*([\d,]+(?:\.\d{2})?)/i);
+            return match ? `KES ${match[1]}` : 'KES 0.00';
+        }
+        return 'KES 0.00';
     }
 }

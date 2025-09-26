@@ -156,7 +156,7 @@ export interface PaymentResult {
               <div class="input-container">
                 <mat-icon class="input-icon">phone</mat-icon>
                 <input 
-                  class="payment-input" 
+                  class="payment-input font-bold" 
                   formControlName="phoneNumber" 
                   placeholder="0706242439" 
                   type="tel"
