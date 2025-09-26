@@ -1425,8 +1425,8 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         return this.fb.group({
             kraPin: ['', [Validators.required, kraPinValidator]],
             idNumber: ['', [Validators.required, idNumberValidator]],
-            postalAddress: ['', [Validators.required, Validators.minLength(10)]],
-            postalCode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
+            postalAddress: ['', [Validators.required, Validators.minLength(1), Validators.pattern(/^[a-zA-Z0-9\s\-,.'#\/]+$/)]],
+            postalCode: ['', [Validators.required, Validators.pattern(/^\d{5}$/), Validators.minLength(5), Validators.maxLength(5)]],
             kycDocuments: this.fb.group({
                 kraPinUpload: [null, [Validators.required, enhancedFileTypeValidator(allowedFileTypes, maxFileSize)]],
                 nationalIdUpload: [null, [Validators.required, enhancedFileTypeValidator(allowedFileTypes, maxFileSize)]],
@@ -1737,6 +1737,14 @@ export class KycShippingPaymentModalComponent implements OnInit, OnDestroy {
         if (control.hasError('maxWords')) return `Maximum of ${control.errors['maxWords'].maxWords} words is allowed.`;
         if (control.hasError('invalidIdfNumber')) return 'Invalid IDF Number. Format: 25MBAIM004889919 (2 digits + 5 letters + 9 digits).';
         if (control.hasError('invalidUcrNumber')) return 'Invalid UCR Number. Format: 2 digits + 3 letters + 9 digits + 1 letter + 9 digits (e.g. 12VNP123456789X123456789).';
+        if (control.hasError('pattern')) {
+            if (control === this.kycShippingForm?.get('postalAddress')) {
+                return 'Postal address can contain letters, numbers, spaces, hyphens, commas, periods, apostrophes, # and /.';
+            }
+            if (control === this.kycShippingForm?.get('postalCode')) {
+                return 'Postal code must be exactly 5 digits (e.g., 00200).';
+            }
+        }
         return 'This field has an error.';
     }
 
