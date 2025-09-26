@@ -27,7 +27,7 @@ export interface PendingQuote {
     quoteDate: string;
 }
 
-// Custom validator function
+// Custom validator functions
 export function dateNotInFuture(control: AbstractControl): ValidationErrors | null {
     const selectedDate = new Date(control.value);
     const today = new Date();
@@ -36,6 +36,38 @@ export function dateNotInFuture(control: AbstractControl): ValidationErrors | nu
         return { futureDate: true };
     }
     return null;
+}
+
+export function kraPinValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const trimmedValue = control.value.trim();
+    // Check if original value had leading/trailing spaces
+    if (control.value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    const kraPinPattern = /^[A-Z]\d{9}[A-Z]$/i;
+    return kraPinPattern.test(trimmedValue) ? null : { invalidKraPin: true };
+}
+
+export function phoneValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const trimmedValue = control.value.trim();
+    // Check if original value had leading/trailing spaces
+    if (control.value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    const phonePattern = /^(01|07)\d{8}$/;
+    return phonePattern.test(trimmedValue) ? null : { invalidPhoneNumber: true };
+}
+
+export function nameValidatorWithSpaces(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const trimmedValue = control.value.trim();
+    // Check if original value had leading/trailing spaces
+    if (control.value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    return trimmedValue.length >= 3 ? null : { minlength: true };
 }
 
 @Component({
@@ -102,11 +134,11 @@ export class GolfersQuoteComponent implements OnInit, OnDestroy {
     ) {
     this.golferForm = this.fb.group({
       policyHolderType: ['individual', Validators.required],
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      fullName: ['', [Validators.required, nameValidatorWithSpaces]],
       dob: ['', [Validators.required, dateNotInFuture]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^(01|07)\d{8}$/)]],
-      kraPin: ['', [Validators.pattern(/^[A-Z]\d{9}[A-Z]$/i)]],
+      phoneNumber: ['', [Validators.required, phoneValidatorWithSpaces]],
+      kraPin: ['', [kraPinValidatorWithSpaces]],
       golfClub: ['', Validators.required],
       intermediaryName: [''],
       intermediaryNumber: [''],

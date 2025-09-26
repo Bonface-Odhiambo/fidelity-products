@@ -14,7 +14,12 @@ import { TravelQuoteService } from './travel-quote.service';
 export function fullNameValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value as string;
     if (!value) return null;
-    const names = value.trim().split(/\s+/);
+    const trimmedValue = value.trim();
+    // Check if original value had leading/trailing spaces
+    if (value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    const names = trimmedValue.split(/\s+/);
     return names.length >= 2 ? null : { invalidName: true };
 }
 
@@ -32,6 +37,26 @@ export function dobValidator(control: AbstractControl): ValidationErrors | null 
     if (dob.getFullYear() < minValidYear) return { tooOld: true };
 
     return null;
+}
+
+export function emailValidatorTravel(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const trimmedValue = control.value.trim();
+    if (control.value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(trimmedValue) ? null : { email: true };
+}
+
+export function phoneValidatorTravel(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const trimmedValue = control.value.trim();
+    if (control.value !== trimmedValue) {
+        return { hasLeadingTrailingSpaces: true };
+    }
+    const phonePattern = /^\+254[17]\d{8}$/;
+    return phonePattern.test(trimmedValue) ? null : { invalidPhoneNumber: true };
 }
 
 /**
@@ -103,8 +128,8 @@ export class TravelQuoteComponent implements OnInit, OnDestroy {
     });
 
     this.travelerDetailsForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\+254[17]\d{8}$/)]],
+      email: ['', [Validators.required, emailValidatorTravel]],
+      phoneNumber: ['', [Validators.required, phoneValidatorTravel]],
       numTravelers: [1, [Validators.required, Validators.min(1)]],
       winterSports: [false],
       // UPDATED: Added duplicateTravelerValidator to the FormArray

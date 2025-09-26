@@ -1,6 +1,6 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,6 +13,26 @@ import { MpesaPaymentModalComponent, PaymentResult } from '../shared/payment-mod
 import { QuoteSummaryModalComponent } from './quote-summary-modal.component';
 import { ShareQuoteModalComponent } from './share-quote-modal.component';
 import { AuthService } from 'app/core/auth/auth.service';
+
+// Custom validators for personal accident
+function noLeadingTrailingSpacesValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const trimmedValue = control.value.trim();
+  if (control.value !== trimmedValue) {
+    return { hasLeadingTrailingSpaces: true };
+  }
+  return null;
+}
+
+function phoneValidatorPA(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const trimmedValue = control.value.trim();
+  if (control.value !== trimmedValue) {
+    return { hasLeadingTrailingSpaces: true };
+  }
+  const phonePattern = /^\+?\d{7,15}$/;
+  return phonePattern.test(trimmedValue) ? null : { invalidPhoneNumber: true };
+}
 
 @Component({
   selector: 'personal-accident-quote',
@@ -128,19 +148,19 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
   ngOnInit(): void {
     this.personalAccidentForm = this._formBuilder.group({
       personalDetails: this._formBuilder.group({
-        surname: ['', Validators.required],
-        firstName: ['', Validators.required],
-        middleName: [''],
-        address: ['', Validators.required],
-        postalCode: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        mobileNumber: ['', [Validators.required, Validators.pattern(/^\+?\d{7,15}$/)]],
+        surname: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        firstName: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        middleName: ['', [noLeadingTrailingSpacesValidator]],
+        address: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        postalCode: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        email: ['', [Validators.required, Validators.email, noLeadingTrailingSpacesValidator]],
+        mobileNumber: ['', [Validators.required, phoneValidatorPA]],
         ageLastBirthday: ['', [Validators.required, Validators.min(18), Validators.max(70)]],
-        passportIdNo: ['', Validators.required],
+        passportIdNo: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
       }),
       beneficiaryDetails: this._formBuilder.group({
-        beneficiaryName: ['', Validators.required],
-        beneficiaryRelationship: ['', Validators.required],
+        beneficiaryName: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        beneficiaryRelationship: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
       }),
       periodOfInsurance: this._formBuilder.group({
         fromDate: ['', Validators.required],
