@@ -264,14 +264,14 @@ if (!originalQuoteServiceProto.updateQuoteWithKycAndShipping) {
             <mat-dialog-content class="modal-content">
                 <div class="content-text">
                     <h3>Terms of Use and Data Privacy Policy</h3>
-                    <p>Geminia Insurance Company Limited is committed to protecting the fundamental human right to
+                    <p>Fidelity Insurance Company Limited is committed to protecting the fundamental human right to
                         privacy of those with whom we interact. We recognize the need to safeguard personal data that is
                         collected or disclosed to us as part of the Know-your-customer information required by us in
                         order to provide you with the requisite financial product or service.</p>
                     <p>We are committed to complying with the requirements of the Data Protection Act and the attendant
                         regulations as well as best global best practices regarding the processing of your personal
                         data. In this regard, you are required to acquaint yourselves with our data privacy statement
-                        (<a href="https://geminia.co.ke/data-privacy-statement/" target="_blank" class="policy-link">https://geminia.co.ke/data-privacy-statement/</a>)
+                        (<a href="https://fidelity.co.ke/data-privacy-statement/" target="_blank" class="policy-link">https://fidelity.co.ke/data-privacy-statement/</a>)
                         which is intended to tell you how we use your personal data and describes how we collect and
                         process your personal data during and after your relationship with us.</p>
                 </div>
@@ -2635,7 +2635,7 @@ export class MarineCargoQuotationComponent implements OnInit, OnDestroy, AfterVi
         const formValue = this.quotationForm.value;
         const currency = this.premiumCalculation.currency;
 
-        return ` Marine Cargo Insurance Quote - Geminia Insurance
+        return ` Marine Cargo Insurance Quote - Fidelity Insurance
 
 : ${formValue.firstName} ${formValue.lastName}
 : ${formValue.email}
