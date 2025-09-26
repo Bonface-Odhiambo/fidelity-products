@@ -917,7 +917,7 @@ export class PaymentModalComponent implements OnInit {
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Postal Code <span class="text-red-500">*</span></label>
-                            <input type="number" formControlName="postalCode"
+                            <input type="text" formControlName="postalCode"
                                    class="w-full rounded-md border bg-white px-3 py-2 font-bold focus-ring-primary"
                                    placeholder="e.g., 00100"
                                    [ngClass]="{'border-red-500': isFieldInvalid(kycShippingForm, 'postalCode')}" />
