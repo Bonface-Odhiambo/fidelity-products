@@ -240,6 +240,13 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
     this.personalAccidentForm.get('ageRange')?.valueChanges
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => this.calculatePremium());
+
+    // Subscribe to form changes to update button states in real-time
+    this.personalAccidentForm.valueChanges
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        this._cd.markForCheck(); // Trigger change detection for button state updates
+      });
   }
 
   ngOnDestroy(): void {
@@ -502,6 +509,15 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
     const coverOption = this.personalAccidentForm.get('coverOption')?.value;
     const ageRange = this.personalAccidentForm.get('ageRange')?.value;
     return !!coverOption && !!ageRange;
+  }
+
+  // Getters for reactive button states
+  get isStep1FormValid(): boolean {
+    return this.isStep1Valid();
+  }
+
+  get isStep2FormValid(): boolean {
+    return this.isStep2Valid();
   }
   
   isStep2Valid(): boolean {

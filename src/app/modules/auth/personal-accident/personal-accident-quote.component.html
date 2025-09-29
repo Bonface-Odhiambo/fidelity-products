@@ -141,7 +141,7 @@
           
           <!-- Step Navigation -->
           <div class="step-navigation">
-            <button type="button" (click)="nextStep()" [disabled]="!isStep1Valid()" class="btn-primary">
+            <button type="button" (click)="nextStep()" [disabled]="!isStep1FormValid" class="btn-primary">
               Continue to Personal Information
               <mat-icon>arrow_forward</mat-icon>
             </button>
@@ -419,57 +419,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Coverage Plans Section -->
-          <div class="coverage-plans-section">
-            <h3 class="section-title-main">
-              <mat-icon>shield</mat-icon>
-              Select Your Coverage Plan
-            </h3>
-            
-            <div class="coverage-grid-improved">
-              <div *ngFor="let plan of coverOptions" 
-                   class="coverage-card-improved" 
-                   [class.selected]="personalAccidentForm.get('coverOption')?.value === plan.id"
-                   (click)="selectCoverageOption(plan.id)">
-                
-                <!-- Card Header -->
-                <div class="coverage-header-improved">
-                  <div class="option-badge">Option {{ plan.id }}</div>
-                  <div class="coverage-price-improved">
-                    <span class="price-amount">KES {{ getSelectedPremium(plan) | number:'1.0-0' }}</span>
-                    <span class="price-period">per year</span>
-                  </div>
-                </div>
-                
-                <!-- Benefits Grid -->
-                <div class="coverage-benefits-grid">
-                  <div *ngFor="let benefit of benefits" class="benefit-item">
-                    <div class="benefit-label">{{ benefit.name }}</div>
-                    <div class="benefit-value" *ngIf="plan[benefit.key] > 0">
-                      KES {{ plan[benefit.key] | number:'1.0-0' }}
-                    </div>
-                    <div class="benefit-value not-covered" *ngIf="plan[benefit.key] === 0">
-                      Not Covered
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Selection Radio -->
-                <div class="coverage-select-improved">
-                  <mat-radio-button [value]="plan.id" formControlName="coverOption" class="coverage-radio">
-                    <span class="select-text">Select Option {{ plan.id }}</span>
-                  </mat-radio-button>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Validation message for coverage selection -->
-            <div *ngIf="personalAccidentForm.get('coverOption')?.touched && personalAccidentForm.get('coverOption')?.invalid" class="error-message-modern coverage-error">
-              <mat-icon class="error-icon">error</mat-icon>
-              <span *ngIf="personalAccidentForm.get('coverOption')?.errors?.['required']">Please select a coverage plan to continue</span>
-            </div>
-          </div>
           
           <!-- Step Navigation -->
           <div class="step-navigation">
@@ -477,7 +426,7 @@
               <mat-icon>arrow_back</mat-icon>
               Back to Coverage
             </button>
-            <button type="button" (click)="nextStep()" [disabled]="!isStep2Valid()" class="btn-primary">
+            <button type="button" (click)="nextStep()" [disabled]="!isStep2FormValid" class="btn-primary">
               Review & Continue
               <mat-icon>arrow_forward</mat-icon>
             </button>
