@@ -30,8 +30,57 @@ function phoneValidatorPA(control: AbstractControl): ValidationErrors | null {
   if (control.value !== trimmedValue) {
     return { hasLeadingTrailingSpaces: true };
   }
-  const phonePattern = /^\+?\d{7,15}$/;
+  // More comprehensive phone validation for Kenyan numbers
+  const phonePattern = /^(\+254|254|0)?[17]\d{8}$/;
   return phonePattern.test(trimmedValue) ? null : { invalidPhoneNumber: true };
+}
+
+// Additional validator for date range
+function dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const selectedDate = new Date(control.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+  const maxDate = new Date();
+  maxDate.setFullYear(today.getFullYear() + 1);
+  
+  if (selectedDate < today) {
+    return { pastDate: true };
+  }
+  if (selectedDate > maxDate) {
+    return { futureDate: true };
+  }
+  return null;
+}
+
+// Specific validator for start date
+function startDateValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const selectedDate = new Date(control.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+  
+  if (selectedDate < today) {
+    return { startDateInPast: true };
+  }
+  return null;
+}
+
+// Validator for ID/Passport number
+function idPassportValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  const trimmedValue = control.value.trim();
+  if (control.value !== trimmedValue) {
+    return { hasLeadingTrailingSpaces: true };
+  }
+  // Basic validation for Kenyan ID (8 digits) or passport format
+  const idPattern = /^\d{8}$/; // Kenyan ID
+  const passportPattern = /^[A-Z]\d{7}$/; // Basic passport format
+  
+  if (!idPattern.test(trimmedValue) && !passportPattern.test(trimmedValue)) {
+    return { invalidIdPassport: true };
+  }
+  return null;
 }
 
 @Component({
@@ -156,15 +205,15 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
         email: ['', [Validators.required, Validators.email, noLeadingTrailingSpacesValidator]],
         mobileNumber: ['', [Validators.required, phoneValidatorPA]],
         ageLastBirthday: ['', [Validators.required, Validators.min(18), Validators.max(70)]],
-        passportIdNo: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
+        passportIdNo: ['', [Validators.required, idPassportValidator]],
       }),
       beneficiaryDetails: this._formBuilder.group({
         beneficiaryName: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
         beneficiaryRelationship: ['', [Validators.required, noLeadingTrailingSpacesValidator]],
       }),
       periodOfInsurance: this._formBuilder.group({
-        fromDate: ['', Validators.required],
-        toDate: ['', Validators.required],
+        fromDate: ['', [Validators.required, startDateValidator]],
+        toDate: ['', [Validators.required, dateRangeValidator]],
       }),
       occupationClass: ['', Validators.required],
       hazardousActivities: ['', Validators.required],
@@ -393,8 +442,23 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
 
   // Step navigation methods
   nextStep(): void {
+    if (this.currentStep === 1 && !this.isStep1Valid()) {
+      this.markStep1AsTouched();
+      const missingFields = this.getMissingStep1Fields();
+      this.triggerAlert('error', `Please complete the following: ${missingFields.join(', ')}`, 'inline');
+      return;
+    }
+    
+    if (this.currentStep === 2 && !this.isStep2Valid()) {
+      this.markStep2AsTouched();
+      const missingFields = this.getMissingStep2Fields();
+      this.triggerAlert('error', `Please complete the following: ${missingFields.join(', ')}`, 'inline');
+      return;
+    }
+    
     if (this.currentStep < 3) {
       this.currentStep++;
+      this.showAlert = false; // Clear any existing alerts
       this._cd.markForCheck();
     }
   }
@@ -431,6 +495,194 @@ export class PersonalAccidentQuoteComponent implements OnInit, OnDestroy { // <-
   getSelectedCoverOption(): any {
     const selectedId = this.personalAccidentForm.get('coverOption')?.value;
     return this.coverOptions.find(option => option.id === selectedId);
+  }
+
+  // Step validation methods
+  isStep1Valid(): boolean {
+    const coverOption = this.personalAccidentForm.get('coverOption')?.value;
+    const ageRange = this.personalAccidentForm.get('ageRange')?.value;
+    return !!coverOption && !!ageRange;
+  }
+  
+  isStep2Valid(): boolean {
+    const personalDetails = this.personalAccidentForm.get('personalDetails');
+    const beneficiaryDetails = this.personalAccidentForm.get('beneficiaryDetails');
+    const periodOfInsurance = this.personalAccidentForm.get('periodOfInsurance');
+    const occupationClass = this.personalAccidentForm.get('occupationClass');
+    const hazardousActivities = this.personalAccidentForm.get('hazardousActivities');
+    const sustainedInjury = this.personalAccidentForm.get('sustainedInjury');
+    const insurerDeclined = this.personalAccidentForm.get('insurerDeclined');
+    const freeFromIllness = this.personalAccidentForm.get('freeFromIllness');
+    const engagedInExcludedActivities = this.personalAccidentForm.get('engagedInExcludedActivities');
+    
+    // Check if all required fields are valid
+    const isPersonalDetailsValid = personalDetails?.valid;
+    const isBeneficiaryDetailsValid = beneficiaryDetails?.valid;
+    const isPeriodValid = periodOfInsurance?.valid;
+    const isOccupationValid = occupationClass?.valid;
+    const isHazardousActivitiesValid = hazardousActivities?.value !== null && hazardousActivities?.value !== '';
+    const isSustainedInjuryValid = sustainedInjury?.value !== null && sustainedInjury?.value !== '';
+    const isInsurerDeclinedValid = insurerDeclined?.value !== null && insurerDeclined?.value !== '';
+    const isFreeFromIllnessValid = freeFromIllness?.value !== null && freeFromIllness?.value !== '';
+    const isEngagedActivitiesValid = engagedInExcludedActivities?.value !== null && engagedInExcludedActivities?.value !== '';
+    
+    // Check conditional validations
+    const injuryDetailsValid = sustainedInjury?.value === true ? 
+      this.personalAccidentForm.get('injuryDetails')?.valid : true;
+    const illnessDetailsValid = freeFromIllness?.value === false ? 
+      this.personalAccidentForm.get('illnessDetails')?.valid : true;
+    const extensionOfCoverValid = engagedInExcludedActivities?.value === true ? 
+      this.personalAccidentForm.get('extensionOfCover')?.value !== null && this.personalAccidentForm.get('extensionOfCover')?.value !== '' : true;
+    
+    return isPersonalDetailsValid && isBeneficiaryDetailsValid && isPeriodValid && 
+           isOccupationValid && isHazardousActivitiesValid && 
+           isSustainedInjuryValid && isInsurerDeclinedValid && isFreeFromIllnessValid && 
+           isEngagedActivitiesValid && injuryDetailsValid && illnessDetailsValid && extensionOfCoverValid;
+  }
+  
+  getMissingStep1Fields(): string[] {
+    const missingFields: string[] = [];
+    
+    if (!this.personalAccidentForm.get('ageRange')?.value) {
+      missingFields.push('Age Range');
+    }
+    
+    if (!this.personalAccidentForm.get('coverOption')?.value) {
+      missingFields.push('Coverage Plan');
+    }
+    
+    return missingFields;
+  }
+
+  getMissingStep2Fields(): string[] {
+    const missingFields: string[] = [];
+    
+    // Check personal details
+    const personalDetails = this.personalAccidentForm.get('personalDetails');
+    if (personalDetails?.get('firstName')?.invalid) {
+      missingFields.push('First Name');
+    }
+    if (personalDetails?.get('surname')?.invalid) {
+      missingFields.push('Last Name');
+    }
+    if (personalDetails?.get('ageLastBirthday')?.invalid) {
+      missingFields.push('Age');
+    }
+    if (personalDetails?.get('passportIdNo')?.invalid) {
+      missingFields.push('ID/Passport Number');
+    }
+    if (personalDetails?.get('postalCode')?.invalid) {
+      missingFields.push('Postal Code');
+    }
+    if (personalDetails?.get('email')?.invalid) {
+      missingFields.push('Email Address');
+    }
+    if (personalDetails?.get('mobileNumber')?.invalid) {
+      missingFields.push('Mobile Number');
+    }
+    if (personalDetails?.get('address')?.invalid) {
+      missingFields.push('Address');
+    }
+    
+    // Check beneficiary details
+    const beneficiaryDetails = this.personalAccidentForm.get('beneficiaryDetails');
+    if (beneficiaryDetails?.get('beneficiaryName')?.invalid) {
+      missingFields.push('Beneficiary Name');
+    }
+    if (beneficiaryDetails?.get('beneficiaryRelationship')?.invalid) {
+      missingFields.push('Beneficiary Relationship');
+    }
+    
+    // Check period of insurance
+    const periodOfInsurance = this.personalAccidentForm.get('periodOfInsurance');
+    if (periodOfInsurance?.get('fromDate')?.invalid) {
+      const fromDateErrors = periodOfInsurance?.get('fromDate')?.errors;
+      if (fromDateErrors?.['required']) {
+        missingFields.push('Start Date');
+      } else if (fromDateErrors?.['startDateInPast']) {
+        missingFields.push('Valid Start Date (cannot be in the past)');
+      }
+    }
+    if (periodOfInsurance?.get('toDate')?.invalid) {
+      const toDateErrors = periodOfInsurance?.get('toDate')?.errors;
+      if (toDateErrors?.['required']) {
+        missingFields.push('End Date');
+      } else if (toDateErrors?.['pastDate']) {
+        missingFields.push('Valid End Date (cannot be in the past)');
+      } else if (toDateErrors?.['futureDate']) {
+        missingFields.push('Valid End Date (cannot be more than 1 year in the future)');
+      }
+    }
+    
+    // Check other required fields
+    if (!this.personalAccidentForm.get('occupationClass')?.value) {
+      missingFields.push('Occupation Class');
+    }
+    if (this.personalAccidentForm.get('hazardousActivities')?.value === null || this.personalAccidentForm.get('hazardousActivities')?.value === '') {
+      missingFields.push('Hazardous Activities');
+    }
+    if (this.personalAccidentForm.get('sustainedInjury')?.value === null || this.personalAccidentForm.get('sustainedInjury')?.value === '') {
+      missingFields.push('Past Injury');
+    }
+    if (this.personalAccidentForm.get('insurerDeclined')?.value === null || this.personalAccidentForm.get('insurerDeclined')?.value === '') {
+      missingFields.push('Insurer Declined');
+    }
+    if (this.personalAccidentForm.get('freeFromIllness')?.value === null || this.personalAccidentForm.get('freeFromIllness')?.value === '') {
+      missingFields.push('Free from Illness');
+    }
+    if (this.personalAccidentForm.get('engagedInExcludedActivities')?.value === null || this.personalAccidentForm.get('engagedInExcludedActivities')?.value === '') {
+      missingFields.push('Excluded Activities');
+    }
+    
+    // Check conditional fields
+    if (this.personalAccidentForm.get('sustainedInjury')?.value === true && this.personalAccidentForm.get('injuryDetails')?.invalid) {
+      missingFields.push('Injury Details');
+    }
+    if (this.personalAccidentForm.get('freeFromIllness')?.value === false && this.personalAccidentForm.get('illnessDetails')?.invalid) {
+      missingFields.push('Illness Details');
+    }
+    if (this.personalAccidentForm.get('engagedInExcludedActivities')?.value === true && 
+        (this.personalAccidentForm.get('extensionOfCover')?.value === null || this.personalAccidentForm.get('extensionOfCover')?.value === '')) {
+      missingFields.push('Extension of Cover');
+    }
+    
+    return missingFields;
+  }
+
+  markStep1AsTouched(): void {
+    this.personalAccidentForm.get('coverOption')?.markAsTouched();
+    this.personalAccidentForm.get('ageRange')?.markAsTouched();
+  }
+  
+  markStep2AsTouched(): void {
+    // Mark all step 2 fields as touched
+    const personalDetails = this.personalAccidentForm.get('personalDetails') as FormGroup;
+    if (personalDetails) {
+      Object.keys(personalDetails.controls).forEach(key => {
+        personalDetails.get(key)?.markAsTouched();
+      });
+    }
+    
+    const beneficiaryDetails = this.personalAccidentForm.get('beneficiaryDetails') as FormGroup;
+    if (beneficiaryDetails) {
+      Object.keys(beneficiaryDetails.controls).forEach(key => {
+        beneficiaryDetails.get(key)?.markAsTouched();
+      });
+    }
+    
+    const periodOfInsurance = this.personalAccidentForm.get('periodOfInsurance') as FormGroup;
+    if (periodOfInsurance) {
+      Object.keys(periodOfInsurance.controls).forEach(key => {
+        periodOfInsurance.get(key)?.markAsTouched();
+      });
+    }
+    
+    // Mark other step 2 controls
+    ['occupationClass', 'hazardousActivities', 'sustainedInjury', 
+     'insurerDeclined', 'freeFromIllness', 'engagedInExcludedActivities', 
+     'injuryDetails', 'illnessDetails', 'extensionOfCover'].forEach(controlName => {
+      this.personalAccidentForm.get(controlName)?.markAsTouched();
+    });
   }
 
   shareQuote(): void {

@@ -749,6 +749,26 @@ textarea.form-input {
 
 // Coverage Plans Styles
 .coverage-plans-section {
+  margin-top: 2rem;
+  
+  .section-title-main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $fidelity-turquoise;
+    margin: 0 0 2rem 0;
+    text-align: center;
+    justify-content: center;
+    
+    mat-icon {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  
   .section-title {
     display: flex;
     align-items: center;
@@ -778,6 +798,145 @@ textarea.form-input {
     
     @media (min-width: 1200px) {
       grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .coverage-grid-improved {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @media (min-width: 1400px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .coverage-card-improved {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: visible;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    
+    &:hover {
+      border-color: $fidelity-turquoise;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba($fidelity-turquoise, 0.15);
+    }
+    
+    &.selected {
+      border-color: $fidelity-turquoise;
+      background: linear-gradient(135deg, rgba($fidelity-turquoise, 0.05), rgba($fidelity-lime, 0.05));
+      box-shadow: 0 8px 25px rgba($fidelity-turquoise, 0.2);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, $fidelity-turquoise, $fidelity-lime);
+      }
+    }
+    
+    .coverage-header-improved {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      
+      .option-badge {
+        display: inline-block;
+        background: $fidelity-turquoise;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      
+      .coverage-price-improved {
+        .price-amount {
+          font-size: 1.75rem;
+          font-weight: 800;
+          color: $fidelity-dark-text;
+          display: block;
+          line-height: 1.2;
+        }
+        
+        .price-period {
+          font-size: 0.875rem;
+          color: $fidelity-medium-text;
+          font-weight: 500;
+        }
+      }
+    }
+    
+    .coverage-benefits-grid {
+      flex: 1;
+      margin-bottom: 1.5rem;
+      
+      .benefit-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f5f9;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .benefit-label {
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: $fidelity-dark-text;
+          flex: 1;
+          line-height: 1.3;
+        }
+        
+        .benefit-value {
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: $fidelity-turquoise;
+          text-align: right;
+          
+          &.not-covered {
+            color: #9ca3af;
+            font-style: italic;
+          }
+        }
+      }
+    }
+    
+    .coverage-select-improved {
+      margin-top: auto;
+      text-align: center;
+      padding-top: 1rem;
+      border-top: 1px solid #f1f5f9;
+      
+      .coverage-radio {
+        color: $fidelity-turquoise;
+        font-weight: 600;
+        
+        .select-text {
+          font-size: 0.875rem;
+        }
+      }
     }
   }
   
@@ -2005,5 +2164,102 @@ select.modern-input-uniform {
         color: var(--fidelity-primary);
       }
     }
+  }
+}
+
+// Modern Form Styles
+.modern-compact-form {
+  .form-row-modern {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .form-field-modern {
+    display: flex;
+    flex-direction: column;
+    
+    &.form-field-wide {
+      @media (min-width: 640px) {
+        grid-column: span 2;
+      }
+    }
+    
+    &.form-field-full {
+      grid-column: 1 / -1;
+    }
+    
+    &.form-field-half {
+      @media (min-width: 640px) {
+        grid-column: span 1;
+      }
+    }
+    
+    .field-label-modern {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $fidelity-dark-text;
+      margin-bottom: 0.5rem;
+      
+      .required {
+        color: #ef4444;
+        margin-left: 0.25rem;
+      }
+    }
+  }
+}
+
+// Button disabled state improvements
+.btn-primary:disabled {
+  background-color: #e2e8f0 !important;
+  color: #a0aec0 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  
+  &:hover {
+    background-color: #e2e8f0 !important;
+    color: #a0aec0 !important;
+    transform: none !important;
+  }
+}
+
+.btn-share {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: white;
+  color: $fidelity-turquoise;
+  border: 2px solid $fidelity-turquoise;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: $fidelity-turquoise;
+    color: white;
+    transform: translateY(-1px);
+  }
+  
+  mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }

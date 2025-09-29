@@ -29,7 +29,7 @@
             <mat-icon *ngIf="currentStep > 1">check</mat-icon>
             <span *ngIf="currentStep <= 1">1</span>
           </div>
-          <span class="step-label">Personal Info</span>
+          <span class="step-label">Coverage</span>
         </div>
         <div class="progress-line" [class.completed]="currentStep > 1"></div>
         <div class="progress-step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
@@ -37,7 +37,7 @@
             <mat-icon *ngIf="currentStep > 2">check</mat-icon>
             <span *ngIf="currentStep <= 2">2</span>
           </div>
-          <span class="step-label">Coverage</span>
+          <span class="step-label">Personal Info</span>
         </div>
         <div class="progress-line" [class.completed]="currentStep > 2"></div>
         <div class="progress-step" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
@@ -64,13 +64,114 @@
     <div class="main-content">
       <form [formGroup]="personalAccidentForm" (ngSubmit)="getQuote()">
         
-        <!-- Step 1: Personal Information -->
+        <!-- Step 1: Coverage Selection -->
         <div *ngIf="currentStep === 1" class="step-content animate-fade-in">
+          <div class="step-header">
+            <h2 class="step-title">Choose your coverage</h2>
+            <p class="step-description">Select the protection level that best suits your needs</p>
+          </div>
+          
+          <!-- Age Range Selection First -->
+          <div class="modern-compact-form">
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Age Range <span class="required">*</span></label>
+                <mat-radio-group formControlName="ageRange" class="radio-group-compact">
+                  <mat-radio-button *ngFor="let range of ageRanges" [value]="range.id" class="radio-option-compact">
+                    {{ range.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('ageRange')?.touched && personalAccidentForm.get('ageRange')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('ageRange')?.errors?.['required']">Please select your age range</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coverage Plans Section -->
+          <div class="coverage-plans-section">
+            <h3 class="section-title-main">
+              <mat-icon>shield</mat-icon>
+              Select Your Coverage Plan
+            </h3>
+            
+            <div class="coverage-grid-improved">
+              <div *ngFor="let plan of coverOptions" 
+                   class="coverage-card-improved" 
+                   [class.selected]="personalAccidentForm.get('coverOption')?.value === plan.id"
+                   (click)="selectCoverageOption(plan.id)">
+                
+                <!-- Card Header -->
+                <div class="coverage-header-improved">
+                  <div class="option-badge">Option {{ plan.id }}</div>
+                  <div class="coverage-price-improved">
+                    <span class="price-amount">KES {{ getSelectedPremium(plan) | number:'1.0-0' }}</span>
+                    <span class="price-period">per year</span>
+                  </div>
+                </div>
+                
+                <!-- Benefits Grid -->
+                <div class="coverage-benefits-grid">
+                  <div *ngFor="let benefit of benefits" class="benefit-item">
+                    <div class="benefit-label">{{ benefit.name }}</div>
+                    <div class="benefit-value" *ngIf="plan[benefit.key] > 0">
+                      KES {{ plan[benefit.key] | number:'1.0-0' }}
+                    </div>
+                    <div class="benefit-value not-covered" *ngIf="plan[benefit.key] === 0">
+                      Not Covered
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Selection Radio -->
+                <div class="coverage-select-improved">
+                  <mat-radio-button [value]="plan.id" formControlName="coverOption" class="coverage-radio">
+                    <span class="select-text">Select Option {{ plan.id }}</span>
+                  </mat-radio-button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Validation message for coverage selection -->
+            <div *ngIf="personalAccidentForm.get('coverOption')?.touched && personalAccidentForm.get('coverOption')?.invalid" class="error-message-modern coverage-error">
+              <mat-icon class="error-icon">error</mat-icon>
+              <span *ngIf="personalAccidentForm.get('coverOption')?.errors?.['required']">Please select a coverage plan to continue</span>
+            </div>
+          </div>
+          
+          <!-- Step Navigation -->
+          <div class="step-navigation">
+            <button type="button" (click)="nextStep()" [disabled]="!isStep1Valid()" class="btn-primary">
+              Continue to Personal Information
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Personal Information -->
+        <div *ngIf="currentStep === 2" class="step-content animate-fade-in">
           <div class="step-header">
             <h2 class="step-title">Tell us about yourself</h2>
             <p class="step-description">We need some basic information to get started with your quote</p>
           </div>
           
+          <!-- Age Range Selection First -->
+          <div class="modern-compact-form">
+            <div class="form-row-modern">
+              <div class="form-field-modern">
+                <label class="field-label-modern">Age Range <span class="required">*</span></label>
+                <mat-radio-group formControlName="ageRange" class="radio-group-compact">
+                  <mat-radio-button *ngFor="let range of ageRanges" [value]="range.id" class="radio-option-compact">
+                    {{ range.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="personalAccidentForm.get('ageRange')?.touched && personalAccidentForm.get('ageRange')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('ageRange')?.errors?.['required']">Please select your age range</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Modernized Compact Form -->
           <div formGroupName="personalDetails" class="modern-compact-form">
             
@@ -81,6 +182,7 @@
                 <input type="text" formControlName="firstName" class="modern-input-uniform font-bold" placeholder="First name">
                 <div *ngIf="personalAccidentForm.get('personalDetails.firstName')?.touched && personalAccidentForm.get('personalDetails.firstName')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.firstName')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.firstName')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
               
@@ -89,12 +191,16 @@
                 <input type="text" formControlName="surname" class="modern-input-uniform font-bold" placeholder="Last name">
                 <div *ngIf="personalAccidentForm.get('personalDetails.surname')?.touched && personalAccidentForm.get('personalDetails.surname')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.surname')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.surname')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
               
               <div class="form-field-modern">
                 <label class="field-label-modern">Middle Name</label>
                 <input type="text" formControlName="middleName" class="modern-input-uniform font-bold" placeholder="Middle name (optional)">
+                <div *ngIf="personalAccidentForm.get('personalDetails.middleName')?.touched && personalAccidentForm.get('personalDetails.middleName')?.invalid" class="error-message-modern">
+                  <span *ngIf="personalAccidentForm.get('personalDetails.middleName')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
+                </div>
               </div>
             </div>
             
@@ -105,8 +211,8 @@
                 <input type="number" formControlName="ageLastBirthday" class="modern-input-uniform font-bold" min="18" max="70" placeholder="Age">
                 <div *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.touched && personalAccidentForm.get('personalDetails.ageLastBirthday')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['required']">Required</span>
-                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['min']">Min 18</span>
-                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['max']">Max 70</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['min']">Minimum age is 18</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.ageLastBirthday')?.errors?.['max']">Maximum age is 70</span>
                 </div>
               </div>
               
@@ -115,6 +221,8 @@
                 <input type="text" formControlName="passportIdNo" class="modern-input-uniform font-bold" placeholder="ID or passport number">
                 <div *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.touched && personalAccidentForm.get('personalDetails.passportIdNo')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.passportIdNo')?.errors?.['invalidIdPassport']">Invalid ID/Passport format</span>
                 </div>
               </div>
               
@@ -123,6 +231,7 @@
                 <input type="text" formControlName="postalCode" class="modern-input-uniform font-bold" placeholder="Postal code">
                 <div *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.touched && personalAccidentForm.get('personalDetails.postalCode')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.postalCode')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
             </div>
@@ -134,7 +243,8 @@
                 <input type="email" formControlName="email" class="modern-input-uniform font-bold" placeholder="your.email@example.com">
                 <div *ngIf="personalAccidentForm.get('personalDetails.email')?.touched && personalAccidentForm.get('personalDetails.email')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['required']">Required</span>
-                  <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['email']">Invalid email</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['email']">Invalid email format</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.email')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
               
@@ -143,7 +253,8 @@
                 <input type="text" formControlName="mobileNumber" class="modern-input-uniform font-bold" placeholder="+254XXXXXXXXX">
                 <div *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.touched && personalAccidentForm.get('personalDetails.mobileNumber')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['required']">Required</span>
-                  <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['pattern']">Invalid format</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['invalidPhoneNumber']">Invalid phone format</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.mobileNumber')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
             </div>
@@ -155,29 +266,10 @@
                 <input type="text" formControlName="address" class="modern-input-uniform font-bold" placeholder="Enter your full address">
                 <div *ngIf="personalAccidentForm.get('personalDetails.address')?.touched && personalAccidentForm.get('personalDetails.address')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('personalDetails.address')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('personalDetails.address')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Step Navigation -->
-          <div class="step-navigation">
-            <button type="button" (click)="nextStep()" class="btn-primary">
-              Continue to Coverage Selection
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <!-- Step 2: Coverage Selection -->
-        <div *ngIf="currentStep === 2" class="step-content animate-fade-in">
-          <div class="step-header">
-            <h2 class="step-title">Choose your coverage</h2>
-            <p class="step-description">Select the protection level that best suits your needs</p>
-          </div>
-          
-          <!-- Modernized Compact Coverage Form -->
-          <div class="modern-compact-form">
             
             <!-- Beneficiary & Coverage Period Row -->
             <div class="form-row-modern">
@@ -186,6 +278,7 @@
                 <input type="text" formControlName="beneficiaryName" class="modern-input-uniform font-bold" placeholder="Full name">
                 <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryName')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
               
@@ -194,6 +287,7 @@
                 <input type="text" formControlName="beneficiaryRelationship" class="modern-input-uniform font-bold" placeholder="e.g., Spouse, Child">
                 <div *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.touched && personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.invalid" class="error-message-modern">
                   <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('beneficiaryDetails.beneficiaryRelationship')?.errors?.['hasLeadingTrailingSpaces']">Remove leading/trailing spaces</span>
                 </div>
               </div>
               
@@ -201,7 +295,8 @@
                 <label class="field-label-modern">Start Date <span class="required">*</span></label>
                 <input type="date" formControlName="fromDate" class="modern-input-uniform font-bold">
                 <div *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.touched && personalAccidentForm.get('periodOfInsurance.fromDate')?.invalid" class="error-message-modern">
-                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.errors?.['required']">Start date is required</span>
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.fromDate')?.errors?.['startDateInPast']">Start date cannot be in the past</span>
                 </div>
               </div>
               
@@ -209,7 +304,9 @@
                 <label class="field-label-modern">End Date <span class="required">*</span></label>
                 <input type="date" formControlName="toDate" class="modern-input-uniform font-bold">
                 <div *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.touched && personalAccidentForm.get('periodOfInsurance.toDate')?.invalid" class="error-message-modern">
-                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['required']">Required</span>
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['required']">End date is required</span>
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['pastDate']">End date cannot be in the past</span>
+                  <span *ngIf="personalAccidentForm.get('periodOfInsurance.toDate')?.errors?.['futureDate']">End date cannot be more than 1 year in the future</span>
                 </div>
               </div>
             </div>
@@ -217,18 +314,6 @@
             <!-- Age Range & Occupation Row -->
             <div class="form-row-modern">
               <div class="form-field-modern">
-                <label class="field-label-modern">Age Range <span class="required">*</span></label>
-                <mat-radio-group formControlName="ageRange" class="radio-group-compact">
-                  <mat-radio-button *ngFor="let range of ageRanges" [value]="range.id" class="radio-option-compact">
-                    {{ range.label }}
-                  </mat-radio-button>
-                </mat-radio-group>
-                <div *ngIf="personalAccidentForm.get('ageRange')?.touched && personalAccidentForm.get('ageRange')?.invalid" class="error-message-modern">
-                  <span *ngIf="personalAccidentForm.get('ageRange')?.errors?.['required']">Required</span>
-                </div>
-              </div>
-              
-              <div class="form-field-modern form-field-wide">
                 <label class="field-label-modern">Occupation Class <span class="required">*</span></label>
                 <select formControlName="occupationClass" class="modern-input-uniform font-bold">
                   <option value="">Select occupation class</option>
@@ -378,15 +463,21 @@
                 </div>
               </div>
             </div>
+            
+            <!-- Validation message for coverage selection -->
+            <div *ngIf="personalAccidentForm.get('coverOption')?.touched && personalAccidentForm.get('coverOption')?.invalid" class="error-message-modern coverage-error">
+              <mat-icon class="error-icon">error</mat-icon>
+              <span *ngIf="personalAccidentForm.get('coverOption')?.errors?.['required']">Please select a coverage plan to continue</span>
+            </div>
           </div>
           
           <!-- Step Navigation -->
           <div class="step-navigation">
             <button type="button" (click)="prevStep()" class="btn-secondary">
               <mat-icon>arrow_back</mat-icon>
-              Back
+              Back to Coverage
             </button>
-            <button type="button" (click)="nextStep()" class="btn-primary">
+            <button type="button" (click)="nextStep()" [disabled]="!isStep2Valid()" class="btn-primary">
               Review & Continue
               <mat-icon>arrow_forward</mat-icon>
             </button>
